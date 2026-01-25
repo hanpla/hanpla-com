@@ -1,0 +1,80 @@
+type DateInput = string | number | Date;
+
+export function maskIp(userIp: string) {
+  const maskedIp = userIp.split(".").slice(0, 2).join(".");
+  return maskedIp;
+}
+
+export const formatDate = {
+  // 1. 기본 날짜: 2025. 12. 26.
+  simple: (date: DateInput) => {
+    return new Intl.DateTimeFormat("ko-KR", {
+      dateStyle: "medium",
+    }).format(new Date(date));
+  },
+
+  // 2. 상세 시간 포함: 2025. 12. 26. 18:29
+  full: (date: DateInput) => {
+    return new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: false, // 24시간제 적용
+    }).format(new Date(date));
+  },
+
+  // 3. 상대적 시간: 방금 전, 5분 전, 3시간 전
+  relative: (date: DateInput) => {
+    const now = new Date();
+    const target = new Date(date);
+    const diffInSeconds = Math.floor((now.getTime() - target.getTime()) / 1000);
+
+    if (diffInSeconds < 60) return "방금 전";
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}분 전`;
+    if (diffInSeconds < 86400)
+      return `${Math.floor(diffInSeconds / 3600)}시간 전`;
+
+    // 하루 이상 지나면 그냥 날짜 표시
+    return formatDate.full(date);
+  },
+
+  // 4. 요일 포함: 2025. 12. 26. (금)
+  withDay: (date: DateInput) => {
+    return new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      weekday: "short",
+    }).format(new Date(date));
+  },
+
+  onlyHour: (date: DateInput) => {
+    return new Intl.DateTimeFormat("ko-KR", {
+      timeStyle: "short",
+      hour12: false,
+    }).format(new Date(date));
+  },
+};
+
+export function generatePagination(currentPage: number, totalPages: number) {
+  if (totalPages <= 5) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  let start = currentPage - 2;
+  let end = currentPage + 2;
+
+  if (start < 1) {
+    start = 1;
+    end = 5;
+  }
+
+  if (end > totalPages) {
+    end = totalPages;
+    start = totalPages - 4;
+  }
+
+  return Array.from({ length: 5 }, (_, i) => start + i);
+}
