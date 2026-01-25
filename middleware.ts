@@ -22,7 +22,10 @@ export async function middleware(request: NextRequest) {
 
   // 2. 보호된 경로(/profile) 접근 제어
   if (!isAuthenticated && pathname.startsWith("/profile")) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(url);
   }
 
   // 3. 로그인 상태에서 로그인 페이지(/login) 접근 시 인덱스 페이지로 이동
