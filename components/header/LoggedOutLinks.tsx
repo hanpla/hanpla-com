@@ -1,12 +1,24 @@
-import Link from "next/link";
+"use client";
 
-const AUTH_LINKS = [
-  { label: "전체 게시판", href: "/board" },
-  { label: "로그인", href: "/login" },
-  { label: "회원가입", href: "/signup" },
-];
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function LoggedOutLinks() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const fullPath = searchParams.toString()
+    ? `${pathname}?${searchParams.toString()}`
+    : pathname;
+
+  const redirectPath =
+    pathname === "/login" || pathname === "/signup" ? "/" : fullPath;
+
+  const AUTH_LINKS = [
+    { label: "전체 게시판", href: "/board" },
+    { label: "로그인", href: `/login?callbackUrl=${redirectPath}` },
+    { label: "회원가입", href: "/signup" },
+  ];
   return (
     <div className="hidden md:flex items-center gap-4">
       {AUTH_LINKS.map((link) => (
