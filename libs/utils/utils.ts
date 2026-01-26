@@ -78,3 +78,7 @@ export function generatePagination(currentPage: number, totalPages: number) {
 
   return Array.from({ length: 5 }, (_, i) => start + i);
 }
+
+export function normalize(text: string) {
+  return text.split(" ").join("").toLowerCase();
+}
