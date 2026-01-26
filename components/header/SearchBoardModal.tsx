@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 
+// Utils
+import { normalize } from "@/libs/utils/utils";
+
 // Components
 import EmptyList from "../common/EmptyList";
 
@@ -18,7 +21,6 @@ export default function SearchBoardModal({ onClose, allBoards }: Props) {
   const [searchInput, setSearchInput] = useState("");
 
   const filteredBoards = allBoards.filter((board) => {
-    const normalize = (text: string) => text.split(" ").join("").toLowerCase();
     return normalize(board.name).includes(normalize(searchInput));
   });
 
