@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../libs/styles/globals.css";
-import Link from "next/link";
 
 // Actions
 import { getAllBoards } from "@/libs/actions/board";
 
 // Components
-import Logo from "@/components/header/Logo";
-import Search from "@/components/header/Search";
-import LoggedInLinks from "@/components/header/LoggedInLinks";
-import LoggedOutLinks from "@/components/header/LoggedOutLinks";
-
-// Icons
-import { TextAlignJustify } from "lucide-react";
+import Header from "@/components/header";
+import Container from "@/components/layout/Container";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,23 +38,10 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="border-b border-neutral-200">
-          <div className="max-w-5xl mx-auto px-4 py-2 flex items-center justify-between">
-            <Logo />
-            <div className="flex items-center gap-2">
-              {isLogin && (
-                <Link href="/profile" className="text-xs text-neutral-800">
-                  @ {nickname}
-                </Link>
-              )}
-
-              <Search allBoards={allBoards} />
-              {isLogin ? <LoggedInLinks /> : <LoggedOutLinks />}
-              <TextAlignJustify className="p-0.5 md:hidden" />
-            </div>
-          </div>
-        </header>
-        <main>{children}</main>
+        <Header allBoards={allBoards} isLogin={isLogin} nickname={nickname} />
+        <main>
+          <Container>{children}</Container>
+        </main>
       </body>
     </html>
   );
