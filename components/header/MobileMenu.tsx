@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -13,8 +13,16 @@ import { TextAlignJustify, X } from "lucide-react";
 import ModalLayout from "../layout/ModalLayout";
 import LogoutBtn from "../common/LogoutBtn";
 
-export default function MobileMenu() {
+export default function MobileMenu({ isLogin }: { isLogin: boolean }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const callbackUrl = generateCallbackUrl(pathname, searchParams.toString());
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   const closeMenu = () => setIsMenuOpen(false);
   const openMenu = () => setIsMenuOpen(true);
@@ -22,7 +30,13 @@ export default function MobileMenu() {
   return (
     <>
       <MobileMenuButton onClick={openMenu} />
-      {isMenuOpen && <MobileMenuModal onClose={closeMenu} />}
+      {isMenuOpen && (
+        <MobileMenuModal
+          onClose={closeMenu}
+          callbackUrl={callbackUrl}
+          isLogin={isLogin}
+        />
+      )}
     </>
   );
 }
@@ -35,13 +49,25 @@ const MobileMenuButton = ({ onClick }: { onClick: () => void }) => {
   );
 };
 
-const MobileMenuModal = ({ onClose }: { onClose: () => void }) => {
+const MobileMenuModal = ({
+  onClose,
+  callbackUrl,
+  isLogin,
+}: {
+  onClose: () => void;
+  callbackUrl: string;
+  isLogin: boolean;
+}) => {
   return (
     <>
       <ModalLayout onClose={onClose} />
       <ModalContainer>
         <ModalClose onClose={onClose} />
-        <ModalLoggedInItems isLogin={false} />
+        {isLogin ? (
+          <ModalLoggedInItems />
+        ) : (
+          <ModalLoggedOutItems callbackUrl={callbackUrl} />
+        )}
       </ModalContainer>
     </>
   );
@@ -65,26 +91,28 @@ const ModalClose = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-const ModalLoggedInItems = ({ isLogin }: { isLogin: boolean }) => {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const callbackUrl = generateCallbackUrl(pathname, searchParams.toString());
-
+const ModalLoggedInItems = () => {
   return (
     <nav className="flex flex-col gap-6 text-lg">
       <Link href="/board">전체 게시판 </Link>
-      {isLogin ? (
-        <>
-          <Link href="/profile">프로필</Link>
-          <LogoutBtn className="text-left" />
-        </>
-      ) : (
-        <>
-          <Link href={`/login?callbackUrl=${callbackUrl}`}>로그인</Link>
-          <Link href="signup">회원가입</Link>
-        </>
-      )}
+      <>
+        <Link href="/profile">프로필</Link>
+        <LogoutBtn className="text-left" />
+      </>
+    </nav>
+  );
+};
+
+const ModalLoggedOutItems = ({ callbackUrl }: { callbackUrl: string }) => {
+  return (
+    <nav className="flex flex-col gap-6 text-lg">
+      <>
+        <Link href="/board">전체 게시판 </Link>
+        <Link href={`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`}>
+          로그인
+        </Link>
+        <Link href="signup">회원가입</Link>
+      </>
     </nav>
   );
 };

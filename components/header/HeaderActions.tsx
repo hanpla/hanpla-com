@@ -28,7 +28,7 @@ export default function HeaderActions({ allBoards, isLogin, nickname }: Props) {
 
       {isLogin ? <LoggedInLinks /> : <LoggedOutLinks />}
 
-      <MobileMenu />
+      <MobileMenu isLogin={isLogin} />
     </div>
   );
 }
