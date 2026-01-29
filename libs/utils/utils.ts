@@ -82,3 +82,14 @@ export function generatePagination(currentPage: number, totalPages: number) {
 export function normalize(text: string) {
   return text.split(" ").join("").toLowerCase();
 }
+
+export function generateCallbackUrl(pathname: string, searchParams: string) {
+  const fullPath = searchParams.toString()
+    ? `${pathname}?${searchParams.toString()}`
+    : pathname;
+
+  const redirectPath =
+    pathname === "/login" || pathname === "/signup" ? "/" : fullPath;
+
+  return redirectPath;
+}
