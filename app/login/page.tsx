@@ -9,8 +9,8 @@ import { loginAction } from "@/libs/actions/auth";
 // Components
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthInput from "@/components/auth/AuthInput";
-import AuthLoginBtn from "@/components/auth/AuthBtns";
 import AuthMsg from "@/components/auth/AuthMsg";
+import AuthBtn from "@/components/auth/AuthBtns";
 
 // Types
 import { AuthState } from "@/libs/types/auth";
@@ -37,7 +37,7 @@ export default function LoginPage() {
           label="아이디"
           id="userId"
           name="userId"
-          minLength={2}
+          minLength={4}
           defaultValue={state.inputs?.userId || ""}
           placeholder="아이디를 입력해주세요"
         />
@@ -49,7 +49,7 @@ export default function LoginPage() {
           minLength={4}
           placeholder="비밀번호를 입력해주세요"
         />
-        <AuthLoginBtn />
+        <AuthBtn isPending={isPending} text="로그인" />
         {state.message && <AuthMsg text={state.message} />}
         <AuthLinks />
       </form>
