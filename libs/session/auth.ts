@@ -23,7 +23,11 @@ export async function verifySession(): Promise<SessionPayload | null> {
       algorithms: ["HS256"], // 알고리즘 "RS256" 등
     });
 
-    return payload as unknown as SessionPayload;
+    return {
+      userId: payload.userId as string,
+      nickname: payload.nickname as string,
+      role: payload.role as string,
+    } as SessionPayload;
   } catch (err) {
     // 만료되었거나 조작된 토큰인 경우
     return null;

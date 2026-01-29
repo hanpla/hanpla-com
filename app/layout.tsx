@@ -5,9 +5,12 @@ import "../libs/styles/globals.css";
 // Actions
 import { getAllBoards } from "@/libs/actions/board";
 
+// session
+import { verifySession } from "@/libs/session/auth";
+
 // Components
-import Header from "@/components/header";
 import Container from "@/components/layout/Container";
+import Header from "@/components/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +32,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const allBoards = await getAllBoards({});
-  const isLogin = false;
-  const nickname = "한플라";
+  const [allBoards, session] = await Promise.all([
+    getAllBoards({}),
+    verifySession(),
+  ]);
+  const isLogin = !!session;
+  const nickname = session?.nickname || "ㅇㅇ";
 
   return (
     <html lang="ko">
