@@ -4,10 +4,10 @@ import { createClient } from "../utils/supabase/server";
 import { redirect } from "next/navigation";
 
 // session
-import { createSession } from "../session/auth";
+import { createSession, deleteSession } from "../session/auth";
 
 // Utils
-import { createAuthError } from "../utils/auth";
+import { createAuthError, getSafeRedirect } from "../utils/auth";
 
 // Types
 import { AuthState, SessionPayload } from "../types/auth";
@@ -62,8 +62,11 @@ export async function loginAction(
     };
   }
 
-  const safeRedirect =
-    callbackUrl && callbackUrl.startsWith("/") ? callbackUrl : "/";
+  redirect(getSafeRedirect(callbackUrl));
+}
 
-  redirect(safeRedirect);
+export async function logoutAction(callbackUrl: string) {
+  await deleteSession();
+
+  redirect(getSafeRedirect(callbackUrl));
 }

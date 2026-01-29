@@ -13,3 +13,14 @@ export const createAuthError = (
   message,
   inputs: inputs || {},
 });
+
+/**
+ * 외부 사이트로의 가로채기 리다이렉트를 방지하기 위해
+ * 내부 경로(/)로 시작하는지 검증하는 함수
+ */
+export const getSafeRedirect = (url?: string | null): string => {
+  if (!url || !url.startsWith("/")) {
+    return "/";
+  }
+  return url;
+};

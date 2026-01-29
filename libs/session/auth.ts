@@ -54,3 +54,12 @@ export async function createSession(userData: SessionPayload) {
     path: "/",
   });
 }
+
+/**
+ * [세션 삭제 함수]
+ * 쿠키 삭제
+ */
+export async function deleteSession() {
+  const cookieStore = await cookies();
+  cookieStore.delete("session");
+}
