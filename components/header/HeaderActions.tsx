@@ -4,9 +4,7 @@ import Link from "next/link";
 import Search from "./Search";
 import LoggedInLinks from "./LoggedInLinks";
 import LoggedOutLinks from "./LoggedOutLinks";
-
-// Icons
-import { TextAlignJustify } from "lucide-react";
+import MobileMenu from "./MobileMenu";
 
 // Types
 import { BoardType } from "@/libs/types/board";
@@ -30,9 +28,7 @@ export default function HeaderActions({ allBoards, isLogin, nickname }: Props) {
 
       {isLogin ? <LoggedInLinks /> : <LoggedOutLinks />}
 
-      <button type="button" className="md:hidden p-1">
-        <TextAlignJustify size={20} />
-      </button>
+      <MobileMenu />
     </div>
   );
 }
