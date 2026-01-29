@@ -24,8 +24,6 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
-  console.log(callbackUrl);
-
   const [state, formAction, isPending] = useActionState(
     loginAction,
     initialState,

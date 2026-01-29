@@ -1,13 +1,16 @@
 "use server";
 
 import { createClient } from "../utils/supabase/server";
+import { redirect } from "next/navigation";
 
 // session
 import { createSession } from "../session/auth";
 
+// Utils
+import { createAuthError } from "../utils/auth";
+
 // Types
 import { AuthState, SessionPayload } from "../types/auth";
-import { redirect } from "next/navigation";
 
 export async function loginAction(
   _prevState: AuthState,
@@ -16,6 +19,7 @@ export async function loginAction(
   const userId = formData.get("userId") as string;
   const password = formData.get("userPassword") as string;
   const callbackUrl = (formData.get("callbackUrl") as string) || "/";
+  const currentInputs = { userId };
 
   try {
     const supabase = await createClient();
@@ -28,19 +32,18 @@ export async function loginAction(
       .maybeSingle();
 
     if (error) {
-      console.error("조회 중 에러:", error.message);
-      return {
-        success: false,
-        message: "오류가 발생했습니다. 다시 시도해주세요.",
-      };
+      console.error("DB 조회 에러:", error.message);
+      return createAuthError(
+        "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        currentInputs,
+      );
     }
 
     if (!data) {
-      return {
-        success: false,
-        message: "아이디 또는 비밀번호가 일치하지 않습니다.",
-        inputs: { userId: userId },
-      };
+      return createAuthError(
+        "아이디 또는 비밀번호가 일치하지 않습니다.",
+        currentInputs,
+      );
     }
 
     const userData: SessionPayload = {
