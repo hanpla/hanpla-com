@@ -50,7 +50,7 @@ const SearchBtn = ({
   return (
     <button
       onClick={onClick}
-      className="hidden md:flex items-center justify-center bg-neutral-100 px-2 py-1 rounded-lg gap-6 cursor-pointer hover:bg-neutral-200 transition-colors"
+      className="hidden md:flex bg-neutral-100 px-2 py-1 rounded-lg gap-6 cursor-pointer hover:bg-neutral-200 transition-colors"
     >
       <span className="text-neutral-400 text-[14px]">전체 게시판 검색</span>
       <SearchIcon size={20} className="text-neutral-600 p-0.5" />
