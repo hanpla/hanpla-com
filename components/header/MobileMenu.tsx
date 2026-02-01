@@ -75,9 +75,67 @@ const MobileMenuModal = ({
 
 const ModalContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="fixed top-0 right-0 z-20 w-70 h-full bg-white shadow-2xl flex flex-col p-6 pt-3">
+    <div className="fixed top-0 right-0 z-20 w-70 h-full bg-white shadow-2xl flex flex-col p-6 pl-0 pt-3">
       {children}
     </div>
+  );
+};
+
+const ModalItemsLayout = ({ children }: { children: React.ReactNode }) => {
+  return <nav className="flex flex-col gap-2 text-lg">{children}</nav>;
+};
+
+const ModalItem = ({
+  href,
+  label,
+  isBtn,
+}: {
+  href: string;
+  label: string;
+  isBtn?: boolean;
+}) => {
+  const baseStyle = "px-4 py-2 hover:bg-neutral-100 text-left";
+  if (isBtn) return <LogoutBtn className={baseStyle} />;
+
+  return (
+    <Link href={href} className="px-4 py-2 hover:bg-neutral-100">
+      {label}
+    </Link>
+  );
+};
+
+const ModalLoggedInItems = () => {
+  const items = [
+    { href: "/board", label: "전체 게시판" },
+    { href: "/profile", label: "프로필" },
+  ];
+
+  return (
+    <ModalItemsLayout>
+      {items.map((item) => (
+        <ModalItem key={item.href} href={item.href} label={item.label} />
+      ))}
+      <ModalItem href={""} label={""} isBtn />
+    </ModalItemsLayout>
+  );
+};
+
+const ModalLoggedOutItems = ({ callbackUrl }: { callbackUrl: string }) => {
+  const items = [
+    { href: "/board", label: "전체 게시판" },
+    {
+      href: `/login?callbackUrl=${encodeURIComponent(callbackUrl)}`,
+      label: "로그인",
+    },
+    { href: "/signup", label: "회원가입" },
+  ];
+
+  return (
+    <ModalItemsLayout>
+      {items.map((item) => (
+        <ModalItem key={item.href} href={item.href} label={item.label} />
+      ))}
+    </ModalItemsLayout>
   );
 };
 
@@ -88,31 +146,5 @@ const ModalClose = ({ onClose }: { onClose: () => void }) => {
         <X size={24} className="text-neutral-600" />
       </button>
     </div>
-  );
-};
-
-const ModalLoggedInItems = () => {
-  return (
-    <nav className="flex flex-col gap-6 text-lg">
-      <Link href="/board">전체 게시판 </Link>
-      <>
-        <Link href="/profile">프로필</Link>
-        <LogoutBtn className="text-left" />
-      </>
-    </nav>
-  );
-};
-
-const ModalLoggedOutItems = ({ callbackUrl }: { callbackUrl: string }) => {
-  return (
-    <nav className="flex flex-col gap-6 text-lg">
-      <>
-        <Link href="/board">전체 게시판 </Link>
-        <Link href={`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`}>
-          로그인
-        </Link>
-        <Link href="signup">회원가입</Link>
-      </>
-    </nav>
   );
 };
