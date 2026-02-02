@@ -51,10 +51,26 @@ export const formatDate = {
   },
 
   onlyHour: (date: DateInput) => {
-    return new Intl.DateTimeFormat("ko-KR", {
-      timeStyle: "short",
-      hour12: false,
-    }).format(new Date(date));
+    const now = new Date();
+    const target = new Date(date);
+
+    // 날짜가 같은지 확인 (연, 월, 일 비교)
+    const isToday =
+      now.getFullYear() === target.getFullYear() &&
+      now.getMonth() === target.getMonth() &&
+      now.getDate() === target.getDate();
+
+    if (isToday) {
+      return new Intl.DateTimeFormat("ko-KR", {
+        timeStyle: "short",
+        hour12: false,
+      }).format(target);
+    } else {
+      return new Intl.DateTimeFormat("ko-KR", {
+        month: "numeric",
+        day: "numeric",
+      }).format(target);
+    }
   },
 };
 
