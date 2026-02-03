@@ -11,6 +11,7 @@ import { verifySession } from "@/libs/session/auth";
 // Components
 import Container from "@/components/layout/Container";
 import Header from "@/components/header";
+import RecentBoard from "@/components/header/RecentBoard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +46,9 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header allBoards={allBoards} isLogin={isLogin} nickname={nickname} />
+        <Container>
+          <RecentBoard allBoards={allBoards} />
+        </Container>
         <main>
           <Container>{children}</Container>
         </main>
