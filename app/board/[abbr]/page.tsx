@@ -30,8 +30,6 @@ export default async function AbbrPage(props: {
     searchKeyword: postSearch,
   });
 
-  console.log(realPage);
-
   return (
     <>
       <PageTitle title={abbrTitle} href="/" />
