@@ -42,6 +42,29 @@ export async function getAllBoards({
   }
 }
 
+export async function getAbbrName(abbr: string) {
+  const supabase = await createClient();
+
+  try {
+    const { data, error } = await supabase
+      .from("boards")
+      .select("name")
+      .eq("abbr", abbr)
+      .maybeSingle();
+
+    if (error) {
+      console.log(error);
+      return null;
+    }
+
+    return data?.name;
+  } catch (error) {
+    console.log(error);
+
+    return null;
+  }
+}
+
 export async function getPostList({
   abbr,
   page = 1,
@@ -54,7 +77,6 @@ export async function getPostList({
 
   const from = (page - 1) * limit;
   const to = from + limit - 1;
-  console.log(searchType, searchKeyword);
 
   try {
     let query = supabase
@@ -78,7 +100,7 @@ export async function getPostList({
       .range(from, to);
 
     if (error) {
-      console.error("게시글 페칭 에러:", error.message);
+      console.error("게시글이 없습니다.");
       return { postList: [], totalCount: 0 };
     }
 
