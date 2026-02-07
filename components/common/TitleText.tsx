@@ -6,12 +6,12 @@ interface Props {
 }
 
 export default function PageTitle({ title, href }: Props) {
-  const baseStyle = `font-bold text-neutral-800 mt-2`;
+  const baseStyle = `font-bold text-neutral-800 inline-block mt-4`;
 
   if (href) {
     return (
-      <Link href={href} className="inline-block">
-        <h1 className={`${baseStyle}`}>{title}</h1>
+      <Link href={href} className={`${baseStyle}`}>
+        {title}
       </Link>
     );
   }

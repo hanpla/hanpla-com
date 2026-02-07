@@ -54,7 +54,7 @@ const PostItem = ({
     : `/board/${post.abbr}/${post.id}`;
 
   return (
-    <li className="hover:bg-neutral-50 transition-colors">
+    <li className="hover:bg-neutral-50">
       <Link
         href={href}
         className="flex items-center justify-between px-2 py-4 gap-4"
