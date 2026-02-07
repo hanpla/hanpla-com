@@ -1,6 +1,6 @@
 "use client";
 
-// Icons
+import { useSearchParams } from "next/navigation";
 import { Search as SearchIcon, ChevronDown } from "lucide-react";
 
 interface Props {
@@ -8,11 +8,18 @@ interface Props {
 }
 
 export default function Search({ abbr }: Props) {
+  const searchParams = useSearchParams();
+  const currentLikeCount = searchParams.get("likeCount");
+
+  const currentSearchType = searchParams.get("searchType") || "title";
+  const currentPostSearch = searchParams.get("postSearch") || "";
+
   return (
     <Layout>
       <FormLayout abbr={abbr}>
-        <Select />
-        <Input />
+        <Select defaultValue={currentSearchType} />
+        <Input defaultValue={currentPostSearch} />
+        <HiddenInput currentLikeCount={currentLikeCount} />
         <Button />
       </FormLayout>
     </Layout>
@@ -37,11 +44,12 @@ const FormLayout = ({
   );
 };
 
-const Select = () => {
+const Select = ({ defaultValue }: { defaultValue: string }) => {
   return (
     <div className="relative">
       <select
         name="searchType"
+        defaultValue={defaultValue}
         className="appearance-none pl-4 pr-10 py-2.5 bg-neutral-100 border-none rounded-2xl text-sm font-medium text-neutral-700 outline-none transition-all cursor-pointer"
       >
         <option value="title">제목</option>
@@ -54,26 +62,35 @@ const Select = () => {
   );
 };
 
-const Input = () => {
+const Input = ({ defaultValue }: { defaultValue: string }) => {
   return (
     <div className="relative flex-1 group">
       <label htmlFor="postSearch" className="sr-only">
         게시글 검색
       </label>
-
       <div className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
         <SearchIcon size={18} />
       </div>
-
       <input
         type="text"
         name="postSearch"
         id="postSearch"
+        defaultValue={defaultValue}
         placeholder="검색어를 입력하세요"
         className="w-full pl-11 pr-4 py-2.5 bg-neutral-100 border-none rounded-2xl text-sm text-neutral-800 placeholder:text-neutral-400 focus:ring-1 focus:ring-neutral-200 focus:outline-none"
       />
     </div>
   );
+};
+
+const HiddenInput = ({
+  currentLikeCount,
+}: {
+  currentLikeCount?: string | null;
+}) => {
+  if (!currentLikeCount) return null;
+
+  return <input type="hidden" name="likeCount" value={currentLikeCount} />;
 };
 
 const Button = () => {
