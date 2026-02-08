@@ -21,6 +21,7 @@ export default function AbbrHeader({ abbrName, href, isBest }: Props) {
       <PageTitle title={abbrName} href={href} />
       {!isBest && (
         <Tabs>
+          <Tab label="글쓰기" href={`${href}/write`} isActive={false} />
           <Tab label="전체글" href={`${href}?`} isActive={!isLikeCount} />
           <Tab
             label="인기글"
