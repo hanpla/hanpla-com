@@ -81,26 +81,13 @@ const ModalContainer = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const ModalItemsLayout = ({ children }: { children: React.ReactNode }) => {
-  return <nav className="flex flex-col gap-2 text-lg">{children}</nav>;
-};
-
-const ModalItem = ({
-  href,
-  label,
-  isBtn,
-}: {
-  href: string;
-  label: string;
-  isBtn?: boolean;
-}) => {
-  const baseStyle = "px-4 py-2 hover:bg-neutral-100 text-left";
-  if (isBtn) return <LogoutBtn className={baseStyle} />;
-
+const ModalClose = ({ onClose }: { onClose: () => void }) => {
   return (
-    <Link href={href} className="px-4 py-2 hover:bg-neutral-100">
-      {label}
-    </Link>
+    <div className="flex justify-end mb-8">
+      <button onClick={onClose} className="p-1 cursor-pointer">
+        <X size={24} className="text-neutral-600" />
+      </button>
+    </div>
   );
 };
 
@@ -139,12 +126,25 @@ const ModalLoggedOutItems = ({ callbackUrl }: { callbackUrl: string }) => {
   );
 };
 
-const ModalClose = ({ onClose }: { onClose: () => void }) => {
+const ModalItemsLayout = ({ children }: { children: React.ReactNode }) => {
+  return <nav className="flex flex-col gap-2 text-lg">{children}</nav>;
+};
+
+const ModalItem = ({
+  href,
+  label,
+  isBtn,
+}: {
+  href: string;
+  label: string;
+  isBtn?: boolean;
+}) => {
+  const baseStyle = "px-4 py-2 hover:bg-neutral-100 text-left";
+  if (isBtn) return <LogoutBtn className={baseStyle} />;
+
   return (
-    <div className="flex justify-end mb-8">
-      <button onClick={onClose} className="p-1 cursor-pointer">
-        <X size={24} className="text-neutral-600" />
-      </button>
-    </div>
+    <Link href={href} className="px-4 py-2 hover:bg-neutral-100">
+      {label}
+    </Link>
   );
 };
