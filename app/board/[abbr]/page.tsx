@@ -1,6 +1,9 @@
 // Actions
 import { getAbbrName, getPostList } from "@/libs/actions/board";
 
+// Utils
+import { getBoardParams } from "@/libs/utils/board";
+
 // Components
 import AbbrMain from "@/components/abbr";
 import AbbrHeader from "@/components/abbr/AbbrHeader";
@@ -15,17 +18,10 @@ export default async function AbbrPage(props: {
   params: Params;
   searchParams: SearchParams;
 }) {
-  const [{ abbr }, search] = await Promise.all([
+  const { abbr, search } = await getBoardParams(
     props.params,
     props.searchParams,
-  ]);
-
-  const normalizedParams = {
-    page: Number(search.page || 1),
-    likeCount: Number(search.likeCount || 0),
-    searchType: search.searchType,
-    postSearch: search.postSearch,
-  };
+  );
 
   const isBest = abbr === "best";
 
@@ -33,11 +29,11 @@ export default async function AbbrPage(props: {
     isBest ? "인기글" : getAbbrName(abbr),
     getPostList({
       abbr,
-      page: normalizedParams.page,
+      page: search.page,
       limit: ITEM_PER_PAGE,
-      likeCount: normalizedParams.likeCount,
-      searchType: normalizedParams.searchType,
-      searchKeyword: normalizedParams.postSearch,
+      likeCount: search.likeCount,
+      searchType: search.searchType,
+      searchKeyword: search.postSearch,
     }),
   ]);
 
@@ -48,7 +44,7 @@ export default async function AbbrPage(props: {
         postListData={postListData}
         abbr={abbr}
         ITEM_PER_PAGE={ITEM_PER_PAGE}
-        currentPage={normalizedParams.page}
+        currentPage={search.page}
         isBest={isBest}
       />
     </>
