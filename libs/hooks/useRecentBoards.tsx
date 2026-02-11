@@ -10,6 +10,7 @@ const STORAGE_KEY = "recent-board";
 export function useRecentBoards(allBoards: BoardType[]) {
   const { abbr } = useParams();
   const [recentBoards, setRecentBoards] = useState<BoardType[]>([]);
+
   const boardMap = useMemo(() => {
     return new Map(allBoards.map((board) => [board.abbr, board]));
   }, [allBoards]);

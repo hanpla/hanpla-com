@@ -2,9 +2,11 @@
 
 import { createClient } from "../utils/supabase/server";
 
+// Utils
+import { maskIp } from "../utils/format";
+
 // Types
-import { BoardType, GetPostListResult } from "../types/board";
-import { maskIp } from "../utils/utils";
+import { BoardType, PostListType } from "../types/board";
 
 interface GetPostListProps {
   abbr: string;
@@ -13,6 +15,11 @@ interface GetPostListProps {
   likeCount: number;
   searchType?: string;
   searchKeyword?: string;
+}
+
+export interface GetPostListResult {
+  postList: PostListType[];
+  totalCount: number;
 }
 
 export async function getAllBoards({
@@ -41,7 +48,6 @@ export async function getAllBoards({
     return [];
   }
 }
-
 export async function getAbbrName(abbr: string) {
   const supabase = await createClient();
 
@@ -70,7 +76,7 @@ export async function getPostList({
   page = 1,
   limit = 20,
   likeCount = 0,
-  searchType,
+  searchType = "title",
   searchKeyword,
 }: GetPostListProps): Promise<GetPostListResult> {
   const supabase = await createClient();

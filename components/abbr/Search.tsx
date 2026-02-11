@@ -1,6 +1,8 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+
+// Icons
 import { Search as SearchIcon, ChevronDown } from "lucide-react";
 
 interface Props {

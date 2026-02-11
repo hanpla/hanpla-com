@@ -1,48 +1,58 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 // Utils
-import { generatePagination } from "@/libs/utils/utils";
+import { generatePagination } from "@/libs/utils/generate";
+
+// Components
+import JumpPage from "@/components/abbr/JumpPage";
 
 interface Props {
-  href: string;
+  qs: string;
   currentPage: number;
   totalPage: number;
 }
 
-export default function Pagination({ href, currentPage, totalPage }: Props) {
-  const searchParams = useSearchParams();
+export default function Pagination({ qs, currentPage, totalPage }: Props) {
+  const pathname = usePathname();
   const allPages = generatePagination(currentPage, totalPage);
+  const params = new URLSearchParams(qs);
+  const path = pathname === "/" ? "/board/best" : pathname;
 
   const createPageUrl = (pageNumber: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (Number(pageNumber) <= 1) {
+    if (pageNumber <= 1) {
       params.delete("page");
     } else {
       params.set("page", pageNumber.toString());
     }
-    const qs = params.toString();
-    return `${href}${qs ? `?${qs}` : ""}`;
+
+    return `${path}?${params.toString()}`;
   };
 
   return (
     <PaginationLayout>
-      <PaginationText href={createPageUrl(1)} label="처음" />
-      <PaginationNumbers
-        allPages={allPages}
-        createPageUrl={createPageUrl}
-        currentPage={currentPage}
-      />
-      <PaginationText href={createPageUrl(totalPage)} label="마지막" />
+      <div className="flex items-center gap-1">
+        <PaginationText href={createPageUrl(1)} label="처음" />
+        <PaginationNumbers
+          allPages={allPages}
+          createPageUrl={createPageUrl}
+          currentPage={currentPage}
+        />
+        <PaginationText href={createPageUrl(totalPage)} label="마지막" />
+      </div>
+
+      <div className="pt-4 w-full flex justify-center">
+        <JumpPage totalPages={totalPage} />
+      </div>
     </PaginationLayout>
   );
 }
 
 const PaginationLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex items-center justify-center gap-1 mt-8">
+    <div className="flex flex-col items-center justify-center mt-8">
       {children}
     </div>
   );

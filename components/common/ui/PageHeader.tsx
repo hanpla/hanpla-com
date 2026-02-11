@@ -5,8 +5,8 @@ interface Props {
   href?: string;
 }
 
-export default function PageTitle({ title, href }: Props) {
-  const baseStyle = `font-bold text-neutral-800 inline-block mt-4`;
+export default function PageHeader({ title, href }: Props) {
+  const baseStyle = `font-bold text-neutral-800 py-2 inline-block`;
 
   if (href) {
     return (

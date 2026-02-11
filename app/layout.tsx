@@ -5,13 +5,12 @@ import "../libs/styles/globals.css";
 // Actions
 import { getAllBoards } from "@/libs/actions/board";
 
-// session
-import { verifySession } from "@/libs/session/auth";
+// Utils
+import { verifySession } from "@/libs/utils/session/auth";
 
 // Components
-import Container from "@/components/layout/Container";
-import Header from "@/components/header";
-import RecentBoard from "@/components/header/RecentBoard";
+import Header from "@/components/header/Header";
+import RecentBoard from "@/components/RecentBoard/RecentBoard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,8 +23,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "hanpla-com",
-  description: "ㅇㅅㅇ",
+  title: "ㅇㅅㅇ",
+  description: "연습용 게시판",
 };
 
 export default async function RootLayout({
@@ -45,13 +44,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header allBoards={allBoards} isLogin={isLogin} nickname={nickname} />
-        <Container>
-          <RecentBoard allBoards={allBoards} />
-        </Container>
-        <main>
-          <Container>{children}</Container>
-        </main>
+        <Header isLogin={isLogin} nickname={nickname} allBoards={allBoards} />
+        <RecentBoard allBoards={allBoards} />
+        <main className="max-w-5xl mx-auto px-4">{children}</main>
       </body>
     </html>
   );

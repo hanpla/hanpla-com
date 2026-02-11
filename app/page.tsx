@@ -2,15 +2,18 @@
 import { getPostList } from "@/libs/actions/board";
 
 // Components
-import AbbrMain from "@/components/abbr";
-import PageTitle from "@/components/common/TitleText";
+import AbbrMain from "@/components/abbr/AbbrMain";
+import PageHeader from "@/components/common/ui/PageHeader";
 
-const ITEM_PER_PAGE = 1;
-const LIKE_COUNT = 0;
+// Constants
+const abbr = "best";
+const BEST_ABBR_HREF = "/board/best";
+const LIKE_COUNT = 10;
+import { ITEM_PER_PAGE } from "./board/[abbr]/page";
 
 export default async function Home() {
   const postListData = await getPostList({
-    abbr: "best",
+    abbr,
     page: 1,
     limit: ITEM_PER_PAGE,
     likeCount: LIKE_COUNT,
@@ -18,14 +21,8 @@ export default async function Home() {
 
   return (
     <>
-      <PageTitle title="인기글" href="/" />
-      <AbbrMain
-        postListData={postListData}
-        isBest
-        abbr="best"
-        ITEM_PER_PAGE={ITEM_PER_PAGE}
-        currentPage={1}
-      />
+      <PageHeader title={"인기 게시판"} href={BEST_ABBR_HREF} />
+      <AbbrMain abbr={abbr} postListData={postListData} currentPage={1} qs="" />
     </>
   );
 }

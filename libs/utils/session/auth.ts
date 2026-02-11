@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { jwtVerify, SignJWT } from "jose";
+import { SessionPayload } from "@/libs/types/auth";
 
 // Types
-import { SessionPayload } from "../types/auth";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const encodedSecret = new TextEncoder().encode(JWT_SECRET);

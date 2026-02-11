@@ -3,11 +3,9 @@
 import { createClient } from "../utils/supabase/server";
 import { redirect } from "next/navigation";
 
-// session
-import { createSession, deleteSession } from "../session/auth";
-
 // Utils
 import { createAuthError, getSafeRedirect } from "../utils/auth";
+import { createSession, deleteSession } from "../utils/session/auth";
 
 // Types
 import { AuthState, SessionPayload } from "../types/auth";

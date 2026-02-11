@@ -3,39 +3,40 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-// Components
-import PageTitle from "../common/TitleText";
-
 interface Props {
-  abbrName: string;
-  href: string;
-  isBest: boolean;
+  abbr: string;
 }
 
-export default function AbbrHeader({ abbrName, href, isBest }: Props) {
+export default function Taps({ abbr }: Props) {
   const searchParams = useSearchParams();
   const isLikeCount = searchParams.get("likeCount") ? true : false;
+  const isBest = abbr === "best" && true;
 
   return (
-    <HeaderLayout>
-      <PageTitle title={abbrName} href={href} />
+    <>
       {!isBest && (
-        <Tabs>
-          <Tab label="글쓰기" href={`${href}/write`} isActive={false} />
-          <Tab label="전체글" href={`${href}?`} isActive={!isLikeCount} />
-          <Tab
-            label="인기글"
-            href={`${href}?likeCount=10`}
-            isActive={isLikeCount}
-          />
-        </Tabs>
+        <Layout>
+          <Tabs>
+            <Tab
+              label="전체글"
+              href={`/board/${abbr}?`}
+              isActive={!isLikeCount}
+            />
+            <Tab
+              label="인기글"
+              href={`/board/${abbr}?likeCount=10`}
+              isActive={isLikeCount}
+            />
+          </Tabs>
+          <Tab label="글쓰기" href={`/board/${abbr}/write`} isActive={false} />
+        </Layout>
       )}
-    </HeaderLayout>
+    </>
   );
 }
 
-const HeaderLayout = ({ children }: { children: React.ReactNode }) => {
-  return <div className="flex items-center justify-between">{children}</div>;
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex justify-between">{children}</div>;
 };
 
 const Tabs = ({ children }: { children: React.ReactNode }) => {

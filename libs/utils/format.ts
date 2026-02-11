@@ -1,4 +1,10 @@
+import { AbbrSearchParams } from "../types/board";
+
 type DateInput = string | number | Date;
+
+export function normalize(text: string) {
+  return text.replace(/\s+/g, "").toLowerCase();
+}
 
 export function maskIp(userIp: string) {
   const maskedIp = userIp.split(".").slice(0, 2).join(".");
@@ -74,38 +80,19 @@ export const formatDate = {
   },
 };
 
-export function generatePagination(currentPage: number, totalPages: number) {
-  if (totalPages <= 5) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }
-
-  let start = currentPage - 2;
-  let end = currentPage + 2;
-
-  if (start < 1) {
-    start = 1;
-    end = 5;
-  }
-
-  if (end > totalPages) {
-    end = totalPages;
-    start = totalPages - 4;
-  }
-
-  return Array.from({ length: 5 }, (_, i) => start + i);
+export function formatAbbrSearchParams(search: {
+  [key: string]: string | undefined;
+}) {
+  return {
+    page: Number(search.page || 1),
+    likeCount: Number(search.likeCount || 0),
+    searchType: search.searchType,
+    postSearch: search.postSearch,
+  };
 }
 
-export function normalize(text: string) {
-  return text.split(" ").join("").toLowerCase();
-}
+export function formatIp(ip: string) {
+  const formatedIp = ip.replace(/^(\d+\.\d+).+/, "$1");
 
-export function generateCallbackUrl(pathname: string, searchParams: string) {
-  const fullPath = searchParams.toString()
-    ? `${pathname}?${searchParams.toString()}`
-    : pathname;
-
-  const redirectPath =
-    pathname === "/login" || pathname === "/signup" ? "/" : fullPath;
-
-  return redirectPath;
+  return formatedIp;
 }

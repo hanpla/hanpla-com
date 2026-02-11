@@ -21,3 +21,10 @@ export interface GetPostListResult {
   postList: PostListType[];
   totalCount: number;
 }
+
+export interface AbbrSearchParams {
+  page: number;
+  likeCount: number;
+  searchType: string | undefined;
+  postSearch: string | undefined;
+}
