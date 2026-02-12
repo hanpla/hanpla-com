@@ -18,7 +18,7 @@ interface Props {
   allBoards: BoardType[];
 }
 
-export default function RecentBoard({ allBoards }: Props) {
+export function RecentBoard({ allBoards }: Props) {
   const { recentBoards, removeRecentBoard } = useRecentBoards(allBoards);
 
   return (
@@ -34,15 +34,23 @@ export default function RecentBoard({ allBoards }: Props) {
   );
 }
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+export const Layout = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   return (
-    <div className="flex items-center gap-1 overflow-x-auto whitespace-nowrap py-1 no-scrollbar min-h-9.75">
+    <div
+      className={`flex items-center gap-1 overflow-x-auto whitespace-nowrap py-1 no-scrollbar min-h-9.75 ${className}`}
+    >
       {children}
     </div>
   );
 };
 
-const Label = ({ children }: { children: React.ReactNode }) => {
+export const Label = ({ children }: { children: React.ReactNode }) => {
   return (
     <span className="text-xs font-bold text-neutral-400 mr-2 shrink-0">
       {children}

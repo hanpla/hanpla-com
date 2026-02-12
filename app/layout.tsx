@@ -10,7 +10,8 @@ import { verifySession } from "@/libs/utils/session/auth";
 
 // Components
 import Header from "@/components/header/Header";
-import RecentBoard from "@/components/RecentBoard/RecentBoard";
+import { RecentBoard } from "@/components/RecentBoard/RecentBoard";
+import PopularBoards from "@/components/PopularBoards/PopularBoards";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,7 @@ export default async function RootLayout({
         <Header isLogin={isLogin} nickname={nickname} allBoards={allBoards} />
         <RecentBoard allBoards={allBoards} />
         <main className="max-w-5xl mx-auto px-4">{children}</main>
+        <PopularBoards popularBoards={allBoards} />
       </body>
     </html>
   );
