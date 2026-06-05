@@ -1,9 +1,9 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { signup, type ActionState } from "@/app/actions/signup";
+import { signup, type ActionState } from "@/lib/actions/signup";
 import SpinnerIcon from "@/components/icons/SpinnerIcon";
-import InputField from "@/components/common/InputField";
+import InputField from "@/components/ui/InputField";
 import AuthLink from "@/components/auth/AuthLink";
 
 const BUTTON_CLASS =

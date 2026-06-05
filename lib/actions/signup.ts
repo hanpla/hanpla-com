@@ -1,8 +1,8 @@
 "use server";
 
 import bcrypt from "bcryptjs";
-import { createAdminClient } from "@/utils/supabase/admin";
-import { signUpSchema } from "@/components/auth/schema";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { signUpSchema } from "@/lib/validations/auth";
 
 export interface ActionState {
   success?: boolean;

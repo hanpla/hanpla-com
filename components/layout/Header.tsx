@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import ThemeToggle from "./ThemeToggle";
-import MenuIcon from "./icons/MenuIcon";
-import CloseIcon from "./icons/CloseIcon";
+import ThemeToggle from "@/components/ui/ThemeToggle";
+import MenuIcon from "@/components/icons/MenuIcon";
+import CloseIcon from "@/components/icons/CloseIcon";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
