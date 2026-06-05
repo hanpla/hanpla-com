@@ -1,11 +1,19 @@
-export default function MenuIcon({ className }: { className?: string }) {
+import { IconProps } from "@/types/icon";
+
+export default function MenuIcon({
+  size = 24,
+  color = "currentColor",
+  className = "",
+}: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={2}
-      stroke="currentColor"
+      stroke={color}
+      width={size}
+      height={size}
       className={className}
     >
       <path
@@ -16,3 +24,4 @@ export default function MenuIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
