@@ -1,6 +1,7 @@
 "use client";
 
 import SpinnerIcon from "@/components/icons/SpinnerIcon";
+import CheckCircleIcon from "@/components/icons/CheckCircleIcon";
 
 interface SignupSuccessProps {
   countdown: number;
@@ -19,19 +20,7 @@ export default function SignupSuccess({ countdown, isNavigating, onNavigate }: S
           {isNavigating ? (
             <SpinnerIcon className="h-6 w-6 text-zinc-900 dark:text-zinc-100" />
           ) : (
-            <svg
-              className="h-6 w-6 text-zinc-900 dark:text-zinc-100"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <CheckCircleIcon className="h-6 w-6 text-zinc-900 dark:text-zinc-100" />
           )}
         </div>
         <div className="space-y-2">
@@ -52,8 +41,8 @@ export default function SignupSuccess({ countdown, isNavigating, onNavigate }: S
         <button onClick={onNavigate} disabled={isNavigating} className={BUTTON_CLASS}>
           {isNavigating ? (
             <>
-              <SpinnerIcon className="mr-2 h-4 w-4" />
               이동 중...
+              <SpinnerIcon className="ml-2 h-4 w-4" />
             </>
           ) : (
             "로그인 화면으로 이동"

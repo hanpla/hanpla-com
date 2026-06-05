@@ -79,7 +79,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
           {isPending ? (
             <>
               가입 중...
-              <SpinnerIcon className="mr-2 -ml-1 h-4 w-4" />
+              <SpinnerIcon className="-mr-1 ml-2 h-4 w-4" />
             </>
           ) : (
             "가입하기"
