@@ -2,7 +2,7 @@
 
 import bcrypt from "bcryptjs";
 import { createAdminClient } from "@/utils/supabase/admin";
-import { signUpSchema } from "@/app/signup/schema";
+import { signUpSchema } from "@/components/auth/schema";
 
 export interface ActionState {
   success?: boolean;

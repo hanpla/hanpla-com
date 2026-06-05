@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import SignupForm from "./SignupForm";
+import SignupForm from "@/components/auth/SignupForm";
+import AuthTitle from "@/components/auth/AuthTitle";
 
 const BUTTON_CLASS =
   "w-full py-2.5 px-4 rounded-lg bg-zinc-900 text-zinc-50 font-medium hover:bg-zinc-800 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 focus:ring-offset-background dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus:ring-zinc-100 dark:focus:ring-offset-background transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
@@ -74,14 +75,7 @@ export default function SignupPage() {
   return (
     <div className="bg-background text-foreground flex flex-1 items-center justify-center p-6 transition-colors duration-300">
       <div className="animate-in fade-in w-full max-w-md space-y-6 rounded-2xl border border-zinc-200 bg-zinc-50/50 p-8 shadow-xl backdrop-blur-sm duration-300 dark:border-zinc-800 dark:bg-zinc-900/30">
-        <div className="space-y-2 text-center">
-          <h1 className="bg-linear-to-r from-zinc-900 to-zinc-600 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent dark:from-zinc-100 dark:to-zinc-400">
-            회원가입
-          </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            새로운 계정을 생성하여 Hanpla 서비스를 시작해 보세요.
-          </p>
-        </div>
+        <AuthTitle title="회원가입" />
 
         <SignupForm onSuccess={handleSuccess} />
       </div>

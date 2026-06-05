@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div className="bg-background text-foreground flex flex-1 flex-col items-center justify-center p-6 transition-colors duration-300 sm:p-12 md:p-24">
       <main className="flex max-w-2xl flex-col items-center gap-6 text-center">
-        <h1 className="bg-gradient-to-r from-zinc-900 to-zinc-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl md:text-6xl dark:from-zinc-100 dark:to-zinc-400">
+        <h1 className="bg-linear-to-r from-zinc-900 to-zinc-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl md:text-6xl dark:from-zinc-100 dark:to-zinc-400">
           hanpla.com
         </h1>
         <p className="max-w-md text-base text-zinc-600 sm:text-lg dark:text-zinc-400">
