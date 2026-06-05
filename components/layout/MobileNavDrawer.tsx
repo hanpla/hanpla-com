@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CloseIcon from "@/components/icons/CloseIcon";
+import Logo from "./Logo";
 
 interface MobileNavDrawerProps {
   loginUrl: string;
@@ -26,13 +27,7 @@ export default function MobileNavDrawer({ loginUrl, isOpen, closeMenu }: MobileN
       >
         {/* Sidebar Header */}
         <div className="flex h-16 items-center justify-between border-b border-zinc-200 px-6 dark:border-zinc-800/80">
-          <Link
-            href="/"
-            className="text-foreground text-xl font-bold tracking-tight"
-            onClick={closeMenu}
-          >
-            Hanpla
-          </Link>
+          <Logo />
           <button
             onClick={closeMenu}
             className="hover:text-foreground dark:hover:text-foreground cursor-pointer rounded-lg p-2 text-zinc-600 transition-colors hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900/60"
