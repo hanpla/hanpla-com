@@ -25,3 +25,16 @@ export const signUpSchema = z
   });
 
 export type SignUpInput = z.infer<typeof signUpSchema>;
+
+export const loginSchema = z.object({
+  username: z
+    .string()
+    .min(4, "아이디는 4자 이상이어야 합니다.")
+    .max(8, "아이디는 8자 이하여야 합니다."),
+  password: z
+    .string()
+    .min(4, "비밀번호는 4자 이상이어야 합니다.")
+    .max(8, "비밀번호는 8자 이하여야 합니다."),
+});
+
+export type LoginInput = z.infer<typeof loginSchema>;
