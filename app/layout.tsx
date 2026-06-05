@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import localFont from "next/font/local";
 import "@/styles/globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
+import Header from "@/components/Header";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -27,7 +28,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <Header />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
