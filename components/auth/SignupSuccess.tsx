@@ -28,13 +28,10 @@ export default function SignupSuccess({ countdown, isNavigating, onNavigate }: S
           <div className="flex flex-col items-center justify-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400">
             <span>성공적으로 계정이 등록되었습니다.</span>
             <div className="flex items-center gap-1.5 text-xs text-zinc-400 dark:text-zinc-500">
-              <SpinnerIcon className="h-3.5 w-3.5" />
-              <span>
-                <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                  {countdown}초
-                </span>{" "}
-                후 로그인 페이지로 이동합니다.
+              <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                {countdown}초 후 로그인 페이지로 이동합니다.
               </span>
+              <SpinnerIcon className="h-3.5 w-3.5" />
             </div>
           </div>
         </div>
