@@ -45,7 +45,7 @@ export default function Header() {
             </Link>
             <Link
               href="/signup"
-              className="text-sm font-medium px-3.5 py-2 rounded-lg bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors shadow-sm"
+              className="text-sm font-medium text-zinc-600 hover:text-foreground dark:text-zinc-400 dark:hover:text-foreground transition-colors"
             >
               회원가입
             </Link>
@@ -119,7 +119,7 @@ export default function Header() {
           <Link
             href="/signup"
             onClick={closeMenu}
-            className="text-base font-medium text-center text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors py-3 px-4 rounded-xl font-semibold mt-4 shadow-sm"
+            className="text-base font-medium text-zinc-600 hover:text-foreground dark:text-zinc-400 dark:hover:text-foreground transition-colors py-2"
           >
             회원가입
           </Link>
