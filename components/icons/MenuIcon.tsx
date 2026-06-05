@@ -1,10 +1,6 @@
 import { IconProps } from "@/types/icon";
 
-export default function MenuIcon({
-  size = 24,
-  color = "currentColor",
-  className = "",
-}: IconProps) {
+export default function MenuIcon({ size = 24, color = "currentColor", className = "" }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -24,4 +20,3 @@ export default function MenuIcon({
     </svg>
   );
 }
-
