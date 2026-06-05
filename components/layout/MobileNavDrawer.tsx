@@ -1,43 +1,18 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
-import ThemeToggle from "@/components/ui/ThemeToggle";
-import MenuIcon from "@/components/icons/MenuIcon";
 import CloseIcon from "@/components/icons/CloseIcon";
 
-interface MobileNavProps {
+interface MobileNavDrawerProps {
   loginUrl: string;
+  isOpen: boolean;
+  closeMenu: () => void;
 }
 
-export default function MobileNav({ loginUrl }: MobileNavProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
-  };
-
-  const closeMenu = () => {
-    setIsOpen(false);
-  };
-
+export default function MobileNavDrawer({ loginUrl, isOpen, closeMenu }: MobileNavDrawerProps) {
   return (
     <>
-      {/* Mobile Nav Button Trigger */}
-      <div className="flex items-center gap-3 md:hidden">
-        <ThemeToggle />
-        <button
-          onClick={toggleMenu}
-          className="hover:text-foreground dark:hover:text-foreground cursor-pointer rounded-lg p-2 text-zinc-600 transition-colors hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900/60"
-          aria-label="Open menu"
-        >
-          <MenuIcon className="h-6 w-6" />
-        </button>
-      </div>
-
       {/* Backdrop for Mobile Sidebar Drawer */}
       <div
-        className={`fixed inset-0 z-60 bg-black/40 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
           isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={closeMenu}
@@ -45,7 +20,7 @@ export default function MobileNav({ loginUrl }: MobileNavProps) {
 
       {/* Mobile Sidebar Drawer Container */}
       <div
-        className={`bg-background fixed top-0 right-0 z-70 flex h-full w-72 transform flex-col border-l border-zinc-200 shadow-2xl transition-transform duration-300 ease-in-out md:hidden dark:border-zinc-800/85 ${
+        className={`bg-background fixed top-0 right-0 z-50 flex h-full w-72 transform flex-col border-l border-zinc-200 shadow-2xl transition-transform duration-300 ease-in-out md:hidden dark:border-zinc-800/85 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
