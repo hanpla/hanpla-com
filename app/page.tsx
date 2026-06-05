@@ -1,3 +1,5 @@
+import ThemeToggle from "@/components/ThemeToggle";
+
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center p-8 bg-background text-foreground transition-colors duration-300">
@@ -8,6 +10,9 @@ export default function Home() {
         <p className="text-lg text-zinc-600 dark:text-zinc-400">
           초기화 및 프리텐다드 폰트 설정이 완료되었습니다.
         </p>
+        <div className="mt-2">
+          <ThemeToggle />
+        </div>
       </main>
     </div>
   );
