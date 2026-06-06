@@ -2,11 +2,13 @@ import { getPostById } from "@/lib/queries/posts";
 import PostDetailView from "@/components/post/PostDetailView";
 import { notFound } from "next/navigation";
 
-interface PostPageProps {
-  params: Promise<{
-    abbr: string;
-    id: string;
-  }>;
+export type PostPageParams = Promise<{
+  abbr: string;
+  id: string;
+}>;
+
+export interface PostPageProps {
+  params: PostPageParams;
 }
 
 export async function generateMetadata({ params }: PostPageProps) {

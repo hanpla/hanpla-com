@@ -3,22 +3,26 @@ import { getPostsByBoardAbbr } from "@/lib/queries/posts";
 import BoardDetailView from "@/components/board/BoardDetailView";
 import { notFound } from "next/navigation";
 
-interface BoardPageProps {
-  params: Promise<{
-    abbr: string;
-  }>;
-  searchParams: Promise<{
-    filter?: string;
-    page?: string;
-    searchType?: string;
-    searchKeyword?: string;
-  }>;
+export type BoardPageParams = Promise<{
+  abbr: string;
+}>;
+
+export type BoardPageSearchParams = Promise<{
+  filter?: string;
+  page?: string;
+  searchType?: string;
+  searchKeyword?: string;
+}>;
+
+export interface BoardPageProps {
+  params: BoardPageParams;
+  searchParams: BoardPageSearchParams;
 }
 
 export async function generateMetadata({ params }: BoardPageProps) {
   const { abbr } = await params;
   const board = await getBoardByAbbr(abbr);
-  
+
   if (!board) {
     return {
       title: "게시판을 찾을 수 없음 - hanpla-com",
@@ -36,7 +40,7 @@ export default async function BoardPage({ params, searchParams }: BoardPageProps
   const { filter, page, searchType, searchKeyword } = await searchParams;
   const currentPage = parseInt(page || "1", 10) || 1;
   const pageSize = 10;
-  
+
   // Fetch board info and posts from Supabase in parallel
   const [board, { posts, totalCount }] = await Promise.all([
     getBoardByAbbr(abbr),
