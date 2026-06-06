@@ -1,23 +1,25 @@
 import { formatRelativeTime } from "@/lib/utils/time";
-import type { MockPost } from "@/lib/mocks/posts";
+import type { Post } from "@/lib/queries/posts";
 import EyeIcon from "@/components/icons/EyeIcon";
 import HeartIcon from "@/components/icons/HeartIcon";
 import ChatBubbleIcon from "@/components/icons/ChatBubbleIcon";
+import Link from "next/link";
 
 interface BoardMobileStackProps {
-  posts: MockPost[];
+  posts: Post[];
 }
 
 export default function BoardMobileStack({ posts }: BoardMobileStackProps) {
   return (
     <div className="block md:hidden divide-y divide-zinc-200 dark:divide-zinc-800">
       {posts.map((post) => (
-        <div
+        <Link
           key={post.id}
-          className="p-4 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer space-y-2"
+          href={`/board/${post.board_abbr}/${post.id}`}
+          className="block p-4 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer space-y-2"
         >
           <div className="flex items-start justify-between gap-2">
-            <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 line-clamp-2 text-sm leading-snug">
+            <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 line-clamp-2 text-sm leading-snug hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
               {post.title}
             </h3>
             {post.comments_count > 0 && (
@@ -27,13 +29,10 @@ export default function BoardMobileStack({ posts }: BoardMobileStackProps) {
               </span>
             )}
           </div>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
-            {post.content}
-          </p>
           <div className="flex items-center justify-between text-xs text-zinc-400 dark:text-zinc-500 pt-1">
             <div className="flex items-center gap-1.5">
               <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                {post.author}
+                {post.users?.nickname || "익명"}
               </span>
               <span>•</span>
               <span>{formatRelativeTime(post.created_at)}</span>
@@ -49,7 +48,7 @@ export default function BoardMobileStack({ posts }: BoardMobileStackProps) {
               </span>
             </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

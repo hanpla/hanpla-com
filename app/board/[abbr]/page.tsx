@@ -1,5 +1,5 @@
 import { getBoardByAbbr } from "@/lib/queries/board";
-import { MOCK_POSTS } from "@/lib/mocks/posts";
+import { getPostsByBoardAbbr } from "@/lib/queries/posts";
 import BoardDetailView from "@/components/board/BoardDetailView";
 
 interface BoardPageProps {
@@ -21,9 +21,9 @@ export async function generateMetadata({ params }: BoardPageProps) {
 
 export default async function BoardPage({ params }: BoardPageProps) {
   const { abbr } = await params;
-  
-  // Try to fetch board info from Supabase
-  const board = await getBoardByAbbr(abbr);
+
+  // Fetch board info and posts from Supabase in parallel
+  const [board, posts] = await Promise.all([getBoardByAbbr(abbr), getPostsByBoardAbbr(abbr)]);
 
   // If not found in database, provide a placeholder fallback so UI testing works for any path
   const finalBoard = board || {
@@ -33,5 +33,7 @@ export default async function BoardPage({ params }: BoardPageProps) {
     created_at: new Date().toISOString(),
   };
 
-  return <BoardDetailView board={finalBoard} posts={MOCK_POSTS} />;
+  console.log(posts);
+
+  return <BoardDetailView board={finalBoard} posts={posts} />;
 }

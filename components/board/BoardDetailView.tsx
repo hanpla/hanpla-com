@@ -1,6 +1,6 @@
 "use client";
 
-import type { MockPost } from "@/lib/mocks/posts";
+import type { Post } from "@/lib/queries/posts";
 import type { Board } from "@/lib/queries/board";
 import BoardButtonGroup from "./BoardButtonGroup";
 import BoardDesktopTable from "./BoardDesktopTable";
@@ -10,7 +10,7 @@ import BoardSearchArea from "./BoardSearchArea";
 
 interface BoardDetailViewProps {
   board: Board;
-  posts: MockPost[];
+  posts: Post[];
 }
 
 export default function BoardDetailView({ board, posts }: BoardDetailViewProps) {

@@ -1,8 +1,9 @@
 import { formatTimeOrDate } from "@/lib/utils/time";
-import type { MockPost } from "@/lib/mocks/posts";
+import type { Post } from "@/lib/queries/posts";
+import Link from "next/link";
 
 interface BoardDesktopTableProps {
-  posts: MockPost[];
+  posts: Post[];
 }
 
 export default function BoardDesktopTable({ posts }: BoardDesktopTableProps) {
@@ -25,24 +26,22 @@ export default function BoardDesktopTable({ posts }: BoardDesktopTableProps) {
               className="hover:bg-zinc-100/30 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer group"
             >
               <td className="py-4 pl-6 pr-4 font-normal">
-                <div className="space-y-0.5 max-w-lg">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors line-clamp-1">
-                      {post.title}
+                <div className="flex items-center gap-1.5 max-w-lg">
+                  <Link
+                    href={`/board/${post.board_abbr}/${post.id}`}
+                    className="font-medium text-zinc-900 dark:text-zinc-100 hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline transition-colors line-clamp-1"
+                  >
+                    {post.title}
+                  </Link>
+                  {post.comments_count > 0 && (
+                    <span className="text-xs font-semibold px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                      {post.comments_count}
                     </span>
-                    {post.comments_count > 0 && (
-                      <span className="text-xs font-semibold px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                        {post.comments_count}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-xs text-zinc-400 dark:text-zinc-500 line-clamp-1">
-                    {post.content}
-                  </p>
+                  )}
                 </div>
               </td>
               <td className="py-4 px-4 text-center text-zinc-600 dark:text-zinc-400 font-medium truncate">
-                {post.author}
+                {post.users?.nickname || "익명"}
               </td>
               <td
                 className="py-4 px-4 text-center text-zinc-400 dark:text-zinc-500 text-xs"
