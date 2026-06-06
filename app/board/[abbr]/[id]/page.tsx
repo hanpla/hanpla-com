@@ -1,5 +1,9 @@
-import { getPostById } from "@/lib/queries/posts";
+import { getPostById, getPostsByBoardAbbr } from "@/lib/queries/posts";
 import PostDetailView from "@/components/post/PostDetailView";
+import BoardDesktopTable from "@/components/board/BoardDesktopTable";
+import BoardMobileStack from "@/components/board/BoardMobileStack";
+import BoardPagination from "@/components/board/BoardPagination";
+import BoardSearchArea from "@/components/board/BoardSearchArea";
 import { notFound } from "next/navigation";
 
 export type PostPageParams = Promise<{
@@ -7,8 +11,16 @@ export type PostPageParams = Promise<{
   id: string;
 }>;
 
+export type PostPageSearchParams = Promise<{
+  filter?: string;
+  page?: string;
+  searchType?: string;
+  searchKeyword?: string;
+}>;
+
 export interface PostPageProps {
   params: PostPageParams;
+  searchParams: PostPageSearchParams;
 }
 
 export async function generateMetadata({ params }: PostPageProps) {
@@ -28,21 +40,79 @@ export async function generateMetadata({ params }: PostPageProps) {
   };
 }
 
-export default async function PostPage({ params }: PostPageProps) {
+export default async function PostPage({ params, searchParams }: PostPageProps) {
   const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
   const { abbr, id } = resolvedParams;
-  const postId = parseInt(id, 10);
+  const { filter, page, searchType, searchKeyword } = resolvedSearchParams;
 
+  const postId = parseInt(id, 10);
   if (isNaN(postId)) {
     notFound();
   }
 
-  // Fetch post which already contains the joined boards details
-  const post = await getPostById(postId);
+  const currentPage = parseInt(page || "1", 10) || 1;
+  const pageSize = 10;
+
+  // Fetch post detail and posts list under the current board in parallel
+  const [post, { posts, totalCount }] = await Promise.all([
+    getPostById(postId),
+    getPostsByBoardAbbr(abbr, filter, currentPage, pageSize, searchType, searchKeyword),
+  ]);
 
   if (!post || !post.boards || post.board_abbr !== abbr) {
     notFound();
   }
 
-  return <PostDetailView post={post} />;
+  const activeFilter = filter === "popular" ? "popular" : "all";
+
+  return (
+    <div className="space-y-12">
+      {/* Post Detail Content */}
+      <PostDetailView post={post} />
+
+      {/* Divider */}
+      <hr className="border-zinc-200/80 dark:border-zinc-800/80" />
+
+      {/* Board List Section */}
+      <div className="space-y-6">
+        <div className="space-y-1">
+          <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            이 게시판의 다른 글
+          </h2>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            {post.boards.name} 게시판의 최신 게시글 목록입니다.
+          </p>
+        </div>
+
+        {/* Posts List */}
+        <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50/50 shadow-sm backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/30">
+          <BoardDesktopTable posts={posts} />
+          <BoardMobileStack posts={posts} />
+        </div>
+
+        {/* Pagination & Search */}
+        <div className="flex flex-col items-center gap-6 pt-4">
+          <BoardPagination
+            boardAbbr={abbr}
+            currentPage={currentPage}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            activeFilter={activeFilter}
+            searchType={searchType}
+            searchKeyword={searchKeyword}
+          />
+          <BoardSearchArea
+            boardAbbr={abbr}
+            currentPage={currentPage}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            activeFilter={activeFilter}
+            searchType={searchType}
+            searchKeyword={searchKeyword}
+          />
+        </div>
+      </div>
+    </div>
+  );
 }

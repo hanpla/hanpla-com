@@ -1,11 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import React from "react";
 import type { Post } from "@/lib/queries/posts";
 import { TiptapRenderer } from "@/components/tiptap/TiptapRenderer";
 import { formatFullDateTime } from "@/lib/utils/time";
-import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import EyeIcon from "@/components/icons/EyeIcon";
 import HeartIcon from "@/components/icons/HeartIcon";
 import ChatBubbleIcon from "@/components/icons/ChatBubbleIcon";
@@ -134,34 +132,22 @@ export default function PostDetailView({ post }: PostDetailViewProps) {
 
   return (
     <div className="space-y-6">
-      {/* Header Navigation */}
-      <Link
-        href={`/board/${post.board_abbr}`}
-        className="group inline-flex items-center gap-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-      >
-        <ArrowLeftIcon className="h-4 w-4 transform transition-transform group-hover:-translate-x-0.5" />
-        <span>목록으로 돌아가기</span>
-      </Link>
+      <PostHeader
+        title={post.title}
+        nickname={post.users?.nickname || "익명"}
+        formattedDate={formattedDate}
+        views={post.views}
+        commentsCount={post.comments_count}
+      />
 
-      {/* Post Container */}
-      <div className="space-y-6">
-        <PostHeader
-          title={post.title}
-          nickname={post.users?.nickname || "익명"}
-          formattedDate={formattedDate}
-          views={post.views}
-          commentsCount={post.comments_count}
-        />
-
-        {/* Post Content Body */}
-        <div className={`border-b ${BORDER_COLOR} py-2`}>
-          <TiptapRenderer content={post.content} />
-        </div>
-
-        <PostVotes likes={post.likes} dislikes={post.dislikes} />
-
-        <PostComments count={post.comments_count} />
+      {/* Post Content Body */}
+      <div className={`border-b ${BORDER_COLOR} py-2`}>
+        <TiptapRenderer content={post.content} />
       </div>
+
+      <PostVotes likes={post.likes} dislikes={post.dislikes} />
+
+      <PostComments count={post.comments_count} />
     </div>
   );
 }
