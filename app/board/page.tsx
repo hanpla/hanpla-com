@@ -2,8 +2,6 @@ import { getBoards } from "@/lib/queries/board";
 import { groupBoardsByCategory } from "@/lib/utils/board";
 import BoardCategorySection from "@/components/board/BoardCategorySection";
 
-export const dynamic = "force-dynamic";
-
 export const metadata = {
   title: "전체 게시판 - hanpla-com",
   description: "분야별로 정리된 다양한 게시판들을 확인하세요.",

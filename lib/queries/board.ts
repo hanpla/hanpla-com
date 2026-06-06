@@ -1,5 +1,5 @@
-import { cookies } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
+import { cacheLife } from "next/cache";
 
 export interface Board {
   abbr: string;
@@ -9,9 +9,11 @@ export interface Board {
 }
 
 export const getBoards = async (): Promise<Board[]> => {
+  "use cache";
+  cacheLife("days");
+
   try {
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = createClient();
 
     const { data, error } = await supabase
       .from("boards")
