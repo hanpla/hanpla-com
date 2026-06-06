@@ -31,3 +31,27 @@ export const getBoards = async (): Promise<Board[]> => {
     return [];
   }
 };
+
+export const getBoardByAbbr = async (abbr: string): Promise<Board | null> => {
+  "use cache";
+  cacheLife("days");
+
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("boards")
+      .select("*")
+      .eq("abbr", abbr)
+      .maybeSingle();
+
+    if (error) {
+      console.error(`Error fetching board for abbr ${abbr}:`, error);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.error(`Error in getBoardByAbbr for abbr ${abbr}:`, error);
+    return null;
+  }
+};
