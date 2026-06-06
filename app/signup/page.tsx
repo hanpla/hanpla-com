@@ -3,15 +3,14 @@
 import SignupForm from "@/components/auth/SignupForm";
 import AuthTitle from "@/components/auth/AuthTitle";
 import SignupSuccess from "@/components/auth/SignupSuccess";
-import useSignupTimer from "@/hooks/useSignupTimer";
+import useSignupPage from "@/hooks/useSignupPage";
 
 export default function SignupPage() {
-  const { isSuccess, countdown, isNavigating, handleSuccess, navigateToLogin } = useSignupTimer();
+  const { isSuccess, isNavigating, handleSuccess, navigateToLogin } = useSignupPage();
 
   if (isSuccess) {
     return (
       <SignupSuccess
-        countdown={countdown}
         isNavigating={isNavigating}
         onNavigate={navigateToLogin}
       />
