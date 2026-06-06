@@ -9,6 +9,7 @@ interface BoardSearchAreaProps {
   activeFilter: "all" | "popular";
   searchType?: string;
   searchKeyword?: string;
+  basePath?: string;
 }
 
 export default function BoardSearchArea({
@@ -19,6 +20,7 @@ export default function BoardSearchArea({
   activeFilter,
   searchType = "title",
   searchKeyword = "",
+  basePath,
 }: BoardSearchAreaProps) {
   const totalPages = Math.ceil(totalCount / pageSize) || 1;
 
@@ -33,6 +35,7 @@ export default function BoardSearchArea({
         activeFilter={activeFilter}
         searchType={searchType}
         searchKeyword={searchKeyword}
+        basePath={basePath}
       />
 
       {/* Dynamic Search Bar Component */}
@@ -42,6 +45,7 @@ export default function BoardSearchArea({
         initialSearchType={searchType}
         initialSearchKeyword={searchKeyword}
         activeFilter={activeFilter}
+        basePath={basePath}
       />
     </div>
   );

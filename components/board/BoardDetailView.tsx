@@ -29,6 +29,13 @@ export default function BoardDetailView({
   searchType,
   searchKeyword,
 }: BoardDetailViewProps) {
+  const currentSearchParams = {
+    filter: activeFilter,
+    page: String(currentPage),
+    searchType,
+    searchKeyword,
+  };
+
   return (
     <div className="space-y-6">
       {/* Top Button Group */}
@@ -42,10 +49,10 @@ export default function BoardDetailView({
       {/* Posts List */}
       <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50/50 shadow-sm backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/30">
         {/* Desktop Table View */}
-        <BoardDesktopTable posts={posts} />
+        <BoardDesktopTable posts={posts} searchParams={currentSearchParams} />
 
         {/* Mobile Stack View */}
-        <BoardMobileStack posts={posts} />
+        <BoardMobileStack posts={posts} searchParams={currentSearchParams} />
       </div>
 
       {/* Bottom Button Group */}

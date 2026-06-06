@@ -2,6 +2,7 @@ import { getPostById, getPostsByBoardAbbr } from "@/lib/queries/posts";
 import PostDetailView from "@/components/post/PostDetailView";
 import BoardDesktopTable from "@/components/board/BoardDesktopTable";
 import BoardMobileStack from "@/components/board/BoardMobileStack";
+import BoardButtonGroup from "@/components/board/BoardButtonGroup";
 import BoardPagination from "@/components/board/BoardPagination";
 import BoardSearchArea from "@/components/board/BoardSearchArea";
 import { notFound } from "next/navigation";
@@ -65,6 +66,13 @@ export default async function PostPage({ params, searchParams }: PostPageProps) 
   }
 
   const activeFilter = filter === "popular" ? "popular" : "all";
+  const basePath = `/board/${abbr}/${id}`;
+  const currentSearchParams = {
+    filter,
+    page,
+    searchType,
+    searchKeyword,
+  };
 
   return (
     <div className="space-y-12">
@@ -87,9 +95,17 @@ export default async function PostPage({ params, searchParams }: PostPageProps) 
 
         {/* Posts List */}
         <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50/50 shadow-sm backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/30">
-          <BoardDesktopTable posts={posts} />
-          <BoardMobileStack posts={posts} />
+          <BoardDesktopTable posts={posts} searchParams={currentSearchParams} />
+          <BoardMobileStack posts={posts} searchParams={currentSearchParams} />
         </div>
+
+        {/* Button Group (All, Popular, Write) */}
+        <BoardButtonGroup
+          boardAbbr={abbr}
+          activeFilter={activeFilter}
+          searchType={searchType}
+          searchKeyword={searchKeyword}
+        />
 
         {/* Pagination & Search */}
         <div className="flex flex-col items-center gap-6 pt-4">
@@ -101,6 +117,7 @@ export default async function PostPage({ params, searchParams }: PostPageProps) 
             activeFilter={activeFilter}
             searchType={searchType}
             searchKeyword={searchKeyword}
+            basePath={basePath}
           />
           <BoardSearchArea
             boardAbbr={abbr}
@@ -110,6 +127,7 @@ export default async function PostPage({ params, searchParams }: PostPageProps) 
             activeFilter={activeFilter}
             searchType={searchType}
             searchKeyword={searchKeyword}
+            basePath={basePath}
           />
         </div>
       </div>

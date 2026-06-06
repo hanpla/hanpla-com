@@ -8,6 +8,7 @@ interface BoardPaginationProps {
   activeFilter: "all" | "popular";
   searchType?: string;
   searchKeyword?: string;
+  basePath?: string;
 }
 
 export default function BoardPagination({
@@ -18,6 +19,7 @@ export default function BoardPagination({
   activeFilter,
   searchType,
   searchKeyword,
+  basePath,
 }: BoardPaginationProps) {
   const totalPages = Math.ceil(totalCount / pageSize) || 1;
 
@@ -46,7 +48,8 @@ export default function BoardPagination({
       params.set("searchKeyword", searchKeyword);
     }
     params.set("page", String(pageNumber));
-    return `/board/${boardAbbr}?${params.toString()}`;
+    const base = basePath || `/board/${boardAbbr}`;
+    return `${base}?${params.toString()}`;
   };
 
   const activePageClass =

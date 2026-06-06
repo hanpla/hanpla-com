@@ -10,6 +10,7 @@ interface BoardPageJumpProps {
   activeFilter: "all" | "popular";
   searchType?: string;
   searchKeyword?: string;
+  basePath?: string;
 }
 
 export default function BoardPageJump({
@@ -19,6 +20,7 @@ export default function BoardPageJump({
   activeFilter,
   searchType,
   searchKeyword,
+  basePath,
 }: BoardPageJumpProps) {
   const router = useRouter();
   const [pageInput, setPageInput] = useState(String(currentPage));
@@ -45,7 +47,8 @@ export default function BoardPageJump({
     }
     params.set("page", String(targetPage));
 
-    router.push(`/board/${boardAbbr}?${params.toString()}`);
+    const base = basePath || `/board/${boardAbbr}`;
+    router.push(`${base}?${params.toString()}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

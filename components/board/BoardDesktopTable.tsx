@@ -4,9 +4,33 @@ import Link from "next/link";
 
 interface BoardDesktopTableProps {
   posts: Post[];
+  searchParams?: {
+    filter?: string;
+    page?: string;
+    searchType?: string;
+    searchKeyword?: string;
+  };
 }
 
-export default function BoardDesktopTable({ posts }: BoardDesktopTableProps) {
+export default function BoardDesktopTable({ posts, searchParams }: BoardDesktopTableProps) {
+  const getPostLink = (post: Post) => {
+    const params = new URLSearchParams();
+    if (searchParams) {
+      if (searchParams.filter === "popular") {
+        params.set("filter", "popular");
+      }
+      if (searchParams.page) {
+        params.set("page", searchParams.page);
+      }
+      if (searchParams.searchType && searchParams.searchKeyword) {
+        params.set("searchType", searchParams.searchType);
+        params.set("searchKeyword", searchParams.searchKeyword);
+      }
+    }
+    const queryStr = params.toString();
+    return `/board/${post.board_abbr}/${post.id}${queryStr ? `?${queryStr}` : ""}`;
+  };
+
   return (
     <div className="hidden md:block">
       {/* Table Header using CSS Grid */}
@@ -23,7 +47,7 @@ export default function BoardDesktopTable({ posts }: BoardDesktopTableProps) {
         {posts.map((post) => (
           <Link
             key={post.id}
-            href={`/board/${post.board_abbr}/${post.id}`}
+            href={getPostLink(post)}
             className="group grid cursor-pointer grid-cols-[1fr_112px_80px_80px_64px] items-center px-6 py-4 text-sm text-zinc-900 transition-colors hover:bg-zinc-100/50 dark:text-zinc-100 dark:hover:bg-zinc-800/30"
           >
             <div className="font-normal">

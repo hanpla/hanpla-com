@@ -9,6 +9,7 @@ interface BoardSearchBarProps {
   initialSearchType: string;
   initialSearchKeyword: string;
   activeFilter: "all" | "popular";
+  basePath?: string;
 }
 
 export default function BoardSearchBar({
@@ -16,6 +17,7 @@ export default function BoardSearchBar({
   initialSearchType,
   initialSearchKeyword,
   activeFilter,
+  basePath,
 }: BoardSearchBarProps) {
   const router = useRouter();
   const [searchType, setSearchType] = useState(initialSearchType || "title");
@@ -37,7 +39,8 @@ export default function BoardSearchBar({
     // Reset page back to 1 on new search query
     params.set("page", "1");
 
-    router.push(`/board/${boardAbbr}?${params.toString()}`);
+    const base = basePath || `/board/${boardAbbr}`;
+    router.push(`${base}?${params.toString()}`);
   };
 
   return (

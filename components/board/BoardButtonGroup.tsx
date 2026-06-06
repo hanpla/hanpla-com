@@ -6,6 +6,7 @@ interface BoardButtonGroupProps {
   activeFilter: "all" | "popular";
   searchType?: string;
   searchKeyword?: string;
+  basePath?: string;
 }
 
 export default function BoardButtonGroup({
@@ -13,6 +14,7 @@ export default function BoardButtonGroup({
   activeFilter,
   searchType,
   searchKeyword,
+  basePath,
 }: BoardButtonGroupProps) {
   const activeClass =
     "px-4 py-2 text-sm font-semibold rounded-lg bg-zinc-900 text-zinc-50 hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors cursor-pointer";
@@ -29,7 +31,8 @@ export default function BoardButtonGroup({
       params.set("searchKeyword", searchKeyword);
     }
     const queryStr = params.toString();
-    return `/board/${boardAbbr}${queryStr ? `?${queryStr}` : ""}`;
+    const base = basePath || `/board/${boardAbbr}`;
+    return `${base}${queryStr ? `?${queryStr}` : ""}`;
   };
 
   return (

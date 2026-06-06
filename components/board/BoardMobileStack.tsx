@@ -7,15 +7,39 @@ import Link from "next/link";
 
 interface BoardMobileStackProps {
   posts: Post[];
+  searchParams?: {
+    filter?: string;
+    page?: string;
+    searchType?: string;
+    searchKeyword?: string;
+  };
 }
 
-export default function BoardMobileStack({ posts }: BoardMobileStackProps) {
+export default function BoardMobileStack({ posts, searchParams }: BoardMobileStackProps) {
+  const getPostLink = (post: Post) => {
+    const params = new URLSearchParams();
+    if (searchParams) {
+      if (searchParams.filter === "popular") {
+        params.set("filter", "popular");
+      }
+      if (searchParams.page) {
+        params.set("page", searchParams.page);
+      }
+      if (searchParams.searchType && searchParams.searchKeyword) {
+        params.set("searchType", searchParams.searchType);
+        params.set("searchKeyword", searchParams.searchKeyword);
+      }
+    }
+    const queryStr = params.toString();
+    return `/board/${post.board_abbr}/${post.id}${queryStr ? `?${queryStr}` : ""}`;
+  };
+
   return (
     <div className="block divide-y divide-zinc-200 md:hidden dark:divide-zinc-800">
       {posts.map((post) => (
         <Link
           key={post.id}
-          href={`/board/${post.board_abbr}/${post.id}`}
+          href={getPostLink(post)}
           className="block cursor-pointer space-y-2 p-4 transition-colors hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30"
         >
           <div className="flex items-start justify-between gap-2">
