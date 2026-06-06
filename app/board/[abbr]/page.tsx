@@ -1,7 +1,6 @@
-import { getBoardByAbbr } from "@/lib/queries/board";
 import { getPostsByBoardAbbr } from "@/lib/queries/posts";
+import { getBoardByAbbr } from "@/lib/queries/board";
 import BoardDetailView from "@/components/board/BoardDetailView";
-import { notFound } from "next/navigation";
 
 export type BoardPageParams = Promise<{
   abbr: string;
@@ -41,20 +40,18 @@ export default async function BoardPage({ params, searchParams }: BoardPageProps
   const currentPage = parseInt(page || "1", 10) || 1;
   const pageSize = 10;
 
-  // Fetch board info and posts from Supabase in parallel
-  const [board, { posts, totalCount }] = await Promise.all([
-    getBoardByAbbr(abbr),
-    getPostsByBoardAbbr(abbr, filter, currentPage, pageSize, searchType, searchKeyword),
-  ]);
-
-  // If not found in database, trigger Next.js notFound redirection
-  if (!board) {
-    notFound();
-  }
+  const { posts, totalCount } = await getPostsByBoardAbbr(
+    abbr,
+    filter,
+    currentPage,
+    pageSize,
+    searchType,
+    searchKeyword,
+  );
 
   return (
     <BoardDetailView
-      board={board}
+      boardAbbr={abbr}
       posts={posts}
       totalCount={totalCount}
       currentPage={currentPage}
@@ -65,3 +62,4 @@ export default async function BoardPage({ params, searchParams }: BoardPageProps
     />
   );
 }
+
