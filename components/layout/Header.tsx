@@ -6,8 +6,13 @@ import DesktopNav from "./DesktopNav";
 import MobileNavTrigger from "./MobileNavTrigger";
 import MobileNavDrawer from "./MobileNavDrawer";
 import Logo from "./Logo";
+import type { SessionUser } from "@/lib/auth";
 
-export default function Header() {
+interface HeaderProps {
+  user: SessionUser | null;
+}
+
+export default function Header({ user }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -30,7 +35,7 @@ export default function Header() {
           <Logo className="transition-opacity hover:opacity-80" />
 
           {/* Desktop Navigation */}
-          <DesktopNav loginUrl={loginUrl} />
+          <DesktopNav loginUrl={loginUrl} user={user} />
 
           {/* Mobile Navigation Trigger Button */}
           <MobileNavTrigger toggleMenu={toggleMenu} />
@@ -38,7 +43,7 @@ export default function Header() {
       </header>
 
       {/* Mobile Navigation Drawer & Backdrop (rendered outside <header> to avoid backdrop-filter containing block bug) */}
-      <MobileNavDrawer loginUrl={loginUrl} isOpen={isOpen} closeMenu={closeMenu} />
+      <MobileNavDrawer loginUrl={loginUrl} isOpen={isOpen} closeMenu={closeMenu} user={user} />
     </>
   );
 }

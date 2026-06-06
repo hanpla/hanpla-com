@@ -1,14 +1,81 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import CloseIcon from "@/components/icons/CloseIcon";
 import Logo from "./Logo";
+import { logout } from "@/lib/actions/logout";
+import type { SessionUser } from "@/lib/auth";
+
+const LINK_CLASS =
+  "hover:text-foreground dark:hover:text-foreground py-2 text-base font-medium text-zinc-600 transition-colors dark:text-zinc-400";
 
 interface MobileNavDrawerProps {
   loginUrl: string;
   isOpen: boolean;
   closeMenu: () => void;
+  user: SessionUser | null;
 }
 
-export default function MobileNavDrawer({ loginUrl, isOpen, closeMenu }: MobileNavDrawerProps) {
+// 로그인 상태의 모바일 메뉴 컴포넌트
+interface AuthenticatedMobileNavProps {
+  user: SessionUser;
+  onClose: () => void;
+  onLogout: () => void;
+}
+
+function AuthenticatedMobileNav({ user, onClose, onLogout }: AuthenticatedMobileNavProps) {
+  return (
+    <>
+      <Link href="/profile" onClick={onClose} className={`${LINK_CLASS} flex items-center gap-1`}>
+        <span className="max-w-[140px] truncate font-semibold text-zinc-900 dark:text-zinc-100">
+          {user.nickname}
+        </span>
+        <span>님</span>
+      </Link>
+      <button
+        onClick={onLogout}
+        className={`${LINK_CLASS} cursor-pointer text-left focus:outline-none`}
+      >
+        로그아웃
+      </button>
+    </>
+  );
+}
+
+// 비로그인 상태의 모바일 메뉴 컴포넌트
+interface UnauthenticatedMobileNavProps {
+  loginUrl: string;
+  onClose: () => void;
+}
+
+function UnauthenticatedMobileNav({ loginUrl, onClose }: UnauthenticatedMobileNavProps) {
+  return (
+    <>
+      <Link href={loginUrl} onClick={onClose} className={LINK_CLASS}>
+        로그인
+      </Link>
+      <Link href="/signup" onClick={onClose} className={LINK_CLASS}>
+        회원가입
+      </Link>
+    </>
+  );
+}
+
+export default function MobileNavDrawer({
+  loginUrl,
+  isOpen,
+  closeMenu,
+  user,
+}: MobileNavDrawerProps) {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    closeMenu();
+    await logout();
+    router.refresh();
+  };
+
   return (
     <>
       {/* Backdrop for Mobile Sidebar Drawer */}
@@ -39,27 +106,14 @@ export default function MobileNavDrawer({ loginUrl, isOpen, closeMenu }: MobileN
 
         {/* Sidebar Links */}
         <nav className="flex flex-1 flex-col gap-5 px-6 py-8">
-          <Link
-            href="/board"
-            onClick={closeMenu}
-            className="hover:text-foreground dark:hover:text-foreground py-2 text-base font-medium text-zinc-600 transition-colors dark:text-zinc-400"
-          >
+          <Link href="/board" onClick={closeMenu} className={LINK_CLASS}>
             전체 게시판
           </Link>
-          <Link
-            href={loginUrl}
-            onClick={closeMenu}
-            className="hover:text-foreground dark:hover:text-foreground py-2 text-base font-medium text-zinc-600 transition-colors dark:text-zinc-400"
-          >
-            로그인
-          </Link>
-          <Link
-            href="/signup"
-            onClick={closeMenu}
-            className="hover:text-foreground dark:hover:text-foreground py-2 text-base font-medium text-zinc-600 transition-colors dark:text-zinc-400"
-          >
-            회원가입
-          </Link>
+          {user ? (
+            <AuthenticatedMobileNav user={user} onClose={closeMenu} onLogout={handleLogout} />
+          ) : (
+            <UnauthenticatedMobileNav loginUrl={loginUrl} onClose={closeMenu} />
+          )}
         </nav>
       </div>
     </>

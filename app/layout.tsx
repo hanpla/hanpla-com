@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "@/styles/globals.css";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import Header from "@/components/layout/Header";
+import { getSessionUser } from "@/lib/auth";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -16,11 +17,13 @@ export const metadata: Metadata = {
   description: "hanpla-com website",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const user = await getSessionUser();
+
   return (
     <html
       lang="ko"
@@ -29,7 +32,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col">
         <ThemeProvider>
-          <Header />
+          <Header user={user} />
           {children}
         </ThemeProvider>
       </body>
