@@ -43,14 +43,14 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
       />
 
       <InputField
-        id="username"
-        name="username"
+        id="user_id"
+        name="user_id"
         label="아이디"
         type="text"
         placeholder="4~8자의 아이디"
         disabled={isPending}
-        defaultValue={state.fields?.username || ""}
-        error={state.errors?.username}
+        defaultValue={state.fields?.user_id || ""}
+        error={state.errors?.user_id}
       />
 
       <InputField

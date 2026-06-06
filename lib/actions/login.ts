@@ -9,12 +9,12 @@ import { loginSchema } from "@/lib/validations/auth";
 export interface ActionState {
   success?: boolean;
   errors?: {
-    username?: string;
+    user_id?: string;
     password?: string;
     global?: string;
   };
   fields?: {
-    username?: string;
+    user_id?: string;
   };
 }
 
@@ -22,12 +22,12 @@ export const login = async (
   _prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> => {
-  const username = (formData.get("username") as string) || "";
+  const user_id = (formData.get("user_id") as string) || "";
   const password = (formData.get("password") as string) || "";
 
-  const fields = { username };
+  const fields = { user_id };
 
-  const parsed = loginSchema.safeParse({ username, password });
+  const parsed = loginSchema.safeParse({ user_id, password });
 
   if (!parsed.success) {
     // Return a generic error for any failed validation to align with security requirement
@@ -45,8 +45,8 @@ export const login = async (
   try {
     const { data: user, error } = await supabase
       .from("users")
-      .select("id, username, password_hash, nickname")
-      .eq("username", username)
+      .select("id, user_id, password_hash, nickname")
+      .eq("user_id", user_id)
       .maybeSingle();
 
     if (error) {
@@ -91,7 +91,7 @@ export const login = async (
     const secret = new TextEncoder().encode(jwtSecret);
     const token = await new jose.SignJWT({
       userId: user.id,
-      username: user.username,
+      user_id: user.user_id,
       nickname: user.nickname,
     })
       .setProtectedHeader({ alg: "HS256" })

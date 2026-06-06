@@ -28,13 +28,13 @@ export default function LoginForm() {
   return (
     <form action={formAction} className="space-y-4" noValidate>
       <InputField
-        id="username"
-        name="username"
+        id="user_id"
+        name="user_id"
         label="아이디"
         type="text"
         placeholder="아이디 입력"
         disabled={isPending}
-        defaultValue={state.fields?.username || ""}
+        defaultValue={state.fields?.user_id || ""}
       />
 
       <InputField

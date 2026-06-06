@@ -8,14 +8,14 @@ export interface ActionState {
   success?: boolean;
   errors?: {
     nickname?: string;
-    username?: string;
+    user_id?: string;
     password?: string;
     confirmPassword?: string;
     global?: string;
   };
   fields?: {
     nickname?: string;
-    username?: string;
+    user_id?: string;
   };
 }
 
@@ -24,15 +24,15 @@ export const signup = async (
   formData: FormData
 ): Promise<ActionState> => {
   const nickname = (formData.get("nickname") as string) || "";
-  const username = (formData.get("username") as string) || "";
+  const user_id = (formData.get("user_id") as string) || "";
   const password = (formData.get("password") as string) || "";
   const confirmPassword = (formData.get("confirmPassword") as string) || "";
 
-  const fields = { nickname, username };
+  const fields = { nickname, user_id };
 
   const parsed = signUpSchema.safeParse({
     nickname,
-    username,
+    user_id,
     password,
     confirmPassword,
   });
@@ -56,24 +56,24 @@ export const signup = async (
   const supabase = createAdminClient();
 
   try {
-    const [usernameCheck, nicknameCheck] = await Promise.all([
-      supabase.from("users").select("username").eq("username", username).maybeSingle(),
+    const [userIdCheck, nicknameCheck] = await Promise.all([
+      supabase.from("users").select("user_id").eq("user_id", user_id).maybeSingle(),
       supabase.from("users").select("nickname").eq("nickname", nickname).maybeSingle(),
     ]);
 
-    if (usernameCheck.error) {
-      console.error("Supabase error checking username:", usernameCheck.error);
-      throw usernameCheck.error;
+    if (userIdCheck.error) {
+      console.error("Supabase error checking user_id:", userIdCheck.error);
+      throw userIdCheck.error;
     }
     if (nicknameCheck.error) {
       console.error("Supabase error checking nickname:", nicknameCheck.error);
       throw nicknameCheck.error;
     }
 
-    if (usernameCheck.data || nicknameCheck.data) {
+    if (userIdCheck.data || nicknameCheck.data) {
       const errors: NonNullable<ActionState["errors"]> = {};
-      if (usernameCheck.data) {
-        errors.username = "이미 존재하는 아이디입니다.";
+      if (userIdCheck.data) {
+        errors.user_id = "이미 존재하는 아이디입니다.";
       }
       if (nicknameCheck.data) {
         errors.nickname = "이미 존재하는 닉네임입니다.";
@@ -88,7 +88,7 @@ export const signup = async (
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const { error: insertError } = await supabase.from("users").insert({
-      username,
+      user_id,
       nickname,
       password_hash: hashedPassword,
     });

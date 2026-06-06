@@ -6,7 +6,7 @@ export const signUpSchema = z
       .string()
       .min(2, "닉네임은 2자 이상이어야 합니다.")
       .max(8, "닉네임은 8자 이하여야 합니다."),
-    username: z
+    user_id: z
       .string()
       .min(4, "아이디는 4자 이상이어야 합니다.")
       .max(8, "아이디는 8자 이하여야 합니다."),
@@ -27,7 +27,7 @@ export const signUpSchema = z
 export type SignUpInput = z.infer<typeof signUpSchema>;
 
 export const loginSchema = z.object({
-  username: z
+  user_id: z
     .string()
     .min(4, "아이디는 4자 이상이어야 합니다.")
     .max(8, "아이디는 8자 이하여야 합니다."),
