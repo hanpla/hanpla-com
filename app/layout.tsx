@@ -33,7 +33,9 @@ export default async function RootLayout({
       <body className="flex min-h-full flex-col">
         <ThemeProvider>
           <Header user={user} />
-          {children}
+          <main className="bg-background text-foreground flex flex-1 flex-col transition-colors duration-300">
+            {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>

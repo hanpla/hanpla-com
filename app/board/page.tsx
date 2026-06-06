@@ -26,7 +26,7 @@ export default async function BoardListPage() {
   const { groupedBoards, categories } = groupBoardsByCategory(boards);
 
   return (
-    <div className="bg-background text-foreground flex flex-1 flex-col py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+    <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-5xl space-y-12">
         <BoardHeader />
 

@@ -15,7 +15,7 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="bg-background text-foreground flex flex-1 items-center justify-center p-6 transition-colors duration-300">
+    <div className="flex flex-1 items-center justify-center p-6">
       <div className="w-full max-w-md space-y-6 rounded-2xl border border-zinc-200 bg-zinc-50/50 p-8 shadow-xl backdrop-blur-sm duration-300 dark:border-zinc-800 dark:bg-zinc-900/30">
         <div className="space-y-1 text-center">
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
