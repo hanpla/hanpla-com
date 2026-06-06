@@ -17,21 +17,23 @@ export interface Post {
   } | null;
 }
 
-/**
- * Fetches all posts for a given board abbreviation.
- * Excludes large 'content' field to optimize database/network bandwidth.
- */
-export const getPostsByBoardAbbr = async (boardAbbr: string): Promise<Post[]> => {
+export const getPostsByBoardAbbr = async (boardAbbr: string, filter?: string): Promise<Post[]> => {
   "use cache";
   cacheLife("minutes");
 
   try {
     const supabase = createClient();
-    const { data, error } = await supabase
+    let query = supabase
       .from("posts")
       .select("id, board_abbr, title, author_id, views, likes, dislikes, comments_count, created_at, users(nickname)")
-      .eq("board_abbr", boardAbbr)
-      .order("created_at", { ascending: false });
+      .eq("board_abbr", boardAbbr);
+
+    if (filter === "popular") {
+      // 인기글 조건: 추천수(likes) 10개 이상
+      query = query.gte("likes", 10);
+    }
+
+    const { data, error } = await query.order("created_at", { ascending: false });
 
     if (error) {
       console.error(`Error fetching posts for board ${boardAbbr}:`, error);

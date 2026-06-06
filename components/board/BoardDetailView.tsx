@@ -11,9 +11,10 @@ import BoardSearchArea from "./BoardSearchArea";
 interface BoardDetailViewProps {
   board: Board;
   posts: Post[];
+  activeFilter?: "all" | "popular";
 }
 
-export default function BoardDetailView({ board, posts }: BoardDetailViewProps) {
+export default function BoardDetailView({ board, posts, activeFilter = "all" }: BoardDetailViewProps) {
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-5xl space-y-6">
@@ -28,7 +29,7 @@ export default function BoardDetailView({ board, posts }: BoardDetailViewProps) 
         </div>
 
         {/* Top Button Group */}
-        <BoardButtonGroup />
+        <BoardButtonGroup boardAbbr={board.abbr} activeFilter={activeFilter} />
 
         {/* Posts List */}
         <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50/50 shadow-sm backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/30">
@@ -40,7 +41,7 @@ export default function BoardDetailView({ board, posts }: BoardDetailViewProps) 
         </div>
 
         {/* Bottom Button Group */}
-        <BoardButtonGroup />
+        <BoardButtonGroup boardAbbr={board.abbr} activeFilter={activeFilter} />
 
         {/* Pagination & Search Area */}
         <div className="flex flex-col items-center gap-6 pt-4">

@@ -6,6 +6,9 @@ interface BoardPageProps {
   params: Promise<{
     abbr: string;
   }>;
+  searchParams: Promise<{
+    filter?: string;
+  }>;
 }
 
 export async function generateMetadata({ params }: BoardPageProps) {
@@ -19,11 +22,15 @@ export async function generateMetadata({ params }: BoardPageProps) {
   };
 }
 
-export default async function BoardPage({ params }: BoardPageProps) {
+export default async function BoardPage({ params, searchParams }: BoardPageProps) {
   const { abbr } = await params;
+  const { filter } = await searchParams;
 
   // Fetch board info and posts from Supabase in parallel
-  const [board, posts] = await Promise.all([getBoardByAbbr(abbr), getPostsByBoardAbbr(abbr)]);
+  const [board, posts] = await Promise.all([
+    getBoardByAbbr(abbr),
+    getPostsByBoardAbbr(abbr, filter),
+  ]);
 
   // If not found in database, provide a placeholder fallback so UI testing works for any path
   const finalBoard = board || {
@@ -33,7 +40,5 @@ export default async function BoardPage({ params }: BoardPageProps) {
     created_at: new Date().toISOString(),
   };
 
-  console.log(posts);
-
-  return <BoardDetailView board={finalBoard} posts={posts} />;
+  return <BoardDetailView board={finalBoard} posts={posts} activeFilter={filter === "popular" ? "popular" : "all"} />;
 }

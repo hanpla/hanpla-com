@@ -16,7 +16,7 @@ export default function BoardMobileStack({ posts }: BoardMobileStackProps) {
         <Link
           key={post.id}
           href={`/board/${post.board_abbr}/${post.id}`}
-          className="block p-4 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer space-y-2"
+          className="block p-4 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30 transition-colors cursor-pointer space-y-2"
         >
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 line-clamp-2 text-sm leading-snug hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
