@@ -11,8 +11,7 @@ export default function BoardDesktopTable({ posts }: BoardDesktopTableProps) {
       <table className="w-full text-left border-collapse text-sm">
         <thead>
           <tr className="border-b border-zinc-200 bg-zinc-100/40 dark:border-zinc-800 dark:bg-zinc-900/40 font-semibold text-zinc-500 dark:text-zinc-400">
-            <th className="py-3.5 px-5 w-16 text-center">번호</th>
-            <th className="py-3.5 px-4">제목</th>
+            <th className="py-3.5 pl-6 pr-4">제목</th>
             <th className="py-3.5 px-4 w-28 text-center">작성자</th>
             <th className="py-3.5 px-4 w-20 text-center">작성일</th>
             <th className="py-3.5 px-4 w-20 text-center">조회</th>
@@ -20,15 +19,12 @@ export default function BoardDesktopTable({ posts }: BoardDesktopTableProps) {
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
-          {posts.map((post, idx) => (
+          {posts.map((post) => (
             <tr
               key={post.id}
               className="hover:bg-zinc-100/30 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer group"
             >
-              <td className="py-4 px-5 text-center text-zinc-400 dark:text-zinc-500 font-medium">
-                {posts.length - idx}
-              </td>
-              <td className="py-4 px-4 font-normal">
+              <td className="py-4 pl-6 pr-4 font-normal">
                 <div className="space-y-0.5 max-w-lg">
                   <div className="flex items-center gap-1.5">
                     <span className="font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors line-clamp-1">
