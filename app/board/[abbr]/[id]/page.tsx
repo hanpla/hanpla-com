@@ -100,12 +100,7 @@ export default async function PostPage({ params, searchParams }: PostPageProps) 
         </div>
 
         {/* Button Group (All, Popular, Write) */}
-        <BoardButtonGroup
-          boardAbbr={abbr}
-          activeFilter={activeFilter}
-          searchType={searchType}
-          searchKeyword={searchKeyword}
-        />
+        <BoardButtonGroup boardAbbr={abbr} activeFilter={activeFilter} />
 
         {/* Pagination & Search */}
         <div className="flex flex-col items-center gap-6 pt-4">

@@ -59,7 +59,7 @@ export default function BoardPagination({
   const navBtnClass =
     "px-3.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 font-medium transition-colors cursor-pointer";
   const navBtnDisabledClass =
-    "px-3.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/40 text-zinc-300 dark:text-zinc-700 font-medium transition-colors cursor-not-allowed opacity-50";
+    "px-3.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/40 text-zinc-300 dark:text-zinc-700 font-medium transition-colors cursor-default opacity-50";
 
   return (
     <div className="flex items-center justify-center gap-1">
