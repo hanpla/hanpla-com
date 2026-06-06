@@ -5,6 +5,7 @@ import BoardMobileStack from "@/components/board/BoardMobileStack";
 import BoardButtonGroup from "@/components/board/BoardButtonGroup";
 import BoardPagination from "@/components/board/BoardPagination";
 import BoardSearchArea from "@/components/board/BoardSearchArea";
+import BoardHeader from "@/components/board/BoardHeader";
 import { notFound } from "next/navigation";
 
 export type PostPageParams = Promise<{
@@ -75,7 +76,11 @@ export default async function PostPage({ params, searchParams }: PostPageProps) 
   };
 
   return (
-    <div className="space-y-12">
+    <div className="wrapper space-y-6 py-8">
+      {/* Header */}
+      <BoardHeader board={post.boards} />
+
+      <div className="space-y-12">
       {/* Post Detail Content */}
       <PostDetailView post={post} />
 
@@ -125,6 +130,7 @@ export default async function PostPage({ params, searchParams }: PostPageProps) 
             basePath={basePath}
           />
         </div>
+      </div>
       </div>
     </div>
   );

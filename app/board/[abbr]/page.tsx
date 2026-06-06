@@ -1,6 +1,8 @@
 import { getPostsByBoardAbbr } from "@/lib/queries/posts";
 import { getBoardByAbbr } from "@/lib/queries/board";
 import BoardDetailView from "@/components/board/BoardDetailView";
+import BoardHeader from "@/components/board/BoardHeader";
+import { notFound } from "next/navigation";
 
 export type BoardPageParams = Promise<{
   abbr: string;
@@ -40,26 +42,29 @@ export default async function BoardPage({ params, searchParams }: BoardPageProps
   const currentPage = parseInt(page || "1", 10) || 1;
   const pageSize = 10;
 
-  const { posts, totalCount } = await getPostsByBoardAbbr(
-    abbr,
-    filter,
-    currentPage,
-    pageSize,
-    searchType,
-    searchKeyword,
-  );
+  const [board, { posts, totalCount }] = await Promise.all([
+    getBoardByAbbr(abbr),
+    getPostsByBoardAbbr(abbr, filter, currentPage, pageSize, searchType, searchKeyword),
+  ]);
+
+  if (!board) {
+    notFound();
+  }
 
   return (
-    <BoardDetailView
-      boardAbbr={abbr}
-      posts={posts}
-      totalCount={totalCount}
-      currentPage={currentPage}
-      pageSize={pageSize}
-      activeFilter={filter === "popular" ? "popular" : "all"}
-      searchType={searchType}
-      searchKeyword={searchKeyword}
-    />
+    <div className="wrapper space-y-6 py-8">
+      <BoardHeader board={board} />
+      <BoardDetailView
+        boardAbbr={abbr}
+        posts={posts}
+        totalCount={totalCount}
+        currentPage={currentPage}
+        pageSize={pageSize}
+        activeFilter={filter === "popular" ? "popular" : "all"}
+        searchType={searchType}
+        searchKeyword={searchKeyword}
+      />
+    </div>
   );
 }
 

@@ -1,4 +1,4 @@
-"use client";
+
 
 import type { Post } from "@/lib/queries/posts";
 import BoardButtonGroup from "./BoardButtonGroup";
