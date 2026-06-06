@@ -17,15 +17,23 @@ export interface Post {
   } | null;
 }
 
-export const getPostsByBoardAbbr = async (boardAbbr: string, filter?: string): Promise<Post[]> => {
+export const getPostsByBoardAbbr = async (
+  boardAbbr: string,
+  filter?: string,
+  page: number = 1,
+  pageSize: number = 10
+): Promise<{ posts: Post[]; totalCount: number }> => {
   "use cache";
   cacheLife("minutes");
 
   try {
     const supabase = createClient();
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+
     let query = supabase
       .from("posts")
-      .select("id, board_abbr, title, author_id, views, likes, dislikes, comments_count, created_at, users(nickname)")
+      .select("id, board_abbr, title, author_id, views, likes, dislikes, comments_count, created_at, users(nickname)", { count: "exact" })
       .eq("board_abbr", boardAbbr);
 
     if (filter === "popular") {
@@ -33,17 +41,22 @@ export const getPostsByBoardAbbr = async (boardAbbr: string, filter?: string): P
       query = query.gte("likes", 10);
     }
 
-    const { data, error } = await query.order("created_at", { ascending: false });
+    const { data, error, count } = await query
+      .order("created_at", { ascending: false })
+      .range(from, to);
 
     if (error) {
       console.error(`Error fetching posts for board ${boardAbbr}:`, error);
-      return [];
+      return { posts: [], totalCount: 0 };
     }
 
-    return (data as unknown as Post[]) || [];
+    return {
+      posts: (data as unknown as Post[]) || [],
+      totalCount: count || 0,
+    };
   } catch (error) {
     console.error(`Error in getPostsByBoardAbbr for board ${boardAbbr}:`, error);
-    return [];
+    return { posts: [], totalCount: 0 };
   }
 };
 

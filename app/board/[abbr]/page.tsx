@@ -8,6 +8,7 @@ interface BoardPageProps {
   }>;
   searchParams: Promise<{
     filter?: string;
+    page?: string;
   }>;
 }
 
@@ -24,12 +25,14 @@ export async function generateMetadata({ params }: BoardPageProps) {
 
 export default async function BoardPage({ params, searchParams }: BoardPageProps) {
   const { abbr } = await params;
-  const { filter } = await searchParams;
-
+  const { filter, page } = await searchParams;
+  const currentPage = parseInt(page || "1", 10) || 1;
+  const pageSize = 10;
+  
   // Fetch board info and posts from Supabase in parallel
-  const [board, posts] = await Promise.all([
+  const [board, { posts, totalCount }] = await Promise.all([
     getBoardByAbbr(abbr),
-    getPostsByBoardAbbr(abbr, filter),
+    getPostsByBoardAbbr(abbr, filter, currentPage, pageSize),
   ]);
 
   // If not found in database, provide a placeholder fallback so UI testing works for any path
@@ -40,5 +43,14 @@ export default async function BoardPage({ params, searchParams }: BoardPageProps
     created_at: new Date().toISOString(),
   };
 
-  return <BoardDetailView board={finalBoard} posts={posts} activeFilter={filter === "popular" ? "popular" : "all"} />;
+  return (
+    <BoardDetailView
+      board={finalBoard}
+      posts={posts}
+      totalCount={totalCount}
+      currentPage={currentPage}
+      pageSize={pageSize}
+      activeFilter={filter === "popular" ? "popular" : "all"}
+    />
+  );
 }

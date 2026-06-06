@@ -11,10 +11,20 @@ import BoardSearchArea from "./BoardSearchArea";
 interface BoardDetailViewProps {
   board: Board;
   posts: Post[];
+  totalCount: number;
+  currentPage: number;
+  pageSize: number;
   activeFilter?: "all" | "popular";
 }
 
-export default function BoardDetailView({ board, posts, activeFilter = "all" }: BoardDetailViewProps) {
+export default function BoardDetailView({
+  board,
+  posts,
+  totalCount,
+  currentPage,
+  pageSize,
+  activeFilter = "all",
+}: BoardDetailViewProps) {
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-5xl space-y-6">
@@ -46,10 +56,22 @@ export default function BoardDetailView({ board, posts, activeFilter = "all" }: 
         {/* Pagination & Search Area */}
         <div className="flex flex-col items-center gap-6 pt-4">
           {/* Pagination */}
-          <BoardPagination />
+          <BoardPagination
+            boardAbbr={board.abbr}
+            currentPage={currentPage}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            activeFilter={activeFilter}
+          />
 
           {/* Jump to Page & Search bar wrapper */}
-          <BoardSearchArea />
+          <BoardSearchArea
+            boardAbbr={board.abbr}
+            currentPage={currentPage}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            activeFilter={activeFilter}
+          />
         </div>
       </div>
     </div>
