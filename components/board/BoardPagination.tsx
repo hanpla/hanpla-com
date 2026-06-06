@@ -6,6 +6,8 @@ interface BoardPaginationProps {
   totalCount: number;
   pageSize: number;
   activeFilter: "all" | "popular";
+  searchType?: string;
+  searchKeyword?: string;
 }
 
 export default function BoardPagination({
@@ -14,6 +16,8 @@ export default function BoardPagination({
   totalCount,
   pageSize,
   activeFilter,
+  searchType,
+  searchKeyword,
 }: BoardPaginationProps) {
   const totalPages = Math.ceil(totalCount / pageSize) || 1;
 
@@ -36,6 +40,10 @@ export default function BoardPagination({
     const params = new URLSearchParams();
     if (activeFilter === "popular") {
       params.set("filter", "popular");
+    }
+    if (searchType && searchKeyword) {
+      params.set("searchType", searchType);
+      params.set("searchKeyword", searchKeyword);
     }
     params.set("page", String(pageNumber));
     return `/board/${boardAbbr}?${params.toString()}`;

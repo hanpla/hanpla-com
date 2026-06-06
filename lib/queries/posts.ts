@@ -21,7 +21,9 @@ export const getPostsByBoardAbbr = async (
   boardAbbr: string,
   filter?: string,
   page: number = 1,
-  pageSize: number = 10
+  pageSize: number = 10,
+  searchType?: string,
+  searchKeyword?: string
 ): Promise<{ posts: Post[]; totalCount: number }> => {
   "use cache";
   cacheLife("minutes");
@@ -33,12 +35,27 @@ export const getPostsByBoardAbbr = async (
 
     let query = supabase
       .from("posts")
-      .select("id, board_abbr, title, author_id, views, likes, dislikes, comments_count, created_at, users(nickname)", { count: "exact" })
+      .select("id, board_abbr, title, author_id, views, likes, dislikes, comments_count, created_at, users!inner(nickname)", { count: "exact" })
       .eq("board_abbr", boardAbbr);
 
     if (filter === "popular") {
       // 인기글 조건: 추천수(likes) 10개 이상
       query = query.gte("likes", 10);
+    }
+
+    if (searchKeyword && searchKeyword.trim()) {
+      const keyword = `%${searchKeyword.trim()}%`;
+      if (searchType === "content") {
+        // Tiptap JSONB 본문 검색: PostgreSQL Full-Text Search 접두사 매칭 이용
+        const tokens = searchKeyword.trim().split(/\s+/).filter(Boolean);
+        const tsQuery = tokens.map(token => `'${token.replace(/'/g, "''")}':*`).join(" & ");
+        query = query.textSearch("content", tsQuery, { type: "raw" as "plain" });
+      } else if (searchType === "author") {
+        query = query.ilike("users.nickname", keyword);
+      } else {
+        // 'title' 또는 기본값: 제목 검색
+        query = query.ilike("title", keyword);
+      }
     }
 
     const { data, error, count } = await query

@@ -15,6 +15,8 @@ interface BoardDetailViewProps {
   currentPage: number;
   pageSize: number;
   activeFilter?: "all" | "popular";
+  searchType?: string;
+  searchKeyword?: string;
 }
 
 export default function BoardDetailView({
@@ -24,6 +26,8 @@ export default function BoardDetailView({
   currentPage,
   pageSize,
   activeFilter = "all",
+  searchType,
+  searchKeyword,
 }: BoardDetailViewProps) {
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8">
@@ -39,7 +43,12 @@ export default function BoardDetailView({
         </div>
 
         {/* Top Button Group */}
-        <BoardButtonGroup boardAbbr={board.abbr} activeFilter={activeFilter} />
+        <BoardButtonGroup
+          boardAbbr={board.abbr}
+          activeFilter={activeFilter}
+          searchType={searchType}
+          searchKeyword={searchKeyword}
+        />
 
         {/* Posts List */}
         <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50/50 shadow-sm backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/30">
@@ -51,7 +60,12 @@ export default function BoardDetailView({
         </div>
 
         {/* Bottom Button Group */}
-        <BoardButtonGroup boardAbbr={board.abbr} activeFilter={activeFilter} />
+        <BoardButtonGroup
+          boardAbbr={board.abbr}
+          activeFilter={activeFilter}
+          searchType={searchType}
+          searchKeyword={searchKeyword}
+        />
 
         {/* Pagination & Search Area */}
         <div className="flex flex-col items-center gap-6 pt-4">
@@ -62,6 +76,8 @@ export default function BoardDetailView({
             totalCount={totalCount}
             pageSize={pageSize}
             activeFilter={activeFilter}
+            searchType={searchType}
+            searchKeyword={searchKeyword}
           />
 
           {/* Jump to Page & Search bar wrapper */}
@@ -71,6 +87,8 @@ export default function BoardDetailView({
             totalCount={totalCount}
             pageSize={pageSize}
             activeFilter={activeFilter}
+            searchType={searchType}
+            searchKeyword={searchKeyword}
           />
         </div>
       </div>

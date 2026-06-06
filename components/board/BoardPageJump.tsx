@@ -8,6 +8,8 @@ interface BoardPageJumpProps {
   currentPage: number;
   totalPages: number;
   activeFilter: "all" | "popular";
+  searchType?: string;
+  searchKeyword?: string;
 }
 
 export default function BoardPageJump({
@@ -15,6 +17,8 @@ export default function BoardPageJump({
   currentPage,
   totalPages,
   activeFilter,
+  searchType,
+  searchKeyword,
 }: BoardPageJumpProps) {
   const router = useRouter();
   const [pageInput, setPageInput] = useState(String(currentPage));
@@ -34,6 +38,10 @@ export default function BoardPageJump({
     const params = new URLSearchParams();
     if (activeFilter === "popular") {
       params.set("filter", "popular");
+    }
+    if (searchType && searchKeyword) {
+      params.set("searchType", searchType);
+      params.set("searchKeyword", searchKeyword);
     }
     params.set("page", String(targetPage));
 

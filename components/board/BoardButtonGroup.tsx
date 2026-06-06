@@ -4,20 +4,40 @@ import PenIcon from "@/components/icons/PenIcon";
 interface BoardButtonGroupProps {
   boardAbbr: string;
   activeFilter: "all" | "popular";
+  searchType?: string;
+  searchKeyword?: string;
 }
 
-export default function BoardButtonGroup({ boardAbbr, activeFilter }: BoardButtonGroupProps) {
+export default function BoardButtonGroup({
+  boardAbbr,
+  activeFilter,
+  searchType,
+  searchKeyword,
+}: BoardButtonGroupProps) {
   const activeClass =
     "px-4 py-2 text-sm font-semibold rounded-lg bg-zinc-900 text-zinc-50 hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors cursor-pointer";
   const inactiveClass =
     "px-4 py-2 text-sm font-medium rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-all cursor-pointer";
+
+  const getFilterLink = (filterVal: "all" | "popular") => {
+    const params = new URLSearchParams();
+    if (filterVal === "popular") {
+      params.set("filter", "popular");
+    }
+    if (searchType && searchKeyword) {
+      params.set("searchType", searchType);
+      params.set("searchKeyword", searchKeyword);
+    }
+    const queryStr = params.toString();
+    return `/board/${boardAbbr}${queryStr ? `?${queryStr}` : ""}`;
+  };
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-1.5">
         {/* 전체글 버튼 */}
         <Link
-          href={`/board/${boardAbbr}`}
+          href={getFilterLink("all")}
           className={activeFilter === "all" ? activeClass : inactiveClass}
         >
           전체글
@@ -25,7 +45,7 @@ export default function BoardButtonGroup({ boardAbbr, activeFilter }: BoardButto
         
         {/* 인기글 버튼 */}
         <Link
-          href={`/board/${boardAbbr}?filter=popular`}
+          href={getFilterLink("popular")}
           className={activeFilter === "popular" ? activeClass : inactiveClass}
         >
           인기글
