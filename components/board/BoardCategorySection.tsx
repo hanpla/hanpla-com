@@ -11,9 +11,7 @@ export default function BoardCategorySection({ category, boards }: BoardCategory
     <section className="space-y-4">
       {/* Category Header */}
       <div className="flex items-center gap-3">
-        <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
-          {category}
-        </h2>
+        <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">{category}</h2>
         <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800/80" />
       </div>
 

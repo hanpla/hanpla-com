@@ -24,10 +24,7 @@ function AuthenticatedNav({ user, onLogout }: { user: SessionUser; onLogout: () 
         </span>
         <span>님</span>
       </Link>
-      <button
-        onClick={onLogout}
-        className={`${NAV_LINK_CLASS} cursor-pointer focus:outline-none`}
-      >
+      <button onClick={onLogout} className={`${NAV_LINK_CLASS} cursor-pointer focus:outline-none`}>
         로그아웃
       </button>
     </>

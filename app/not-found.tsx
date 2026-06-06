@@ -13,7 +13,7 @@ export default function NotFound() {
   };
 
   return (
-    <div className="bg-radial from-zinc-100 to-zinc-50 dark:from-zinc-900 dark:to-zinc-950 text-foreground relative flex flex-1 flex-col items-center justify-center p-6 transition-colors duration-300">
+    <div className="text-foreground relative flex flex-1 flex-col items-center justify-center bg-radial from-zinc-100 to-zinc-50 p-6 transition-colors duration-300 dark:from-zinc-900 dark:to-zinc-950">
       {/* Background ambient light effects */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-zinc-300/25 blur-3xl dark:bg-zinc-800/10" />
@@ -36,14 +36,14 @@ export default function NotFound() {
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
           <button
             onClick={handleGoBack}
-            className="group inline-flex items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white px-5 py-3 text-sm font-medium shadow-sm transition-all hover:bg-zinc-50 hover:scale-[1.02] active:scale-[0.98] cursor-pointer dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+            className="group inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white px-5 py-3 text-sm font-medium shadow-sm transition-all hover:scale-[1.02] hover:bg-zinc-50 active:scale-[0.98] dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
           >
             <ArrowLeftIcon className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
             이전 화면으로
           </button>
           <Link
             href="/"
-            className="group inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-900 px-5 py-3 text-sm font-medium text-zinc-50 shadow-md transition-all hover:bg-zinc-800 hover:scale-[1.02] active:scale-[0.98] cursor-pointer dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="group inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-zinc-900 px-5 py-3 text-sm font-medium text-zinc-50 shadow-md transition-all hover:scale-[1.02] hover:bg-zinc-800 active:scale-[0.98] dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             <HomeIcon className="h-4 w-4" />
             메인 화면으로

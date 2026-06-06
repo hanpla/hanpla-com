@@ -12,7 +12,7 @@ export default function LoginPage() {
 
         <Suspense
           fallback={
-            <div className="flex flex-col items-center justify-center py-8 space-y-4">
+            <div className="flex flex-col items-center justify-center space-y-4 py-8">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-300 border-t-zinc-900 dark:border-zinc-700 dark:border-t-zinc-100" />
               <span className="text-sm text-zinc-500">로그인 양식 로딩 중...</span>
             </div>

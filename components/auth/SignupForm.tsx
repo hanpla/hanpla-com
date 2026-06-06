@@ -13,22 +13,11 @@ interface SignupFormProps {
 }
 
 export default function SignupForm({ onSuccess }: SignupFormProps) {
-  const {
-    state,
-    formAction,
-    isPending,
-    clearedFields,
-    handleFocus,
-    handleFormSubmit,
-  } = useSignupForm(onSuccess);
+  const { state, formAction, isPending, clearedFields, handleFocus, handleFormSubmit } =
+    useSignupForm(onSuccess);
 
   return (
-    <form
-      action={formAction}
-      onSubmit={handleFormSubmit}
-      className="space-y-4"
-      noValidate
-    >
+    <form action={formAction} onSubmit={handleFormSubmit} className="space-y-4" noValidate>
       {state.errors?.global && !isPending && !clearedFields.global && (
         <div className="bg-red-55/10 rounded-lg border border-red-200 p-3.5 text-xs font-medium text-red-600 dark:border-red-900/30 dark:bg-red-950/10 dark:text-red-400">
           {state.errors.global}
@@ -77,7 +66,9 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
         type="password"
         placeholder="비밀번호 다시 입력"
         disabled={isPending}
-        error={isPending || clearedFields.confirmPassword ? undefined : state.errors?.confirmPassword}
+        error={
+          isPending || clearedFields.confirmPassword ? undefined : state.errors?.confirmPassword
+        }
         onFocus={() => handleFocus("confirmPassword")}
       />
 

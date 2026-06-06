@@ -42,7 +42,7 @@ export default function BoardButtonGroup({
         >
           전체글
         </Link>
-        
+
         {/* 인기글 버튼 */}
         <Link
           href={getFilterLink("popular")}
@@ -53,7 +53,7 @@ export default function BoardButtonGroup({
       </div>
 
       {/* 글쓰기 버튼 (추후 연동 대비) */}
-      <button className="px-4 py-2 text-sm font-semibold rounded-lg border border-zinc-300 dark:border-zinc-700 bg-background text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5 cursor-pointer">
+      <button className="bg-background text-foreground flex cursor-pointer items-center gap-1.5 rounded-lg border border-zinc-300 px-4 py-2 text-sm font-semibold transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800">
         <PenIcon className="h-4 w-4" />
         글쓰기
       </button>

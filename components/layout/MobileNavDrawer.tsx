@@ -81,7 +81,9 @@ export default function MobileNavDrawer({
       {/* Backdrop for Mobile Sidebar Drawer */}
       <div
         className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-all duration-300 md:hidden ${
-          isOpen ? "visible opacity-100 pointer-events-auto" : "invisible opacity-0 pointer-events-none"
+          isOpen
+            ? "pointer-events-auto visible opacity-100"
+            : "pointer-events-none invisible opacity-0"
         }`}
         onClick={closeMenu}
       />
@@ -89,7 +91,7 @@ export default function MobileNavDrawer({
       {/* Mobile Sidebar Drawer Container */}
       <div
         className={`bg-background fixed top-0 right-0 z-50 flex h-full w-72 transform flex-col border-l border-zinc-200 shadow-2xl transition-all duration-300 ease-in-out md:hidden dark:border-zinc-800/85 ${
-          isOpen ? "translate-x-0 visible" : "translate-x-full invisible"
+          isOpen ? "visible translate-x-0" : "invisible translate-x-full"
         }`}
       >
         {/* Sidebar Header */}

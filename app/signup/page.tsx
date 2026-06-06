@@ -9,12 +9,7 @@ export default function SignupPage() {
   const { isSuccess, isNavigating, handleSuccess, navigateToLogin } = useSignupPage();
 
   if (isSuccess) {
-    return (
-      <SignupSuccess
-        isNavigating={isNavigating}
-        onNavigate={navigateToLogin}
-      />
-    );
+    return <SignupSuccess isNavigating={isNavigating} onNavigate={navigateToLogin} />;
   }
 
   return (

@@ -9,7 +9,7 @@ export interface TiptapNode {
  */
 export const extractTextFromTiptap = (json: unknown): string => {
   if (!json) return "";
-  
+
   let parsedJson: unknown = json;
   if (typeof json === "string") {
     try {
@@ -24,7 +24,7 @@ export const extractTextFromTiptap = (json: unknown): string => {
   const traverse = (node: unknown) => {
     if (!node || typeof node !== "object") return;
     const tiptapNode = node as TiptapNode;
-    
+
     if (tiptapNode.type === "text" && typeof tiptapNode.text === "string") {
       text += tiptapNode.text;
     }

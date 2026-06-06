@@ -41,7 +41,10 @@ export const getPostsByBoardAbbr = async (
 
     let query = supabase
       .from("posts")
-      .select("id, board_abbr, title, author_id, views, likes, dislikes, comments_count, created_at, users!inner(nickname)", { count: "exact" })
+      .select(
+        "id, board_abbr, title, author_id, views, likes, dislikes, comments_count, created_at, users!inner(nickname)",
+        { count: "exact" }
+      )
       .eq("board_abbr", boardAbbr);
 
     if (filter === "popular") {
@@ -54,7 +57,7 @@ export const getPostsByBoardAbbr = async (
       if (searchType === "content") {
         // Tiptap JSONB 본문 검색: PostgreSQL Full-Text Search 접두사 매칭 이용
         const tokens = searchKeyword.trim().split(/\s+/).filter(Boolean);
-        const tsQuery = tokens.map(token => `'${token.replace(/'/g, "''")}':*`).join(" & ");
+        const tsQuery = tokens.map((token) => `'${token.replace(/'/g, "''")}':*`).join(" & ");
         query = query.textSearch("content", tsQuery, { type: "raw" as "plain" });
       } else if (searchType === "author") {
         query = query.ilike("users.nickname", keyword);

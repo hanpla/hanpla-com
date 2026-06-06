@@ -1,6 +1,9 @@
 import { SVGProps } from "react";
 
-export default function SpinnerIcon({ className = "animate-spin", ...props }: SVGProps<SVGSVGElement>) {
+export default function SpinnerIcon({
+  className = "animate-spin",
+  ...props
+}: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

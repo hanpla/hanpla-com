@@ -62,7 +62,7 @@ export default function LoginForm() {
 
       {/* Error Message displayed below login button */}
       {state.errors?.global && (
-        <div className="animate-in fade-in rounded-lg bg-red-50/50 border border-red-200 p-3 text-center text-xs font-semibold text-red-600 dark:border-red-900/30 dark:bg-red-950/10 dark:text-red-400">
+        <div className="animate-in fade-in rounded-lg border border-red-200 bg-red-50/50 p-3 text-center text-xs font-semibold text-red-600 dark:border-red-900/30 dark:bg-red-950/10 dark:text-red-400">
           {state.errors.global}
         </div>
       )}

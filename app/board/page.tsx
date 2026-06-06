@@ -10,7 +10,7 @@ export const metadata = {
 function BoardHeader() {
   return (
     <div className="space-y-2 text-center">
-      <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-4xl">
+      <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-50">
         전체 게시판
       </h1>
       <p className="text-base text-zinc-500 dark:text-zinc-400">
@@ -26,14 +26,16 @@ export default async function BoardListPage() {
   const { groupedBoards, categories } = groupBoardsByCategory(boards);
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8">
+    <div className="px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-5xl space-y-12">
         <BoardHeader />
 
         {categories.length === 0 ? (
           <div className="animate-in fade-in rounded-2xl border border-dashed border-zinc-200 p-12 text-center dark:border-zinc-800">
             <span className="block text-2xl">📭</span>
-            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">등록된 게시판이 없습니다.</p>
+            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+              등록된 게시판이 없습니다.
+            </p>
           </div>
         ) : (
           <div className="space-y-10">

@@ -41,14 +41,11 @@ export default function BoardSearchBar({
   };
 
   return (
-    <form
-      onSubmit={handleSearch}
-      className="flex items-center gap-1.5 w-full sm:w-auto"
-    >
+    <form onSubmit={handleSearch} className="flex w-full items-center gap-1.5 sm:w-auto">
       <select
         value={searchType}
         onChange={(e) => setSearchType(e.target.value)}
-        className="px-2.5 py-2 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 text-zinc-700 dark:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-zinc-950 dark:focus:ring-zinc-50 transition-all cursor-pointer"
+        className="cursor-pointer rounded-lg border border-zinc-200 bg-zinc-50/50 px-2.5 py-2 text-xs font-semibold text-zinc-700 transition-all focus:ring-2 focus:ring-zinc-950 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/30 dark:text-zinc-300 dark:focus:ring-zinc-50"
       >
         <option value="title">제목</option>
         <option value="content">내용</option>
@@ -61,13 +58,13 @@ export default function BoardSearchBar({
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
           placeholder="검색어 입력..."
-          className="w-full sm:w-48 px-3 py-2 pr-8 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 focus:outline-none focus:ring-2 focus:ring-zinc-950 dark:focus:ring-zinc-50 transition-all text-zinc-900 dark:text-zinc-100"
+          className="w-full rounded-lg border border-zinc-200 bg-zinc-50/50 px-3 py-2 pr-8 text-xs text-zinc-900 transition-all focus:ring-2 focus:ring-zinc-950 focus:outline-none sm:w-48 dark:border-zinc-800 dark:bg-zinc-900/30 dark:text-zinc-100 dark:focus:ring-zinc-50"
         />
       </div>
 
       <button
         type="submit"
-        className="px-3.5 py-2 text-xs font-semibold rounded-lg bg-zinc-900 text-zinc-50 hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors flex items-center gap-1 shrink-0 cursor-pointer"
+        className="flex shrink-0 cursor-pointer items-center gap-1 rounded-lg bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-zinc-50 transition-colors hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
       >
         <SearchIcon className="h-3.5 w-3.5" />
         검색

@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PostPageProps) {
   const resolvedParams = await params;
   const { id } = resolvedParams;
   const postId = parseInt(id, 10);
-  
+
   if (isNaN(postId)) {
     return { title: "게시글 - hanpla-com" };
   }
@@ -32,7 +32,6 @@ export default async function PostPage({ params }: PostPageProps) {
   const resolvedParams = await params;
   const { abbr, id } = resolvedParams;
   const postId = parseInt(id, 10);
-
 
   if (isNaN(postId)) {
     notFound();

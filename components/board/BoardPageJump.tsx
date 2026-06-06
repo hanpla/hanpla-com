@@ -56,7 +56,7 @@ export default function BoardPageJump({
 
   return (
     <div className="flex items-center gap-2 text-sm">
-      <span className="text-zinc-500 dark:text-zinc-400 font-medium">페이지 이동</span>
+      <span className="font-medium text-zinc-500 dark:text-zinc-400">페이지 이동</span>
       <input
         type="number"
         min="1"
@@ -65,11 +65,11 @@ export default function BoardPageJump({
         onChange={(e) => setPageInput(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={String(currentPage)}
-        className="w-16 px-2.5 py-1.5 text-center text-sm rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 focus:outline-none focus:ring-2 focus:ring-zinc-950 dark:focus:ring-zinc-50 transition-all font-medium"
+        className="w-16 rounded-lg border border-zinc-200 bg-zinc-50/50 px-2.5 py-1.5 text-center text-sm font-medium transition-all focus:ring-2 focus:ring-zinc-950 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/30 dark:focus:ring-zinc-50"
       />
       <button
         onClick={handleJump}
-        className="px-3 py-1.5 text-sm font-semibold rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer"
+        className="cursor-pointer rounded-lg bg-zinc-100 px-3 py-1.5 text-sm font-semibold text-zinc-800 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
       >
         이동
       </button>

@@ -23,8 +23,7 @@ export default function BoardSearchArea({
   const totalPages = Math.ceil(totalCount / pageSize) || 1;
 
   return (
-    <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-zinc-100 pt-6 dark:border-zinc-800/60">
-      
+    <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-zinc-100 pt-6 sm:flex-row dark:border-zinc-800/60">
       {/* Page Jump Component */}
       <BoardPageJump
         key={currentPage}
@@ -44,7 +43,6 @@ export default function BoardSearchArea({
         initialSearchKeyword={searchKeyword}
         activeFilter={activeFilter}
       />
-
     </div>
   );
 }

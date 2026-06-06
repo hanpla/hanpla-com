@@ -37,3 +37,17 @@ export const formatRelativeTime = (dateInput: Date | string | number): string =>
     return `${diffDay}일 전`;
   }
 };
+
+/**
+ * Formats date into a full Korean date-time string (e.g., "2026년 6월 6일 오후 3:15")
+ */
+export const formatFullDateTime = (dateInput: Date | string | number): string => {
+  const date = new Date(dateInput);
+  return date.toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
