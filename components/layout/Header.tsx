@@ -6,7 +6,7 @@ import DesktopNav from "./DesktopNav";
 import MobileNavTrigger from "./MobileNavTrigger";
 import MobileNavDrawer from "./MobileNavDrawer";
 import Logo from "./Logo";
-import type { SessionUser } from "@/lib/auth";
+import type { SessionUser } from "@/lib/utils/auth";
 
 interface HeaderProps {
   user: SessionUser | null;

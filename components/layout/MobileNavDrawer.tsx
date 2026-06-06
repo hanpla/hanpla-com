@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import CloseIcon from "@/components/icons/CloseIcon";
 import Logo from "./Logo";
 import { logout } from "@/lib/actions/logout";
-import type { SessionUser } from "@/lib/auth";
+import type { SessionUser } from "@/lib/utils/auth";
 
 const LINK_CLASS =
   "hover:text-foreground dark:hover:text-foreground py-2 text-base font-medium text-zinc-600 transition-colors dark:text-zinc-400";

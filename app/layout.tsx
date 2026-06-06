@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "@/styles/globals.css";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import Header from "@/components/layout/Header";
-import { getSessionUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/utils/auth";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",

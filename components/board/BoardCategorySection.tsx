@@ -1,5 +1,5 @@
 import BoardCard from "./BoardCard";
-import type { Board } from "@/lib/supabase/queries/board";
+import type { Board } from "@/lib/queries/board";
 
 interface BoardCategorySectionProps {
   category: string;

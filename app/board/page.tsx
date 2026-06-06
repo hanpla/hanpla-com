@@ -1,4 +1,4 @@
-import { getBoards } from "@/lib/supabase/queries/board";
+import { getBoards } from "@/lib/queries/board";
 import { groupBoardsByCategory } from "@/lib/utils/board";
 import BoardCategorySection from "@/components/board/BoardCategorySection";
 

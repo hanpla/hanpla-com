@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { logout } from "@/lib/actions/logout";
-import type { SessionUser } from "@/lib/auth";
+import type { SessionUser } from "@/lib/utils/auth";
 
 const NAV_LINK_CLASS =
   "hover:text-foreground dark:hover:text-foreground text-sm font-medium text-zinc-600 transition-colors dark:text-zinc-400";

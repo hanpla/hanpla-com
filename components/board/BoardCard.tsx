@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ChevronRightIcon from "@/components/icons/ChevronRightIcon";
-import type { Board } from "@/lib/supabase/queries/board";
+import type { Board } from "@/lib/queries/board";
 
 interface BoardCardProps {
   board: Board;

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getSessionUser } from "@/lib/auth";
+import { getSessionUser } from "@/lib/utils/auth";
 
 const ROW_CLASS = "py-4 flex justify-between items-center";
 const LABEL_CLASS = "font-medium text-zinc-500 dark:text-zinc-400";
