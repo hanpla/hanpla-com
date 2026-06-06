@@ -40,7 +40,7 @@ export default function BoardSearchBar({
     params.set("page", "1");
 
     const base = basePath || `/board/${boardAbbr}`;
-    router.push(`${base}?${params.toString()}`);
+    router.push(`${base}?${params.toString()}`, { scroll: false });
   };
 
   return (

@@ -65,7 +65,7 @@ export default function BoardPagination({
     <div className="flex items-center justify-center gap-1">
       {/* Prev Page Button */}
       {currentPage > 1 ? (
-        <Link href={getPageLink(currentPage - 1)} className={navBtnClass}>
+        <Link href={getPageLink(currentPage - 1)} className={navBtnClass} scroll={false}>
           &lt;
         </Link>
       ) : (
@@ -78,6 +78,7 @@ export default function BoardPagination({
           key={num}
           href={getPageLink(num)}
           className={num === currentPage ? activePageClass : inactivePageClass}
+          scroll={false}
         >
           {num}
         </Link>
@@ -85,7 +86,7 @@ export default function BoardPagination({
 
       {/* Next Page Button */}
       {currentPage < totalPages ? (
-        <Link href={getPageLink(currentPage + 1)} className={navBtnClass}>
+        <Link href={getPageLink(currentPage + 1)} className={navBtnClass} scroll={false}>
           &gt;
         </Link>
       ) : (

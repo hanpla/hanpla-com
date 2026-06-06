@@ -48,7 +48,7 @@ export default function BoardPageJump({
     params.set("page", String(targetPage));
 
     const base = basePath || `/board/${boardAbbr}`;
-    router.push(`${base}?${params.toString()}`);
+    router.push(`${base}?${params.toString()}`, { scroll: false });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
