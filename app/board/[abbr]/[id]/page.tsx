@@ -12,7 +12,8 @@ export interface PostPageProps {
 }
 
 export async function generateMetadata({ params }: PostPageProps) {
-  const { id } = await params;
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
   const postId = parseInt(id, 10);
   
   if (isNaN(postId)) {
@@ -28,16 +29,19 @@ export async function generateMetadata({ params }: PostPageProps) {
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const { id } = await params;
+  const resolvedParams = await params;
+  const { abbr, id } = resolvedParams;
   const postId = parseInt(id, 10);
+
 
   if (isNaN(postId)) {
     notFound();
   }
 
+  // Fetch post which already contains the joined boards details
   const post = await getPostById(postId);
 
-  if (!post) {
+  if (!post || !post.boards || post.board_abbr !== abbr) {
     notFound();
   }
 

@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import { cacheLife } from "next/cache";
+import type { Board } from "@/lib/queries/board";
 
 export interface Post {
   id: number;
@@ -15,8 +16,13 @@ export interface Post {
   users: {
     nickname: string;
   } | null;
+  boards?: Board | null; // Joined board details
 }
 
+/**
+ * Fetches all posts for a given board abbreviation.
+ * Excludes large 'content' field to optimize database/network bandwidth.
+ */
 export const getPostsByBoardAbbr = async (
   boardAbbr: string,
   filter?: string,
@@ -78,7 +84,7 @@ export const getPostsByBoardAbbr = async (
 };
 
 /**
- * Fetches a single post by its ID, including all fields (such as 'content').
+ * Fetches a single post by its ID, including all fields (such as 'content') and joined 'boards' details.
  */
 export const getPostById = async (id: number): Promise<Post | null> => {
   "use cache";
@@ -88,7 +94,7 @@ export const getPostById = async (id: number): Promise<Post | null> => {
     const supabase = createClient();
     const { data, error } = await supabase
       .from("posts")
-      .select("*, users(nickname)")
+      .select("*, users(nickname), boards(*)")
       .eq("id", id)
       .maybeSingle();
 
