@@ -20,12 +20,10 @@ export default async function BoardLayout({ children, params }: BoardLayoutProps
   }
 
   return (
-    <div className="px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto w-full max-w-5xl space-y-6">
-        {/* Header */}
-        <BoardHeader board={board} />
-        {children}
-      </div>
+    <div className="wrapper space-y-6 py-8">
+      {/* Header */}
+      <BoardHeader board={board} />
+      {children}
     </div>
   );
 }

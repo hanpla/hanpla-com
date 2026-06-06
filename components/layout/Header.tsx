@@ -30,7 +30,7 @@ export default function Header({ user }: HeaderProps) {
   return (
     <>
       <header className="bg-background/80 sticky top-0 z-30 border-b border-zinc-200 backdrop-blur-md dark:border-zinc-800/80">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="wrapper flex h-16 items-center justify-between">
           {/* Logo */}
           <Logo className="transition-opacity hover:opacity-80" />
 
