@@ -2,7 +2,7 @@ import BoardPageJump from "./BoardPageJump";
 import BoardSearchBar from "./BoardSearchBar";
 
 interface BoardSearchAreaProps {
-  boardAbbr: string;
+  boardAbbr?: string;
   currentPage: number;
   totalCount: number;
   pageSize: number;

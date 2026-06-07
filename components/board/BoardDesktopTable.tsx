@@ -10,9 +10,16 @@ interface BoardDesktopTableProps {
     searchType?: string;
     searchKeyword?: string;
   };
+  showBoardName?: boolean;
+  isBestContext?: boolean;
 }
 
-export default function BoardDesktopTable({ posts, searchParams }: BoardDesktopTableProps) {
+export default function BoardDesktopTable({
+  posts,
+  searchParams,
+  showBoardName = false,
+  isBestContext = false,
+}: BoardDesktopTableProps) {
   const getPostLink = (post: Post) => {
     const params = new URLSearchParams();
     if (searchParams) {
@@ -28,7 +35,8 @@ export default function BoardDesktopTable({ posts, searchParams }: BoardDesktopT
       }
     }
     const queryStr = params.toString();
-    return `/board/${post.board_abbr}/${post.id}${queryStr ? `?${queryStr}` : ""}`;
+    const baseRoute = isBestContext ? `/best/${post.id}` : `/board/${post.board_abbr}/${post.id}`;
+    return `${baseRoute}${queryStr ? `?${queryStr}` : ""}`;
   };
 
   return (
@@ -51,7 +59,12 @@ export default function BoardDesktopTable({ posts, searchParams }: BoardDesktopT
             className="group grid cursor-pointer grid-cols-[1fr_112px_80px_80px_64px] items-center px-6 py-4 text-sm text-zinc-900 transition-colors hover:bg-zinc-100/50 dark:text-zinc-100 dark:hover:bg-zinc-800/30"
           >
             <div className="font-normal">
-              <div className="flex max-w-lg items-center gap-1.5">
+              <div className="flex max-w-lg items-center gap-2">
+                {showBoardName && post.boards && (
+                  <span className="shrink-0 rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-bold text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+                    {post.boards.name}
+                  </span>
+                )}
                 <span className="line-clamp-1 font-medium transition-colors group-hover:text-indigo-600 group-hover:underline dark:group-hover:text-indigo-400">
                   {post.title}
                 </span>

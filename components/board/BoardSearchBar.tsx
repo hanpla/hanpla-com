@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import SearchIcon from "@/components/icons/SearchIcon";
 
 interface BoardSearchBarProps {
-  boardAbbr: string;
+  boardAbbr?: string;
   initialSearchType: string;
   initialSearchKeyword: string;
   activeFilter: "all" | "popular";

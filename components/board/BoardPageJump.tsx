@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 interface BoardPageJumpProps {
-  boardAbbr: string;
+  boardAbbr?: string;
   currentPage: number;
   totalPages: number;
   activeFilter: "all" | "popular";

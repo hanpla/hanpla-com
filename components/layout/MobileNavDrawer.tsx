@@ -111,6 +111,9 @@ export default function MobileNavDrawer({
           <Link href="/board" onClick={closeMenu} className={LINK_CLASS}>
             전체 게시판
           </Link>
+          <Link href="/best" onClick={closeMenu} className={LINK_CLASS}>
+            인기글
+          </Link>
           {user ? (
             <AuthenticatedMobileNav user={user} onClose={closeMenu} onLogout={handleLogout} />
           ) : (

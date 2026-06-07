@@ -5,21 +5,21 @@ import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "hanpla-com",
-  description: "인기 게시글들을 모아보는 공간입니다.",
+  title: "인기 게시판 - hanpla-com",
+  description: "추천을 많이 받은 인기 게시글들을 모아보는 공간입니다.",
 };
 
-export type HomePageSearchParams = Promise<{
+export type BestPageSearchParams = Promise<{
   page?: string;
   searchType?: string;
   searchKeyword?: string;
 }>;
 
-interface HomePageProps {
-  searchParams: HomePageSearchParams;
+interface BestPageProps {
+  searchParams: BestPageSearchParams;
 }
 
-export default async function Home({ searchParams }: HomePageProps) {
+export default async function BestPage({ searchParams }: BestPageProps) {
   const resolvedSearchParams = await searchParams;
   const { page, searchType, searchKeyword } = resolvedSearchParams;
   const currentPage = parseInt(page || "1", 10) || 1;
@@ -51,4 +51,3 @@ export default async function Home({ searchParams }: HomePageProps) {
     </div>
   );
 }
-

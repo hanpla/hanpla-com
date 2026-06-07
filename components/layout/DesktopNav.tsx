@@ -58,6 +58,9 @@ export default function DesktopNav({ loginUrl, user }: DesktopNavProps) {
       <Link href="/board" className={NAV_LINK_CLASS}>
         전체 게시판
       </Link>
+      <Link href="/best" className={NAV_LINK_CLASS}>
+        인기글
+      </Link>
       {user ? (
         <AuthenticatedNav user={user} onLogout={handleLogout} />
       ) : (

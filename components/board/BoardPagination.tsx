@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 interface BoardPaginationProps {
-  boardAbbr: string;
+  boardAbbr?: string;
   currentPage: number;
   totalCount: number;
   pageSize: number;

@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/client";
 import { cacheLife } from "next/cache";
 import type { Board } from "@/lib/queries/board";
-import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
+import { DEFAULT_PAGE_SIZE, BEST_POST_LIKES_THRESHOLD } from "@/lib/constants";
 
 export interface Post {
   id: number;
@@ -113,3 +113,62 @@ export const getPostById = async (id: number): Promise<Post | null> => {
     return null;
   }
 };
+
+/**
+ * Fetches all best posts across all boards.
+ * Requires likes >= BEST_POST_LIKES_THRESHOLD.
+ */
+export const getBestPosts = async (
+  page: number = 1,
+  pageSize: number = DEFAULT_PAGE_SIZE,
+  searchType?: string,
+  searchKeyword?: string
+): Promise<{ posts: Post[]; totalCount: number }> => {
+  "use cache";
+  cacheLife("minutes");
+
+  try {
+    const supabase = createClient();
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+
+    let query = supabase
+      .from("posts")
+      .select(
+        "id, board_abbr, title, author_id, views, likes, dislikes, comments_count, created_at, users!inner(nickname), boards(*)",
+        { count: "exact" }
+      )
+      .gte("likes", BEST_POST_LIKES_THRESHOLD);
+
+    if (searchKeyword && searchKeyword.trim()) {
+      const keyword = `%${searchKeyword.trim()}%`;
+      if (searchType === "content") {
+        const tokens = searchKeyword.trim().split(/\s+/).filter(Boolean);
+        const tsQuery = tokens.map((token) => `'${token.replace(/'/g, "''")}':*`).join(" & ");
+        query = query.textSearch("content", tsQuery, { type: "raw" as "plain" });
+      } else if (searchType === "author") {
+        query = query.ilike("users.nickname", keyword);
+      } else {
+        query = query.ilike("title", keyword);
+      }
+    }
+
+    const { data, error, count } = await query
+      .order("created_at", { ascending: false })
+      .range(from, to);
+
+    if (error) {
+      console.error("Error fetching best posts:", error);
+      return { posts: [], totalCount: 0 };
+    }
+
+    return {
+      posts: (data as unknown as Post[]) || [],
+      totalCount: count || 0,
+    };
+  } catch (error) {
+    console.error("Error in getBestPosts:", error);
+    return { posts: [], totalCount: 0 };
+  }
+};
+

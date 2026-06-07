@@ -13,9 +13,16 @@ interface BoardMobileStackProps {
     searchType?: string;
     searchKeyword?: string;
   };
+  showBoardName?: boolean;
+  isBestContext?: boolean;
 }
 
-export default function BoardMobileStack({ posts, searchParams }: BoardMobileStackProps) {
+export default function BoardMobileStack({
+  posts,
+  searchParams,
+  showBoardName = false,
+  isBestContext = false,
+}: BoardMobileStackProps) {
   const getPostLink = (post: Post) => {
     const params = new URLSearchParams();
     if (searchParams) {
@@ -31,7 +38,8 @@ export default function BoardMobileStack({ posts, searchParams }: BoardMobileSta
       }
     }
     const queryStr = params.toString();
-    return `/board/${post.board_abbr}/${post.id}${queryStr ? `?${queryStr}` : ""}`;
+    const baseRoute = isBestContext ? `/best/${post.id}` : `/board/${post.board_abbr}/${post.id}`;
+    return `${baseRoute}${queryStr ? `?${queryStr}` : ""}`;
   };
 
   return (
@@ -44,6 +52,11 @@ export default function BoardMobileStack({ posts, searchParams }: BoardMobileSta
         >
           <div className="flex items-start justify-between gap-2">
             <h3 className="line-clamp-2 text-sm leading-snug font-semibold text-zinc-900 transition-colors hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400">
+              {showBoardName && post.boards && (
+                <span className="mr-1.5 inline-block rounded bg-zinc-100 px-1.5 py-0.5 text-[9px] font-bold text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+                  {post.boards.name}
+                </span>
+              )}
               {post.title}
             </h3>
             {post.comments_count > 0 && (
