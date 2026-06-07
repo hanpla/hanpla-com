@@ -7,6 +7,7 @@ import BoardPagination from "@/components/board/BoardPagination";
 import BoardSearchArea from "@/components/board/BoardSearchArea";
 import BoardHeader from "@/components/board/BoardHeader";
 import { notFound } from "next/navigation";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type PostPageParams = Promise<{
   abbr: string;
@@ -54,7 +55,7 @@ export default async function PostPage({ params, searchParams }: PostPageProps) 
   }
 
   const currentPage = parseInt(page || "1", 10) || 1;
-  const pageSize = 10;
+  const pageSize = DEFAULT_PAGE_SIZE;
 
   // Fetch post detail and posts list under the current board in parallel
   const [post, { posts, totalCount }] = await Promise.all([

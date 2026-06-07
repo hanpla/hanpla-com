@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/client";
 import { cacheLife } from "next/cache";
 import type { Board } from "@/lib/queries/board";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export interface Post {
   id: number;
@@ -27,7 +28,7 @@ export const getPostsByBoardAbbr = async (
   boardAbbr: string,
   filter?: string,
   page: number = 1,
-  pageSize: number = 10,
+  pageSize: number = DEFAULT_PAGE_SIZE,
   searchType?: string,
   searchKeyword?: string
 ): Promise<{ posts: Post[]; totalCount: number }> => {

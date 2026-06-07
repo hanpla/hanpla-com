@@ -3,6 +3,7 @@ import { getBoardByAbbr } from "@/lib/queries/board";
 import BoardDetailView from "@/components/board/BoardDetailView";
 import BoardHeader from "@/components/board/BoardHeader";
 import { notFound } from "next/navigation";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type BoardPageParams = Promise<{
   abbr: string;
@@ -40,7 +41,7 @@ export default async function BoardPage({ params, searchParams }: BoardPageProps
   const { abbr } = await params;
   const { filter, page, searchType, searchKeyword } = await searchParams;
   const currentPage = parseInt(page || "1", 10) || 1;
-  const pageSize = 10;
+  const pageSize = DEFAULT_PAGE_SIZE;
 
   const [board, { posts, totalCount }] = await Promise.all([
     getBoardByAbbr(abbr),
