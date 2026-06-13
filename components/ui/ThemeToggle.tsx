@@ -1,29 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import SunIcon from "@/components/icons/SunIcon";
 import MoonIcon from "@/components/icons/MoonIcon";
 
+const emptySubscribe = () => () => {};
+
 export default function ThemeToggle() {
-  const [mounted, setMounted] = useState(false);
+  const isMounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+  
   const { theme, setTheme } = useTheme();
 
-  useEffect(() => {
-    let isMounted = true;
-    const mount = () => {
-      if (isMounted) {
-        setMounted(true);
-      }
-    };
-    const handle = requestAnimationFrame(mount);
-    return () => {
-      isMounted = false;
-      cancelAnimationFrame(handle);
-    };
-  }, []);
-
-  if (!mounted) {
+  if (!isMounted) {
     return (
       <div className="dark:bg-zinc-850 h-10 w-10 animate-pulse rounded-lg border border-zinc-200 bg-zinc-100 dark:border-zinc-800" />
     );
