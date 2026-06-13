@@ -31,7 +31,6 @@ export default async function Home({ searchParams }: HomePageProps) {
     searchType,
     searchKeyword
   );
-
   return (
     <div className="wrapper space-y-6 py-8">
       <BoardHeader
@@ -51,4 +50,3 @@ export default async function Home({ searchParams }: HomePageProps) {
     </div>
   );
 }
-
