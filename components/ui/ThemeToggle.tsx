@@ -1,18 +1,12 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import SunIcon from "@/components/icons/SunIcon";
 import MoonIcon from "@/components/icons/MoonIcon";
-
-const emptySubscribe = () => () => {};
+import { useMount } from "@/hooks/useMount";
 
 export default function ThemeToggle() {
-  const isMounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
+  const isMounted = useMount();
   
   const { theme, setTheme } = useTheme();
 

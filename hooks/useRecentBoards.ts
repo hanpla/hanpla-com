@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useSyncExternalStore, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useLocalStorage } from "./useLocalStorage";
+import { useMount } from "./useMount";
 
 export interface VisitedBoard {
   name: string;
@@ -10,7 +11,6 @@ export interface VisitedBoard {
 
 const KEY = "recent-visited-boards";
 const MAX = 5;
-const emptySubscribe = () => () => {};
 
 export function useRecentBoards() {
   const [isDeleteMode, setIsDeleteMode] = useState(false);
@@ -19,11 +19,7 @@ export function useRecentBoards() {
   const [recentBoards, setRecentBoards] = useLocalStorage<VisitedBoard[]>(KEY, []);
 
   // 2. 새로고침 깜빡임 방지용 마운트 상태 감시
-  const isMounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
+  const isMounted = useMount();
 
   // 3. 비즈니스 로직: 보드 추가 (순서 조정 및 5개 제한)
   const addBoard = useCallback(
