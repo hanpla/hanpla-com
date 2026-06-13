@@ -1,13 +1,15 @@
 import { cookies } from "next/headers";
 import * as jose from "jose";
+import { cache } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 export interface SessionUser {
-  userId: string;
+  id: string;
   user_id: string;
   nickname: string;
 }
 
-export const getSessionUser = async (): Promise<SessionUser | null> => {
+export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("session_token")?.value;
@@ -24,14 +26,32 @@ export const getSessionUser = async (): Promise<SessionUser | null> => {
 
     const secret = new TextEncoder().encode(jwtSecret);
     const { payload } = await jose.jwtVerify(token, secret);
+    const id = payload.id as string;
+
+    if (!id) {
+      return null;
+    }
+
+    // Fetch user profile dynamically from DB for data consistency
+    const supabase = createClient();
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("id, user_id, nickname")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (error || !user) {
+      console.error("Error fetching session user profile:", error);
+      return null;
+    }
 
     return {
-      userId: payload.userId as string,
-      user_id: payload.user_id as string,
-      nickname: payload.nickname as string,
+      id: user.id,
+      user_id: user.user_id,
+      nickname: user.nickname,
     };
   } catch {
     // JWT verification failed or expired
     return null;
   }
-};
+});
