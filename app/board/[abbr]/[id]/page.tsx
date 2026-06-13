@@ -6,6 +6,7 @@ import BoardButtonGroup from "@/components/board/BoardButtonGroup";
 import BoardPagination from "@/components/board/BoardPagination";
 import BoardSearchArea from "@/components/board/BoardSearchArea";
 import BoardHeader from "@/components/board/BoardHeader";
+import RecordVisit from "@/components/layout/RecordVisit";
 import { notFound } from "next/navigation";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
@@ -133,6 +134,7 @@ export default async function PostPage({ params, searchParams }: PostPageProps) 
         </div>
       </div>
       </div>
+      <RecordVisit board={post.boards} />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { getPostsByBoardAbbr } from "@/lib/queries/posts";
 import { getBoardByAbbr } from "@/lib/queries/board";
 import BoardDetailView from "@/components/board/BoardDetailView";
 import BoardHeader from "@/components/board/BoardHeader";
+import RecordVisit from "@/components/layout/RecordVisit";
 import { notFound } from "next/navigation";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
@@ -65,6 +66,7 @@ export default async function BoardPage({ params, searchParams }: BoardPageProps
         searchType={searchType}
         searchKeyword={searchKeyword}
       />
+      <RecordVisit board={board} />
     </div>
   );
 }
