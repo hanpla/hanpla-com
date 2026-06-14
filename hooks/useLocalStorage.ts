@@ -53,7 +53,19 @@ export function useLocalStorage<T>(
   // 4. 로컬스토리지 값 변경 및 이벤트 발송 함수
   const setState = useCallback((value: T | ((val: T) => T)) => {
     try {
-      const nextValue = value instanceof Function ? value(state) : value;
+      let currentVal: T = state;
+      if (typeof window !== "undefined") {
+        const item = localStorage.getItem(key);
+        if (item !== null) {
+          try {
+            currentVal = JSON.parse(item);
+          } catch {
+            // 파싱 실패 시 훅 상태의 값을 유지
+          }
+        }
+      }
+      
+      const nextValue = value instanceof Function ? value(currentVal) : value;
       localStorage.setItem(key, JSON.stringify(nextValue));
       
       // 현재 탭 내의 리스너들에게 변경 전파
