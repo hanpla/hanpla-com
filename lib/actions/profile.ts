@@ -43,6 +43,15 @@ export const updateNicknameAction = async (
     };
   }
 
+  if (user.nickname === nickname) {
+    return {
+      success: false,
+      errors: {
+        nickname: "현재 사용 중인 닉네임과 동일합니다.",
+      },
+    };
+  }
+
   const supabase = createAdminClient();
 
   try {

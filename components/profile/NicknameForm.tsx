@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { updateNicknameAction, type ProfileActionState } from "@/lib/actions/profile";
 import ProfileCard from "./ProfileCard";
 import InputField from "@/components/ui/InputField";
@@ -16,6 +16,16 @@ export default function NicknameForm({ initialNickname, userIdStr }: NicknameFor
     {} as ProfileActionState
   );
 
+  const [nickname, setNickname] = useState(initialNickname);
+  const [prevInitialNickname, setPrevInitialNickname] = useState(initialNickname);
+
+  if (initialNickname !== prevInitialNickname) {
+    setPrevInitialNickname(initialNickname);
+    setNickname(initialNickname);
+  }
+
+  const isButtonDisabled = isPending || nickname.trim() === "" || nickname === initialNickname;
+
   return (
     <ProfileCard
       title="닉네임 변경"
@@ -29,7 +39,7 @@ export default function NicknameForm({ initialNickname, userIdStr }: NicknameFor
           type="text"
           value={userIdStr}
           disabled
-          className="font-mono text-zinc-400 bg-zinc-100/50 dark:bg-zinc-950/40 dark:text-zinc-600 cursor-not-allowed"
+          className="cursor-not-allowed bg-zinc-100/50 font-mono text-zinc-400 dark:bg-zinc-950/40 dark:text-zinc-600"
         />
 
         {/* 새 닉네임 필드 */}
@@ -38,8 +48,8 @@ export default function NicknameForm({ initialNickname, userIdStr }: NicknameFor
           id="nickname"
           name="nickname"
           type="text"
-          key={initialNickname}
-          defaultValue={initialNickname}
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
           placeholder="새 닉네임 입력..."
           error={state.errors?.nickname}
           disabled={isPending}
@@ -47,21 +57,21 @@ export default function NicknameForm({ initialNickname, userIdStr }: NicknameFor
 
         {/* 성공 피드백 */}
         {state.success && (
-          <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 animate-fade-in">
+          <p className="animate-fade-in text-xs font-semibold text-emerald-600 dark:text-emerald-400">
             닉네임이 성공적으로 변경되었습니다.
           </p>
         )}
 
         {/* 글로벌 에러 */}
         {state.errors?.global && (
-          <p className="text-xs font-medium text-red-500 dark:text-red-400 animate-fade-in">
+          <p className="animate-fade-in text-xs font-medium text-red-500 dark:text-red-400">
             {state.errors.global}
           </p>
         )}
 
         <button
           type="submit"
-          disabled={isPending}
+          disabled={isButtonDisabled}
           className="flex w-full cursor-pointer justify-center rounded-xl bg-zinc-900 px-4 py-2.5 text-sm font-semibold text-zinc-50 transition-all hover:bg-zinc-800 active:scale-[0.98] disabled:scale-100 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           {isPending ? "변경 중..." : "닉네임 저장"}
