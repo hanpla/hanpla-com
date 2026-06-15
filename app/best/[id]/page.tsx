@@ -23,7 +23,7 @@ export interface BestPostPageProps {
   searchParams: BestPostPageSearchParams;
 }
 
-export async function generateMetadata({ params }: BestPostPageProps) {
+export const generateMetadata = async ({ params }: BestPostPageProps) => {
   const resolvedParams = await params;
   const { id } = resolvedParams;
   const postId = parseInt(id, 10);

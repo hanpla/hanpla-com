@@ -4,7 +4,7 @@ import { useSyncExternalStore } from "react";
 
 const emptySubscribe = () => () => {};
 
-export function useMount(): boolean {
+export const useMount = (): boolean => {
   return useSyncExternalStore(
     emptySubscribe,
     () => true,

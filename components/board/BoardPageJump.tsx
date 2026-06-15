@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 
 interface BoardPageJumpProps {
   boardAbbr?: string;
@@ -51,7 +51,7 @@ export default function BoardPageJump({
     router.push(`${base}?${params.toString()}`, { scroll: false });
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleJump();
     }

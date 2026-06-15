@@ -7,16 +7,16 @@ import HomeIcon from "@/components/icons/HomeIcon";
 import ErrorStatusView from "@/components/ui/ErrorStatusView";
 
 // Standalone NotFound badge sub-component
-function NotFoundBadge() {
+const NotFoundBadge = () => {
   return (
     <h1 className="bg-linear-to-r from-zinc-900 to-zinc-500 bg-clip-text text-8xl font-black tracking-widest text-transparent dark:from-zinc-100 dark:to-zinc-500">
       404
     </h1>
   );
-}
+};
 
 // Standalone NotFound actions sub-component
-function NotFoundActions({ onGoBack }: { onGoBack: () => void }) {
+const NotFoundActions = ({ onGoBack }: { onGoBack: () => void }) => {
   return (
     <>
       <button
@@ -35,7 +35,7 @@ function NotFoundActions({ onGoBack }: { onGoBack: () => void }) {
       </Link>
     </>
   );
-}
+};
 
 export default function NotFound() {
   const router = useRouter();

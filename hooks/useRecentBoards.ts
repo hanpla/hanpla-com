@@ -12,7 +12,7 @@ export interface VisitedBoard {
 const KEY = "recent-visited-boards";
 const MAX = 5;
 
-export function useRecentBoards() {
+export const useRecentBoards = () => {
   const [isDeleteMode, setIsDeleteMode] = useState(false);
 
   // 1. 범용 훅을 사용하여 상태와 변경 함수 획득 (초기값은 빈 배열)

@@ -7,7 +7,7 @@ export const metadata = {
   description: "분야별로 정리된 다양한 게시판들을 확인하세요.",
 };
 
-function BoardHeader() {
+const BoardHeader = () => {
   return (
     <div className="space-y-2 text-center">
       <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-50">
@@ -18,7 +18,7 @@ function BoardHeader() {
       </p>
     </div>
   );
-}
+};
 
 export default async function BoardListPage() {
   const boards = await getBoards();

@@ -27,7 +27,7 @@ export interface PostPageProps {
   searchParams: PostPageSearchParams;
 }
 
-export async function generateMetadata({ params }: PostPageProps) {
+export const generateMetadata = async ({ params }: PostPageProps) => {
   const resolvedParams = await params;
   const { id } = resolvedParams;
   const postId = parseInt(id, 10);

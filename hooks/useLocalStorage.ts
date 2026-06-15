@@ -5,10 +5,10 @@ import { useSyncExternalStore, useCallback } from "react";
 // 키별로 독립된 이벤트를 발생시키기 위한 이름 생성 헬퍼
 const getStorageEventName = (key: string) => `local-storage-${key}`;
 
-export function useLocalStorage<T>(
+export const useLocalStorage = <T>(
   key: string,
   initialValue: T
-): [T, (value: T | ((val: T) => T)) => void] {
+): [T, (value: T | ((val: T) => T)) => void] => {
   
   // 1. 이벤트 구독 (동일 탭 내 변경 알림 + 다른 탭 storage 이벤트 대응)
   const subscribe = useCallback((callback: () => void) => {

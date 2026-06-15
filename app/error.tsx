@@ -7,7 +7,7 @@ import HomeIcon from "@/components/icons/HomeIcon";
 import ErrorStatusView from "@/components/ui/ErrorStatusView";
 
 // Standalone badge sub-component
-function ErrorBadge() {
+const ErrorBadge = () => {
   return (
     <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-red-100/80 text-red-600 dark:bg-red-950/35 dark:text-red-400">
       {/* Pulsing ring */}
@@ -15,10 +15,10 @@ function ErrorBadge() {
       <AlertTriangleIcon className="relative h-7 w-7" />
     </div>
   );
-}
+};
 
 // Standalone actions sub-component
-function ErrorActions({ onReset }: { onReset: () => void }) {
+const ErrorActions = ({ onReset }: { onReset: () => void }) => {
   return (
     <>
       <button
@@ -36,7 +36,7 @@ function ErrorActions({ onReset }: { onReset: () => void }) {
       </Link>
     </>
   );
-}
+};
 
 // Standalone technical details sub-component
 interface ErrorTechnicalDetailsProps {
@@ -45,7 +45,7 @@ interface ErrorTechnicalDetailsProps {
   onToggle: () => void;
 }
 
-function ErrorTechnicalDetails({ error, showDetails, onToggle }: ErrorTechnicalDetailsProps) {
+const ErrorTechnicalDetails = ({ error, showDetails, onToggle }: ErrorTechnicalDetailsProps) => {
   return (
     <>
       <button
@@ -69,7 +69,7 @@ function ErrorTechnicalDetails({ error, showDetails, onToggle }: ErrorTechnicalD
       )}
     </>
   );
-}
+};
 
 export default function Error({
   error,

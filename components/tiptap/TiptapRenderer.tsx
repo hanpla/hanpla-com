@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { ReactNode } from "react";
 
 export interface TiptapMark {
   type: string;
@@ -19,7 +19,7 @@ interface TiptapRendererProps {
   content: unknown;
 }
 
-export const TiptapRenderer: React.FC<TiptapRendererProps> = ({ content }) => {
+export default function TiptapRenderer({ content }: TiptapRendererProps) {
   if (!content) return null;
 
   let doc: TiptapNode | null = null;
@@ -46,7 +46,7 @@ export const TiptapRenderer: React.FC<TiptapRendererProps> = ({ content }) => {
     );
   }
 
-  const renderMark = (textNode: TiptapNode, children: React.ReactNode, index: number) => {
+  const renderMark = (textNode: TiptapNode, children: ReactNode, index: number) => {
     if (!textNode.marks || textNode.marks.length === 0) return children;
 
     let result = children;
@@ -114,7 +114,7 @@ export const TiptapRenderer: React.FC<TiptapRendererProps> = ({ content }) => {
     return result;
   };
 
-  const renderNode = (node: TiptapNode, index: number): React.ReactNode => {
+  const renderNode = (node: TiptapNode, index: number): ReactNode => {
     const key = `node-${node.type || "unknown"}-${index}`;
 
     switch (node.type) {
@@ -126,7 +126,7 @@ export const TiptapRenderer: React.FC<TiptapRendererProps> = ({ content }) => {
         );
       case "heading": {
         const level = typeof node.attrs?.level === "number" ? node.attrs.level : 1;
-        const Tag = `h${level}` as keyof React.JSX.IntrinsicElements;
+        const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
         const classes =
           {
             1: "text-2xl font-bold text-zinc-900 dark:text-zinc-50 mt-6 mb-3",
@@ -185,4 +185,4 @@ export const TiptapRenderer: React.FC<TiptapRendererProps> = ({ content }) => {
       {doc.content.map((node, idx) => renderNode(node, idx))}
     </div>
   );
-};
+}

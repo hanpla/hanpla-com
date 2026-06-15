@@ -2,7 +2,7 @@
 
 import React from "react";
 import type { Post } from "@/lib/queries/posts";
-import { TiptapRenderer } from "@/components/tiptap/TiptapRenderer";
+import TiptapRenderer from "@/components/tiptap/TiptapRenderer";
 import { formatFullDateTime } from "@/lib/utils/time";
 import EyeIcon from "@/components/icons/EyeIcon";
 import HeartIcon from "@/components/icons/HeartIcon";

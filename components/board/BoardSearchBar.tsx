@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { FormEvent, useState } from "react";
 import SearchIcon from "@/components/icons/SearchIcon";
 
 interface BoardSearchBarProps {
@@ -23,7 +23,7 @@ export default function BoardSearchBar({
   const [searchType, setSearchType] = useState(initialSearchType || "title");
   const [searchKeyword, setSearchKeyword] = useState(initialSearchKeyword || "");
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault();
 
     const params = new URLSearchParams();

@@ -1,11 +1,11 @@
-import React from "react";
+import { ReactNode } from "react";
 
 interface ErrorStatusViewProps {
   title: string;
   description: string;
-  badge?: React.ReactNode;
-  actions?: React.ReactNode;
-  technicalDetails?: React.ReactNode;
+  badge?: ReactNode;
+  actions?: ReactNode;
+  technicalDetails?: ReactNode;
   ambientTopColor?: string; // e.g. "bg-red-500/10 dark:bg-red-900/5"
   ambientBottomColor?: string; // e.g. "bg-zinc-400/15 dark:bg-zinc-700/5"
 }

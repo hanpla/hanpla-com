@@ -22,7 +22,7 @@ export interface BoardPageProps {
   searchParams: BoardPageSearchParams;
 }
 
-export async function generateMetadata({ params }: BoardPageProps) {
+export const generateMetadata = async ({ params }: BoardPageProps) => {
   const { abbr } = await params;
   const board = await getBoardByAbbr(abbr);
 
