@@ -40,7 +40,31 @@ export const generateMetadata = async ({ params }: BestPostPageProps) => {
   };
 }
 
-export default async function BestPostPage({ params, searchParams }: BestPostPageProps) {
+import { Suspense } from "react";
+import { PostDetailSkeleton } from "@/components/ui/Skeletons";
+
+export default function BestPostPage({ params, searchParams }: BestPostPageProps) {
+  return (
+    <div className="wrapper space-y-6 py-8">
+      {/* Header - static rendered immediately */}
+      <BoardHeader
+        title="인기 게시판"
+        description="추천을 많이 받은 인기 게시글들을 모아보는 공간입니다."
+      />
+      <Suspense fallback={<PostDetailSkeleton />}>
+        <BestPostPageContent params={params} searchParams={searchParams} />
+      </Suspense>
+    </div>
+  );
+}
+
+async function BestPostPageContent({
+  params,
+  searchParams,
+}: {
+  params: BestPostPageParams;
+  searchParams: BestPostPageSearchParams;
+}) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
   const { id } = resolvedParams;
@@ -72,68 +96,60 @@ export default async function BestPostPage({ params, searchParams }: BestPostPag
   };
 
   return (
-    <div className="wrapper space-y-6 py-8">
-      {/* Header */}
-      <BoardHeader
-        title="인기 게시판"
-        description="추천을 많이 받은 인기 게시글들을 모아보는 공간입니다."
-      />
+    <div className="space-y-12">
+      {/* Post Detail Content */}
+      <PostDetailView post={post} />
 
-      <div className="space-y-12">
-        {/* Post Detail Content */}
-        <PostDetailView post={post} />
+      {/* Divider */}
+      <hr className="border-zinc-200/80 dark:border-zinc-800/80" />
 
-        {/* Divider */}
-        <hr className="border-zinc-200/80 dark:border-zinc-800/80" />
+      {/* Board List Section */}
+      <div className="space-y-6">
+        <div className="space-y-1">
+          <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            인기 게시판의 다른 글
+          </h2>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            추천을 많이 받은 인기 게시글들입니다.
+          </p>
+        </div>
 
-        {/* Board List Section */}
-        <div className="space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-              인기 게시판의 다른 글
-            </h2>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              추천을 많이 받은 인기 게시글들입니다.
-            </p>
-          </div>
+        {/* Posts List */}
+        <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50/50 shadow-sm backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/30">
+          <BoardDesktopTable
+            posts={posts}
+            searchParams={currentSearchParams}
+            showBoardName={true}
+            isBestContext={true}
+          />
+          <BoardMobileStack
+            posts={posts}
+            searchParams={currentSearchParams}
+            showBoardName={true}
+            isBestContext={true}
+          />
+        </div>
 
-          {/* Posts List */}
-          <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50/50 shadow-sm backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/30">
-            <BoardDesktopTable
-              posts={posts}
-              searchParams={currentSearchParams}
-              showBoardName={true}
-              isBestContext={true}
-            />
-            <BoardMobileStack
-              posts={posts}
-              searchParams={currentSearchParams}
-              showBoardName={true}
-              isBestContext={true}
-            />
-          </div>
-
-          {/* Pagination & Search */}
-          <div className="flex flex-col items-center gap-6 pt-4">
-            <BoardPagination
-              currentPage={currentPage}
-              totalCount={totalCount}
-              pageSize={pageSize}
-              activeFilter="all"
-              searchType={searchType}
-              searchKeyword={searchKeyword}
-              basePath={basePath}
-            />
-            <BoardSearchArea
-              currentPage={currentPage}
-              totalCount={totalCount}
-              pageSize={pageSize}
-              activeFilter="all"
-              searchType={searchType}
-              searchKeyword={searchKeyword}
-              basePath={basePath}
-            />
-          </div>
+        {/* Pagination & Search */}
+        <div className="flex flex-col items-center gap-6 pt-4">
+          <BoardPagination
+            currentPage={currentPage}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            activeFilter="all"
+            searchType={searchType}
+            searchKeyword={searchKeyword}
+            basePath={basePath}
+          />
+          <BoardSearchArea
+            currentPage={currentPage}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            activeFilter="all"
+            searchType={searchType}
+            searchKeyword={searchKeyword}
+            basePath={basePath}
+          />
         </div>
       </div>
     </div>

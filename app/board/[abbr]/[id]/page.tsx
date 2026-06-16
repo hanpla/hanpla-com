@@ -44,7 +44,24 @@ export const generateMetadata = async ({ params }: PostPageProps) => {
   };
 }
 
-export default async function PostPage({ params, searchParams }: PostPageProps) {
+import { Suspense } from "react";
+import { PostDetailSkeleton } from "@/components/ui/Skeletons";
+
+export default function PostPage({ params, searchParams }: PostPageProps) {
+  return (
+    <Suspense fallback={<div className="wrapper py-8"><PostDetailSkeleton /></div>}>
+      <PostPageContent params={params} searchParams={searchParams} />
+    </Suspense>
+  );
+}
+
+async function PostPageContent({
+  params,
+  searchParams,
+}: {
+  params: PostPageParams;
+  searchParams: PostPageSearchParams;
+}) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
   const { abbr, id } = resolvedParams;

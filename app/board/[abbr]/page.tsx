@@ -38,7 +38,24 @@ export const generateMetadata = async ({ params }: BoardPageProps) => {
   };
 }
 
-export default async function BoardPage({ params, searchParams }: BoardPageProps) {
+import { Suspense } from "react";
+import { PostListSkeleton } from "@/components/ui/Skeletons";
+
+export default function BoardPage({ params, searchParams }: BoardPageProps) {
+  return (
+    <Suspense fallback={<div className="wrapper py-8"><PostListSkeleton /></div>}>
+      <BoardPageContent params={params} searchParams={searchParams} />
+    </Suspense>
+  );
+}
+
+async function BoardPageContent({
+  params,
+  searchParams,
+}: {
+  params: BoardPageParams;
+  searchParams: BoardPageSearchParams;
+}) {
   const { abbr } = await params;
   const { filter, page, searchType, searchKeyword } = await searchParams;
   const currentPage = parseInt(page || "1", 10) || 1;

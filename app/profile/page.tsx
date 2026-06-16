@@ -1,14 +1,10 @@
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/utils/auth";
 import EditProfileForm from "@/components/profile/EditProfileForm";
+import { Suspense } from "react";
+import { ProfileSkeleton } from "@/components/ui/Skeletons";
 
-export default async function ProfilePage() {
-  const user = await getSessionUser();
-
-  if (!user) {
-    redirect("/login?callbackUrl=/profile");
-  }
-
+export default function ProfilePage() {
   return (
     <div className="flex flex-1 items-center justify-center p-6">
       <div className="w-full max-w-xl space-y-6">
@@ -21,8 +17,20 @@ export default async function ProfilePage() {
           </p>
         </div>
 
-        <EditProfileForm initialNickname={user.nickname} userIdStr={user.user_id} />
+        <Suspense fallback={<ProfileSkeleton />}>
+          <ProfilePageContent />
+        </Suspense>
       </div>
     </div>
   );
+}
+
+async function ProfilePageContent() {
+  const user = await getSessionUser();
+
+  if (!user) {
+    redirect("/login?callbackUrl=/profile");
+  }
+
+  return <EditProfileForm initialNickname={user.nickname} userIdStr={user.user_id} />;
 }
