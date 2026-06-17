@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 import Header from "@/components/layout/header";
-import RecentBoardsBar from "@/components/layout/recent-boards-bar";
+import RecentBoardsBar from "@/components/layout/recent-boards/recent-boards-bar";
 
 const MainLayout = ({
   children,
