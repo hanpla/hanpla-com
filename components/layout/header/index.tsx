@@ -6,8 +6,8 @@ import NavFallback from "./nav-fallback";
 
 const Header = () => {
   return (
-    <header className="bg-background/80 sticky top-0 z-30 border-b border-zinc-200 backdrop-blur-md dark:border-zinc-800/80">
-      <div className="wrapper flex items-center justify-between py-4">
+    <header className="border-b border-zinc-200 backdrop-blur-md dark:border-zinc-800/80">
+      <div className="wrapper flex items-center justify-between py-2">
         <Logo />
         <Suspense fallback={<NavFallback />}>
           <DynamicNav />
@@ -18,7 +18,3 @@ const Header = () => {
 };
 
 export default Header;
-
-
-
-

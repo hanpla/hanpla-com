@@ -1,13 +1,14 @@
 "use client";
 
 import { useTheme } from "next-themes";
+
+import { useMount } from "@/hooks/useMount";
 import SunIcon from "@/components/icons/sun-icon";
 import MoonIcon from "@/components/icons/moon-icon";
-import { useMount } from "@/hooks/useMount";
 
 const ThemeToggle = () => {
   const isMounted = useMount();
-  
+
   const { theme, setTheme } = useTheme();
 
   if (!isMounted) {
@@ -38,4 +39,3 @@ const ThemeToggle = () => {
 };
 
 export default ThemeToggle;
-
