@@ -7,12 +7,11 @@ export interface UserState {
   setUser: (user: SessionUser | null) => void;
 }
 
-export const createUserStore = (initProps?: Partial<UserState>) => {
-  return createStore<UserState>((set) => ({
+export const createUserStore = (initProps?: Partial<UserState>) =>
+  createStore<UserState>((set) => ({
     user: null,
     setUser: (user) => set({ user }),
     ...initProps,
   }));
-};
 
 export type UserStore = ReturnType<typeof createUserStore>;
