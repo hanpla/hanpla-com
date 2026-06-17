@@ -16,19 +16,14 @@ interface UserStoreProviderProps {
 export const UserStoreProvider = ({ children, initialUser }: UserStoreProviderProps) => {
   const [store] = useState(() => createUserStore({ user: initialUser }));
 
-  return (
-    <UserStoreContext.Provider value={store}>
-      {children}
-    </UserStoreContext.Provider>
-  );
+  return <UserStoreContext.Provider value={store}>{children}</UserStoreContext.Provider>;
 };
-
 
 export const useUserStore = <T,>(selector: (store: UserState) => T): T => {
   const userStoreContext = useContext(UserStoreContext);
 
   if (!userStoreContext) {
-    throw new Error("useUserStore must be used within UserStoreProvider");
+    throw new Error("useUserStore는 UserStoreProvider 안에서 사용되어야 합니다.");
   }
 
   return useStore(userStoreContext, selector);
