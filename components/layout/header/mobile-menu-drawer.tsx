@@ -1,15 +1,17 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import CloseIcon from "@/components/icons/CloseIcon";
 import Logo from "@/components/ui/logo";
 import { logout } from "@/lib/actions/logout";
+import { useMount } from "@/hooks/useMount";
+import { useUserStore } from "@/components/providers/user-store-provider";
 import type { SessionUser } from "@/lib/utils/auth";
 
 interface MobileMenuDrawerProps {
-  user: SessionUser | null;
   isOpen: boolean;
   closeMenu: () => void;
 }
@@ -22,6 +24,24 @@ interface MobileAuthenticatedMenuProps {
 interface MobileUnauthenticatedMenuProps {
   closeMenu: () => void;
 }
+
+const DEFAULT_LINKS = [
+  {
+    href: "/board",
+    label: "전체 게시판",
+  },
+];
+
+const UNAUTHENTICATED_LINKS = [
+  {
+    href: "/login",
+    label: "로그인",
+  },
+  {
+    href: "/signup",
+    label: "회원가입",
+  },
+];
 
 const LINK_CLASS =
   "hover:text-foreground dark:hover:text-foreground py-2 text-base font-medium text-zinc-600 transition-colors dark:text-zinc-400";
@@ -55,13 +75,24 @@ const MobileAuthenticatedMenu = ({ user, closeMenu }: MobileAuthenticatedMenuPro
 };
 
 const MobileUnauthenticatedMenu = ({ closeMenu }: MobileUnauthenticatedMenuProps) => (
-  <Link href="/login" onClick={closeMenu} className={LINK_CLASS}>
-    로그인
-  </Link>
+  <>
+    {UNAUTHENTICATED_LINKS.map((link) => (
+      <Link key={link.href} href={link.href} onClick={closeMenu} className={LINK_CLASS}>
+        {link.label}
+      </Link>
+    ))}
+  </>
 );
 
-const MobileMenuDrawer = ({ user, isOpen, closeMenu }: MobileMenuDrawerProps) => {
-  return (
+const MobileMenuDrawer = ({ isOpen, closeMenu }: MobileMenuDrawerProps) => {
+  const isMounted = useMount();
+  const user = useUserStore((state) => state.user);
+
+  if (!isMounted) {
+    return null;
+  }
+
+  return createPortal(
     <>
       <div
         className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-all duration-300 md:hidden ${
@@ -88,12 +119,11 @@ const MobileMenuDrawer = ({ user, isOpen, closeMenu }: MobileMenuDrawerProps) =>
           </button>
         </div>
         <nav className="flex flex-1 flex-col gap-5 px-6 py-8">
-          <Link href="/board" onClick={closeMenu} className={LINK_CLASS}>
-            전체 게시판
-          </Link>
-          <Link href="/best" onClick={closeMenu} className={LINK_CLASS}>
-            인기글
-          </Link>
+          {DEFAULT_LINKS.map((link) => (
+            <Link key={link.href} href={link.href} onClick={closeMenu} className={LINK_CLASS}>
+              {link.label}
+            </Link>
+          ))}
           {user ? (
             <MobileAuthenticatedMenu user={user} closeMenu={closeMenu} />
           ) : (
@@ -101,9 +131,12 @@ const MobileMenuDrawer = ({ user, isOpen, closeMenu }: MobileMenuDrawerProps) =>
           )}
         </nav>
       </div>
-    </>
+    </>,
+    document.body
   );
 };
 
 export default MobileMenuDrawer;
+
+
 

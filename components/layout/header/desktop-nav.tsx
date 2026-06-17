@@ -5,24 +5,28 @@ import { useRouter } from "next/navigation";
 
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { logout } from "@/lib/actions/logout";
+import { useUserStore } from "@/components/providers/user-store-provider";
 import type { SessionUser } from "@/lib/utils/auth";
 
 interface AuthenticatedNavProps {
   user: SessionUser;
 }
 
-interface DesktopNavProps {
-  user: SessionUser | null;
-}
-
-const Links = [
+const DEFAULT_LINKS = [
   {
     href: "/board",
     label: "전체 게시판",
   },
+];
+
+const UNAUTHENTICATED_LINKS = [
   {
-    href: "/best",
-    label: "인기글",
+    href: "/login",
+    label: "로그인",
+  },
+  {
+    href: "/signup",
+    label: "회원가입",
   },
 ];
 
@@ -56,15 +60,21 @@ const AuthenticatedNav = ({ user }: AuthenticatedNavProps) => {
 };
 
 const UnauthenticatedNav = () => (
-  <Link href="/login" className={NAV_LINK_CLASS}>
-    로그인
-  </Link>
+  <>
+    {UNAUTHENTICATED_LINKS.map((link) => (
+      <Link key={link.href} href={link.href} className={NAV_LINK_CLASS}>
+        {link.label}
+      </Link>
+    ))}
+  </>
 );
 
-const DesktopNav = ({ user }: DesktopNavProps) => {
+const DesktopNav = () => {
+  const user = useUserStore((state) => state.user);
+
   return (
     <nav className="hidden gap-6 md:flex md:items-center">
-      {Links.map((link) => (
+      {DEFAULT_LINKS.map((link) => (
         <Link key={link.href} href={link.href} className={NAV_LINK_CLASS}>
           {link.label}
         </Link>
@@ -76,4 +86,3 @@ const DesktopNav = ({ user }: DesktopNavProps) => {
 };
 
 export default DesktopNav;
-
