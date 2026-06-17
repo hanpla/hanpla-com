@@ -1,4 +1,4 @@
-import MenuIcon from "@/components/icons/MenuIcon";
+import MenuIcon from "@/components/icons/menu-icon";
 
 interface MobileNavTriggerProps {
   toggleMenu: () => void;

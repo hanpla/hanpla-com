@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import CloseIcon from "@/components/icons/CloseIcon";
+import CloseIcon from "@/components/icons/close-icon";
 import Logo from "@/components/ui/logo";
 import { logout } from "@/lib/actions/logout";
 import { useMount } from "@/hooks/useMount";

@@ -1,11 +1,11 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import SunIcon from "@/components/icons/SunIcon";
-import MoonIcon from "@/components/icons/MoonIcon";
+import SunIcon from "@/components/icons/sun-icon";
+import MoonIcon from "@/components/icons/moon-icon";
 import { useMount } from "@/hooks/useMount";
 
-export default function ThemeToggle() {
+const ThemeToggle = () => {
   const isMounted = useMount();
   
   const { theme, setTheme } = useTheme();
@@ -35,4 +35,7 @@ export default function ThemeToggle() {
       <MoonIcon className="absolute h-5 w-5 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
     </button>
   );
-}
+};
+
+export default ThemeToggle;
+

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useRecentBoards } from "@/hooks/useRecentBoards";
-import TrashIcon from "@/components/icons/TrashIcon";
-import CloseIcon from "@/components/icons/CloseIcon";
+import TrashIcon from "@/components/icons/trash-icon";
+import CloseIcon from "@/components/icons/close-icon";
 
 interface VisitedBoard {
   name: string;
@@ -25,8 +25,7 @@ const CHIP_DELETE_CLASS =
 const CHIP_NORMAL_CLASS =
   "rounded-full border border-zinc-200/80 bg-zinc-50/50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800/80 dark:bg-zinc-900/40 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200";
 
-// 중복 스타일 속성 및 로직을 제거하기 위한 BoardChip 컴포넌트
-function BoardChip({ board, isDeleteMode, onDelete }: BoardChipProps) {
+const BoardChip = ({ board, isDeleteMode, onDelete }: BoardChipProps) => {
   if (isDeleteMode) {
     return (
       <button
@@ -48,9 +47,9 @@ function BoardChip({ board, isDeleteMode, onDelete }: BoardChipProps) {
       {board.name}
     </Link>
   );
-}
+};
 
-export default function RecentBoardsBar() {
+const RecentBoardsBar = () => {
   const {
     recentBoards,
     isMounted,
@@ -110,4 +109,7 @@ export default function RecentBoardsBar() {
       </div>
     </div>
   );
-}
+};
+
+export default RecentBoardsBar;
+
