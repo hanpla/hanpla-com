@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <div className="wrapper space-y-6 py-8">asd</div>;
+  return <div>asd</div>;
 }

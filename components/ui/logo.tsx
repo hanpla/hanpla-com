@@ -4,10 +4,12 @@ interface LogoProps {
   className?: string;
 }
 
-export default function Logo({ className = "" }: LogoProps) {
+const Logo = ({ className = "" }: LogoProps) => {
   return (
     <Link href="/" className={`text-foreground text-xl font-bold tracking-tight ${className}`}>
       Hanpla
     </Link>
   );
-}
+};
+
+export default Logo;
