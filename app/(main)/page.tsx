@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   description: "인기 게시글들을 모아보는 공간입니다.",
 };
 
-export default function Home() {
+const Home = () => {
   return <div>asd</div>;
-}
+};
+
+export default Home;

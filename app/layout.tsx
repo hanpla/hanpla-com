@@ -4,8 +4,6 @@ import localFont from "next/font/local";
 
 import "@/styles/globals.css";
 import ThemeProvider from "@/components/providers/theme-provider";
-import Header from "@/components/layout/header";
-import RecentBoardsBar from "@/components/layout/recent-boards-bar";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -27,11 +25,7 @@ const RootLayout = ({
   return (
     <html lang="ko" className={`${pretendard.variable} antialiased`} suppressHydrationWarning>
       <body>
-        <ThemeProvider>
-          <Header />
-          <RecentBoardsBar />
-          <main className="wrapper mt-2">{children}</main>
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
