@@ -1,5 +1,5 @@
-const SignupPage = () => {
-  return <div>asd</div>;
-};
+import SignupForm from "@/components/auth/signup-form";
+
+const SignupPage = () => <SignupForm />;
 
 export default SignupPage;
