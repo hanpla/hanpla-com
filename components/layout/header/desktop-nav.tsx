@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import ThemeToggle from "@/components/ui/ThemeToggle";
 import { logout } from "@/lib/actions/logout";
-import { useUserStore } from "@/components/providers/user-store-provider";
 import type { SessionUser } from "@/lib/utils/auth";
+import ThemeToggle from "@/components/ui/theme-toggle";
+import { useUserStore } from "@/components/providers/user-store-provider";
 
 interface AuthenticatedNavProps {
   user: SessionUser;
