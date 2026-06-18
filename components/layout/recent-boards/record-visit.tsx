@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRecentBoards } from "@/hooks/useRecentBoards";
+import { useRecentBoards } from "@/hooks/use-recent-boards";
 
 interface RecordVisitProps {
   board: {

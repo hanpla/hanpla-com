@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useLocalStorage } from "./useLocalStorage";
-import { useMount } from "./useMount";
+import { useLocalStorage } from "./use-local-storage";
+import { useMount } from "./use-mount";
 
 export interface VisitedBoard {
   name: string;

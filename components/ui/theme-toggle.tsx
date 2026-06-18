@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 
-import { useMount } from "@/hooks/useMount";
+import { useMount } from "@/hooks/use-mount";
 import SunIcon from "@/components/icons/sun-icon";
 import MoonIcon from "@/components/icons/moon-icon";
 

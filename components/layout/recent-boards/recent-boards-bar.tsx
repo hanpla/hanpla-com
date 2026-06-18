@@ -3,7 +3,7 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 
-import { useRecentBoards } from "@/hooks/useRecentBoards";
+import { useRecentBoards } from "@/hooks/use-recent-boards";
 import TrashIcon from "@/components/icons/trash-icon";
 import CloseIcon from "@/components/icons/close-icon";
 
