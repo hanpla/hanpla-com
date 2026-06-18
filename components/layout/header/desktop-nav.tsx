@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useLoginUrl } from "@/hooks/use-login-url";
 import { logout } from "@/lib/actions/logout";
 import type { SessionUser } from "@/lib/utils/auth";
 import ThemeToggle from "@/components/ui/theme-toggle";
@@ -59,15 +60,22 @@ const AuthenticatedNav = ({ user }: AuthenticatedNavProps) => {
   );
 };
 
-const UnauthenticatedNav = () => (
-  <>
-    {UNAUTHENTICATED_LINKS.map((link) => (
-      <Link key={link.href} href={link.href} className={NAV_LINK_CLASS}>
-        {link.label}
-      </Link>
-    ))}
-  </>
-);
+const UnauthenticatedNav = () => {
+  const loginUrl = useLoginUrl();
+
+  return (
+    <>
+      {UNAUTHENTICATED_LINKS.map((link) => {
+        const href = link.href === "/login" ? loginUrl : link.href;
+        return (
+          <Link key={link.href} href={href} className={NAV_LINK_CLASS}>
+            {link.label}
+          </Link>
+        );
+      })}
+    </>
+  );
+};
 
 const DesktopNav = () => {
   const user = useUserStore((state) => state.user);

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import CloseIcon from "@/components/icons/close-icon";
 import Logo from "@/components/ui/logo";
+import { useLoginUrl } from "@/hooks/use-login-url";
 import { logout } from "@/lib/actions/logout";
 import { useMount } from "@/hooks/use-mount";
 import { useUserStore } from "@/components/providers/user-store-provider";
@@ -74,15 +75,22 @@ const MobileAuthenticatedMenu = ({ user, closeMenu }: MobileAuthenticatedMenuPro
   );
 };
 
-const MobileUnauthenticatedMenu = ({ closeMenu }: MobileUnauthenticatedMenuProps) => (
-  <>
-    {UNAUTHENTICATED_LINKS.map((link) => (
-      <Link key={link.href} href={link.href} onClick={closeMenu} className={LINK_CLASS}>
-        {link.label}
-      </Link>
-    ))}
-  </>
-);
+const MobileUnauthenticatedMenu = ({ closeMenu }: MobileUnauthenticatedMenuProps) => {
+  const loginUrl = useLoginUrl();
+
+  return (
+    <>
+      {UNAUTHENTICATED_LINKS.map((link) => {
+        const href = link.href === "/login" ? loginUrl : link.href;
+        return (
+          <Link key={link.href} href={href} onClick={closeMenu} className={LINK_CLASS}>
+            {link.label}
+          </Link>
+        );
+      })}
+    </>
+  );
+};
 
 const MobileMenuDrawer = ({ isOpen, closeMenu }: MobileMenuDrawerProps) => {
   const isMounted = useMount();
