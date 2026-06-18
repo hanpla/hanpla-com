@@ -1,12 +1,5 @@
-import AuthHeader from "@/components/auth/header";
-
 const LoginPage = () => {
-  return (
-    <>
-      <AuthHeader title="로그인" />
-      <div className="mt-8" />
-    </>
-  );
+  return <div>asd</div>;
 };
 
 export default LoginPage;
