@@ -1,8 +1,9 @@
 "use server";
 
+import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import * as jose from "jose";
-import { cookies } from "next/headers";
+
 import { createAdminClient } from "@/lib/supabase/admin";
 import { loginSchema } from "@/lib/validations/auth";
 
@@ -30,7 +31,6 @@ export const login = async (
   const parsed = loginSchema.safeParse({ user_id, password });
 
   if (!parsed.success) {
-    // Return a generic error for any failed validation to align with security requirement
     return {
       success: false,
       errors: {
@@ -50,7 +50,7 @@ export const login = async (
       .maybeSingle();
 
     if (error) {
-      console.error("Supabase error during login query:", error);
+      console.error("Supabase 로그인 에러:", error);
       throw error;
     }
 
@@ -75,10 +75,11 @@ export const login = async (
       };
     }
 
-    // Generate JWT token
+    // JWT 토큰 생성
     const jwtSecret = process.env.JWT_SECRET;
     if (!jwtSecret) {
-      console.error("JWT_SECRET environment variable is missing.");
+      console.error("JWT_SECRET 환경 변수가 누락되었습니다.");
+
       return {
         success: false,
         errors: {
@@ -109,7 +110,7 @@ export const login = async (
 
     return { success: true };
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("Login 에러:", error);
     return {
       success: false,
       errors: {
