@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useUserStore } from "./user-store-provider";
 import type { SessionUser } from "@/lib/utils/auth";
+import { useUserStore } from "./user-store-provider";
 
 interface UserStoreInitializerProps {
   user: SessionUser | null;
