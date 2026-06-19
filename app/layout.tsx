@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 
 import "@/styles/globals.css";
 import ThemeProvider from "@/components/providers/theme-provider";
+import { UserStoreProvider } from "@/components/providers/user-store-provider";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -25,7 +26,11 @@ const RootLayout = ({
   return (
     <html lang="ko" className={`${pretendard.variable} antialiased`} suppressHydrationWarning>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <UserStoreProvider initialUser={null}>
+            {children}
+          </UserStoreProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

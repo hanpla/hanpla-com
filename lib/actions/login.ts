@@ -6,9 +6,11 @@ import * as jose from "jose";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { loginSchema } from "@/lib/validations/auth";
+import type { SessionUser } from "@/lib/utils/auth";
 
 export interface ActionState {
   success?: boolean;
+  user?: SessionUser | null;
   errors?: {
     user_id?: string;
     password?: string;
@@ -108,7 +110,14 @@ export const login = async (
       path: "/",
     });
 
-    return { success: true };
+    return {
+      success: true,
+      user: {
+        id: user.id,
+        user_id: user.user_id,
+        nickname: user.nickname,
+      },
+    };
   } catch (error) {
     console.error("Login 에러:", error);
     return {

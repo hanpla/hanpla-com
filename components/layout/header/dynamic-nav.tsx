@@ -1,17 +1,16 @@
 import { getSessionUser } from "@/lib/utils/auth";
-import { UserStoreProvider } from "@/components/providers/user-store-provider";
+import { UserStoreInitializer } from "@/components/providers/user-store-initializer";
 import NavClient from "./nav-client";
 
 const DynamicNav = async () => {
   const user = await getSessionUser();
 
   return (
-    <UserStoreProvider initialUser={user}>
+    <>
+      <UserStoreInitializer user={user} />
       <NavClient />
-    </UserStoreProvider>
+    </>
   );
 };
 
 export default DynamicNav;
-
-

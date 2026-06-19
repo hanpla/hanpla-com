@@ -4,13 +4,13 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { logout } from "@/lib/actions/logout";
+import type { SessionUser } from "@/lib/utils/auth";
+import { useLoginUrl } from "@/hooks/use-login-url";
+import { useMount } from "@/hooks/use-mount";
 import CloseIcon from "@/components/icons/close-icon";
 import Logo from "@/components/ui/logo";
-import { useLoginUrl } from "@/hooks/use-login-url";
-import { logout } from "@/lib/actions/logout";
-import { useMount } from "@/hooks/use-mount";
 import { useUserStore } from "@/components/providers/user-store-provider";
-import type { SessionUser } from "@/lib/utils/auth";
 
 interface MobileMenuDrawerProps {
   isOpen: boolean;
@@ -49,9 +49,11 @@ const LINK_CLASS =
 
 const MobileAuthenticatedMenu = ({ user, closeMenu }: MobileAuthenticatedMenuProps) => {
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
 
   const handleLogout = async () => {
     await logout();
+    setUser(null);
     closeMenu();
     router.refresh();
   };
@@ -67,7 +69,7 @@ const MobileAuthenticatedMenu = ({ user, closeMenu }: MobileAuthenticatedMenuPro
       </Link>
       <button
         onClick={handleLogout}
-        className={`${LINK_CLASS} text-left cursor-pointer focus:outline-none`}
+        className={`${LINK_CLASS} cursor-pointer text-left focus:outline-none`}
       >
         로그아웃
       </button>
@@ -145,6 +147,3 @@ const MobileMenuDrawer = ({ isOpen, closeMenu }: MobileMenuDrawerProps) => {
 };
 
 export default MobileMenuDrawer;
-
-
-

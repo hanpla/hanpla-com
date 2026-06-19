@@ -36,9 +36,11 @@ const NAV_LINK_CLASS =
 
 const AuthenticatedNav = ({ user }: AuthenticatedNavProps) => {
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
 
   const handleLogout = async () => {
     await logout();
+    setUser(null);
     router.refresh();
   };
 
