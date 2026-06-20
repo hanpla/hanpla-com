@@ -1,6 +1,8 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
+
 import { createAdminClient } from "@/lib/supabase/admin";
 import { signUpSchema } from "@/lib/validations/auth";
 
@@ -97,8 +99,6 @@ export const signup = async (
       console.error("Supabase error inserting user:", insertError);
       throw insertError;
     }
-
-    return { success: true };
   } catch (error) {
     console.error("Signup error:", error);
     return {
@@ -109,4 +109,6 @@ export const signup = async (
       fields,
     };
   }
+
+  redirect("/login");
 };
