@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 export interface Board {
   abbr: string;
@@ -11,6 +11,7 @@ export interface Board {
 export const getBoards = async (): Promise<Board[]> => {
   "use cache";
   cacheLife("days");
+  cacheTag("boards");
 
   try {
     const supabase = createClient();
@@ -31,6 +32,7 @@ export const getBoards = async (): Promise<Board[]> => {
     return [];
   }
 };
+
 
 export const getBoardByAbbr = async (abbr: string): Promise<Board | null> => {
   "use cache";

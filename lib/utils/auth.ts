@@ -1,6 +1,7 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import * as jose from "jose";
-import { cache } from "react";
+
 import { createClient } from "@/lib/supabase/client";
 
 export interface SessionUser {
@@ -41,7 +42,14 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
       .maybeSingle();
 
     if (error || !user) {
-      console.error("Error fetching session user profile:", error);
+      const isAbortError =
+        error?.message?.includes("AbortError") ||
+        error?.message?.includes("aborted") ||
+        (error instanceof Error && error.name === "AbortError");
+
+      if (error && !isAbortError) {
+        console.error("Error fetching session user profile:", error);
+      }
       return null;
     }
 
