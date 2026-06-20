@@ -8,9 +8,9 @@ import { logout } from "@/lib/actions/logout";
 import type { SessionUser } from "@/lib/utils/auth";
 import { useLoginUrl } from "@/hooks/use-login-url";
 import { useMount } from "@/hooks/use-mount";
+import { useSession } from "@/components/providers/session-provider";
 import CloseIcon from "@/components/icons/close-icon";
 import Logo from "@/components/ui/logo";
-import { useUserStore } from "@/components/providers/user-store-provider";
 
 interface MobileMenuDrawerProps {
   isOpen: boolean;
@@ -49,11 +49,9 @@ const LINK_CLASS =
 
 const MobileAuthenticatedMenu = ({ user, closeMenu }: MobileAuthenticatedMenuProps) => {
   const router = useRouter();
-  const setUser = useUserStore((state) => state.setUser);
 
   const handleLogout = async () => {
     await logout();
-    setUser(null);
     closeMenu();
     router.refresh();
   };
@@ -96,7 +94,7 @@ const MobileUnauthenticatedMenu = ({ closeMenu }: MobileUnauthenticatedMenuProps
 
 const MobileMenuDrawer = ({ isOpen, closeMenu }: MobileMenuDrawerProps) => {
   const isMounted = useMount();
-  const user = useUserStore((state) => state.user);
+  const { user } = useSession();
 
   if (!isMounted) {
     return null;

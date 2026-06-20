@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useLoginUrl } from "@/hooks/use-login-url";
 import { logout } from "@/lib/actions/logout";
 import type { SessionUser } from "@/lib/utils/auth";
+import { useSession } from "@/components/providers/session-provider";
 import ThemeToggle from "@/components/ui/theme-toggle";
-import { useUserStore } from "@/components/providers/user-store-provider";
 
 interface AuthenticatedNavProps {
   user: SessionUser;
@@ -36,11 +36,9 @@ const NAV_LINK_CLASS =
 
 const AuthenticatedNav = ({ user }: AuthenticatedNavProps) => {
   const router = useRouter();
-  const setUser = useUserStore((state) => state.setUser);
 
   const handleLogout = async () => {
     await logout();
-    setUser(null);
     router.refresh();
   };
 
@@ -80,7 +78,7 @@ const UnauthenticatedNav = () => {
 };
 
 const DesktopNav = () => {
-  const user = useUserStore((state) => state.user);
+  const { user } = useSession();
 
   return (
     <nav className="hidden gap-6 md:flex md:items-center">

@@ -1,16 +1,15 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import * as jose from "jose";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { loginSchema } from "@/lib/validations/auth";
-import type { SessionUser } from "@/lib/utils/auth";
 
 export interface ActionState {
   success?: boolean;
-  user?: SessionUser | null;
   errors?: {
     user_id?: string;
     password?: string;
@@ -27,6 +26,7 @@ export const login = async (
 ): Promise<ActionState> => {
   const user_id = (formData.get("user_id") as string) || "";
   const password = (formData.get("password") as string) || "";
+  const callbackUrl = (formData.get("callbackUrl") as string) || "/";
 
   const fields = { user_id };
 
@@ -109,15 +109,6 @@ export const login = async (
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: "/",
     });
-
-    return {
-      success: true,
-      user: {
-        id: user.id,
-        user_id: user.user_id,
-        nickname: user.nickname,
-      },
-    };
   } catch (error) {
     console.error("Login 에러:", error);
     return {
@@ -128,4 +119,6 @@ export const login = async (
       fields,
     };
   }
+
+  redirect(callbackUrl);
 };

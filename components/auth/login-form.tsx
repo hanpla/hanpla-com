@@ -7,10 +7,11 @@ import InputField from "@/components/ui/input-field";
 import AuthLink from "./auth-link";
 
 const LoginForm = () => {
-  const { state, formAction, isPending } = useLoginForm();
+  const { state, formAction, isPending, callbackUrl } = useLoginForm();
 
   return (
     <form action={formAction} className="space-y-4" noValidate>
+      <input type="hidden" name="callbackUrl" value={callbackUrl} />
       <InputField
         label="아이디"
         id="user_id"

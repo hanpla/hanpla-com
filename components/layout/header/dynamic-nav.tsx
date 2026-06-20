@@ -1,15 +1,14 @@
 import { getSessionUser } from "@/lib/utils/auth";
-import { UserStoreInitializer } from "@/components/providers/user-store-initializer";
+import { SessionProvider } from "@/components/providers/session-provider";
 import NavClient from "./nav-client";
 
 const DynamicNav = async () => {
   const user = await getSessionUser();
 
   return (
-    <>
-      <UserStoreInitializer user={user} />
+    <SessionProvider user={user}>
       <NavClient />
-    </>
+    </SessionProvider>
   );
 };
 
