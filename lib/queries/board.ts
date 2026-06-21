@@ -1,11 +1,16 @@
-import { createClient } from "@/lib/supabase/client";
 import { cacheLife, cacheTag } from "next/cache";
+
+import { createClient } from "@/lib/supabase/client";
 
 export interface Board {
   abbr: string;
   name: string;
   category: string;
   created_at: string;
+}
+
+export interface BoardName {
+  name: string;
 }
 
 export const getBoards = async (): Promise<Board[]> => {
@@ -22,19 +27,18 @@ export const getBoards = async (): Promise<Board[]> => {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("Error fetching boards from Supabase:", error);
+      console.error(error);
       return [];
     }
 
     return data || [];
   } catch (error) {
-    console.error("Error in getBoards query helper:", error);
+    console.error(error);
     return [];
   }
 };
 
-
-export const getBoardByAbbr = async (abbr: string): Promise<Board | null> => {
+export const getBoardName = async (abbr: string): Promise<BoardName | null> => {
   "use cache";
   cacheLife("days");
 
@@ -42,18 +46,18 @@ export const getBoardByAbbr = async (abbr: string): Promise<Board | null> => {
     const supabase = createClient();
     const { data, error } = await supabase
       .from("boards")
-      .select("*")
+      .select("name")
       .eq("abbr", abbr)
       .maybeSingle();
 
     if (error) {
-      console.error(`Error fetching board for abbr ${abbr}:`, error);
+      console.error(error);
       return null;
     }
 
     return data;
   } catch (error) {
-    console.error(`Error in getBoardByAbbr for abbr ${abbr}:`, error);
+    console.error(error);
     return null;
   }
 };
