@@ -1,9 +1,5 @@
 import { getBoards } from "@/lib/queries/board";
-import Board from "@/components/board";
-
-export type BoardPageParams = Promise<{
-  abbr: string;
-}>;
+import Board, { BoardPageParams, BoardSearchParams } from "@/components/board";
 
 export const generateStaticParams = async () => {
   const boards = await getBoards();
@@ -12,8 +8,14 @@ export const generateStaticParams = async () => {
   }));
 };
 
-const BoardAbbrPage = ({ params }: { params: BoardPageParams }) => {
-  return <Board params={params} />;
+const BoardAbbrPage = ({
+  params,
+  searchParams,
+}: {
+  params: BoardPageParams;
+  searchParams: BoardSearchParams;
+}) => {
+  return <Board params={params} searchParams={searchParams} />;
 };
 
 export default BoardAbbrPage;

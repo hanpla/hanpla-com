@@ -50,7 +50,7 @@ const PostRowPc = ({ post, href, showBoardName }: PostRowProps) => {
   return (
     <Link
       href={href}
-      className="group grid cursor-pointer grid-cols-[1fr_112px_80px_80px_64px] items-center px-6 py-4 text-sm text-zinc-900 transition-colors hover:bg-zinc-100/50 dark:text-zinc-100 dark:hover:bg-zinc-800/30"
+      className="group grid cursor-pointer grid-cols-[1fr_112px_80px_80px_64px] items-center py-4 text-sm text-zinc-900 transition-colors hover:bg-zinc-100/50 dark:text-zinc-100 dark:hover:bg-zinc-800/30"
     >
       <div className="font-normal">
         <div className="flex max-w-lg items-center gap-2">
@@ -88,10 +88,10 @@ const PostRowMobile = ({ post, href, showBoardName }: PostRowProps) => {
   return (
     <Link
       href={href}
-      className="block cursor-pointer space-y-2 p-4 transition-colors hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30"
+      className="block cursor-pointer space-y-2 py-4 transition-colors hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30"
     >
       <div className="flex items-start justify-between gap-2">
-        <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-zinc-900 transition-colors hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400">
+        <h3 className="line-clamp-2 text-sm leading-snug font-semibold text-zinc-900 transition-colors hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400">
           {showBoardName && boardName && (
             <BoardBadge name={boardName} className="mr-1.5 inline-block text-[9px]" />
           )}
@@ -101,9 +101,7 @@ const PostRowMobile = ({ post, href, showBoardName }: PostRowProps) => {
       </div>
       <div className="flex items-center justify-between pt-1 text-xs text-zinc-400 dark:text-zinc-500">
         <div className="flex items-center gap-1.5">
-          <span className="font-medium text-zinc-700 dark:text-zinc-300">
-            {author}
-          </span>
+          <span className="font-medium text-zinc-700 dark:text-zinc-300">{author}</span>
           <span>•</span>
           <span>{post.formattedRelativeTime || post.created_at.split("T")[0]}</span>
         </div>
@@ -144,8 +142,8 @@ const PostListUi = ({
       {/* PC View (md 이상) */}
       <div className="hidden md:block">
         {/* Table Header using CSS Grid */}
-        <div className="grid grid-cols-[1fr_112px_80px_80px_64px] border-b border-zinc-200 bg-zinc-100/40 px-6 py-3.5 text-sm font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/40 dark:text-zinc-400">
-          <div>제목</div>
+        <div className="grid grid-cols-[1fr_112px_80px_80px_64px] border-b border-zinc-200 bg-zinc-100/40 py-3.5 text-sm font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/40 dark:text-zinc-400">
+          <div className="text-center">제목</div>
           <div className="text-center">작성자</div>
           <div className="text-center">작성일</div>
           <div className="text-center">조회</div>
