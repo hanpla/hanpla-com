@@ -19,7 +19,7 @@ export const getPostsByBoardAbbr = async ({
   searchKeyword,
 }: GetBoardPostsOptions): Promise<{ posts: Post[]; totalCount: number }> => {
   "use cache";
-  cacheLife("minutes");
+  cacheLife("boardList");
 
   try {
     const supabase = createClient();
