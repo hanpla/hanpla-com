@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import BoardNavArea from "./board-nav-area";
 import BoardSearchBar from "./board-search-bar";
+import BoardSearchBarSkeleton from "./board-search-bar-skeleton";
 import PostListUi from "@/components/post/post-list-ui";
 import { getPostsByBoardAbbr } from "@/lib/queries/posts";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
@@ -49,7 +50,7 @@ const BoardPostSection = async ({ params, searchParams }: BoardPostSectionProps)
 
       {/* 검색 바 (페이지네이션 밑, 중앙 정렬) */}
       <div className="flex justify-center pt-2">
-        <Suspense fallback={<div className="h-9 w-64 animate-pulse rounded bg-zinc-100 dark:bg-zinc-900/30" />}>
+        <Suspense fallback={<BoardSearchBarSkeleton />}>
           <BoardSearchBar />
         </Suspense>
       </div>

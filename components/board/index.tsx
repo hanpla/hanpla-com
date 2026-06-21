@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import Header from "./header";
 import HeaderFallback from "./header-fallback";
 import BoardPostSection from "./board-post-section";
+import BoardPostSectionSkeleton from "./board-post-section-skeleton";
 
 export type BoardPageParams = Promise<{
   abbr: string;
@@ -30,11 +31,7 @@ const Board = ({ params, searchParams }: BoardProps) => {
       </Suspense>
 
       {/* 2. 포스트 리스트 & 페이징 컨트롤 (PPR 지연 스트리밍 영역) */}
-      <Suspense
-        fallback={
-          <div className="h-96 w-full animate-pulse rounded bg-zinc-100 dark:bg-zinc-900/30" />
-        }
-      >
+      <Suspense fallback={<BoardPostSectionSkeleton />}>
         <BoardPostSection params={params} searchParams={searchParams} />
       </Suspense>
     </div>
