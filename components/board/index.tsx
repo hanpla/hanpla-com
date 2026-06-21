@@ -4,6 +4,8 @@ import Header from "./header";
 import HeaderFallback from "./header-fallback";
 import BoardPostSection from "./board-post-section";
 import BoardPostSectionSkeleton from "./board-post-section-skeleton";
+import BoardSearchBar from "./board-search-bar";
+import BoardSearchBarSkeleton from "./board-search-bar-skeleton";
 
 export type BoardPageParams = Promise<{
   abbr: string;
@@ -34,6 +36,13 @@ const Board = ({ params, searchParams }: BoardProps) => {
       <Suspense fallback={<BoardPostSectionSkeleton />}>
         <BoardPostSection params={params} searchParams={searchParams} />
       </Suspense>
+
+      {/* 3. 검색 바 (페이지네이션 밑, 중앙 정렬 - 0ms 즉시 렌더링 유지) */}
+      <div className="flex justify-center pt-2">
+        <Suspense fallback={<BoardSearchBarSkeleton />}>
+          <BoardSearchBar />
+        </Suspense>
+      </div>
     </div>
   );
 };

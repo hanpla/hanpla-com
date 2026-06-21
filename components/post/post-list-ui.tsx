@@ -4,6 +4,7 @@ import ChatBubbleIcon from "@/components/icons/chat-bubble-icon";
 import EyeIcon from "@/components/icons/eye-icon";
 import HeartIcon from "@/components/icons/heart-icon";
 import type { Post } from "@/types/post";
+import PostListHeader, { POST_GRID_COLS_CLASS } from "./post-list-header";
 
 // ==========================================
 // 1. 공통 서브 컴포넌트 (배지 및 행 UI 추상화)
@@ -50,7 +51,7 @@ const PostRowPc = ({ post, href, showBoardName }: PostRowProps) => {
   return (
     <Link
       href={href}
-      className="group grid cursor-pointer grid-cols-[1fr_112px_80px_80px_64px] items-center py-4 text-sm text-zinc-900 transition-colors hover:bg-zinc-100/50 dark:text-zinc-100 dark:hover:bg-zinc-800/30"
+      className={`group grid cursor-pointer ${POST_GRID_COLS_CLASS} items-center py-4 text-sm text-zinc-900 transition-colors hover:bg-zinc-100/50 dark:text-zinc-100 dark:hover:bg-zinc-800/30`}
     >
       <div className="font-normal">
         <div className="flex max-w-lg items-center gap-2">
@@ -142,13 +143,7 @@ const PostListUi = ({
       {/* PC View (md 이상) */}
       <div className="hidden md:block">
         {/* Table Header using CSS Grid */}
-        <div className="grid grid-cols-[1fr_112px_80px_80px_64px] border-b border-zinc-200 bg-zinc-100/40 py-3.5 text-sm font-semibold text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/40 dark:text-zinc-400">
-          <div className="text-center">제목</div>
-          <div className="text-center">작성자</div>
-          <div className="text-center">작성일</div>
-          <div className="text-center">조회</div>
-          <div className="text-center">추천</div>
-        </div>
+        <PostListHeader />
 
         {/* Table Body rows */}
         <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
