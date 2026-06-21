@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import Header from "./header";
+import HeaderFallback from "./header-fallback";
 
 export type BoardPageParams = Promise<{
   abbr: string;
@@ -10,15 +11,14 @@ interface BoardProps {
   params: BoardPageParams;
 }
 
-const Board = async ({ params }: BoardProps) => {
-  const { abbr } = await params;
-
+const Board = ({ params }: BoardProps) => {
   return (
-    <Suspense>
-      <Header abbr={abbr} />
-    </Suspense>
+    <div className="space-y-6 py-6">
+      <Suspense fallback={<HeaderFallback />}>
+        <Header params={params} />
+      </Suspense>
+    </div>
   );
 };
 
 export default Board;
-
