@@ -2,7 +2,6 @@ import { Suspense } from "react";
 
 import Header from "./header";
 import HeaderFallback from "./header-fallback";
-import BoardSearchBar from "./board-search-bar";
 import BoardPostSection from "./board-post-section";
 
 export type BoardPageParams = Promise<{
@@ -30,18 +29,7 @@ const Board = ({ params, searchParams }: BoardProps) => {
         <Header params={params} />
       </Suspense>
 
-      {/* 2. 검색창 (useSearchParams를 사용하므로 Suspense로 감싸 정적 셸 차단 방지) */}
-      <div className="flex justify-end">
-        <Suspense
-          fallback={
-            <div className="h-9 w-64 animate-pulse rounded bg-zinc-100 dark:bg-zinc-900/30" />
-          }
-        >
-          <BoardSearchBar />
-        </Suspense>
-      </div>
-
-      {/* 3. 포스트 리스트 & 페이징 컨트롤 (PPR 지연 스트리밍 영역) */}
+      {/* 2. 포스트 리스트 & 페이징 컨트롤 (PPR 지연 스트리밍 영역) */}
       <Suspense
         fallback={
           <div className="h-96 w-full animate-pulse rounded bg-zinc-100 dark:bg-zinc-900/30" />

@@ -2,29 +2,23 @@ import { Suspense } from "react";
 import BoardNavArea from "./board-nav-area";
 import BoardSearchBar from "./board-search-bar";
 import PostListUi from "@/components/post/post-list-ui";
-import { getPostsByBoardAbbr } from "@/lib/queries/posts";
+import { getBestPosts } from "@/lib/queries/posts";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
+import type { BoardSearchParams } from "./index";
 
-import { BoardPageParams, BoardSearchParams } from "./index";
-
-interface BoardPostSectionProps {
-  params: BoardPageParams;
+interface BestPostSectionProps {
   searchParams: BoardSearchParams;
 }
 
-const BoardPostSection = async ({ params, searchParams }: BoardPostSectionProps) => {
-  const { abbr } = await params;
+const BestPostSection = async ({ searchParams }: BestPostSectionProps) => {
   const resolvedSearchParams = await searchParams;
 
   const page = Number(resolvedSearchParams.page) || 1;
-  const filter = (resolvedSearchParams.filter as "all" | "popular") || "all";
   const searchType = resolvedSearchParams.searchType;
   const searchKeyword = resolvedSearchParams.searchKeyword;
 
-  // 비동기 DB 조회 (1분 캐싱 및 검색 필터 연계)
-  const { posts, totalCount } = await getPostsByBoardAbbr({
-    boardAbbr: abbr,
-    filter,
+  // 비동기 DB 조회 (1시간 캐싱 및 검색 필터 연계)
+  const { posts, totalCount } = await getBestPosts({
     page,
     pageSize: DEFAULT_PAGE_SIZE,
     searchType,
@@ -33,28 +27,33 @@ const BoardPostSection = async ({ params, searchParams }: BoardPostSectionProps)
 
   return (
     <div className="space-y-6">
-      {/* 포스트 목록 프레젠터 */}
-      <PostListUi posts={posts} showBoardName={false} />
+      {/* 포스트 목록 프레젠터 (인기게시판이므로 showBoardName=true, 상세 이동은 /best/{id} 매핑) */}
+      <PostListUi
+        posts={posts}
+        showBoardName={true}
+        getPostLink={(post) => `/best/${post.id}`}
+      />
 
-      {/* 하단 페이지네이션 및 점프 컨트롤러 */}
+      {/* 하단 페이지네이션 및 점프 컨트롤러 (basePath="/" 로 매핑) */}
       <BoardNavArea
-        boardAbbr={abbr}
+        boardAbbr="best"
         currentPage={page}
         totalCount={totalCount}
         pageSize={DEFAULT_PAGE_SIZE}
-        activeFilter={filter}
+        activeFilter="all"
         searchType={searchType}
         searchKeyword={searchKeyword}
+        basePath="/"
       />
 
-      {/* 검색 바 (페이지네이션 밑, 중앙 정렬) */}
+      {/* 검색 바 (페이지네이션 밑, 중앙 정렬, basePath="/" 매핑) */}
       <div className="flex justify-center pt-2">
         <Suspense fallback={<div className="h-9 w-64 animate-pulse rounded bg-zinc-100 dark:bg-zinc-900/30" />}>
-          <BoardSearchBar />
+          <BoardSearchBar basePath="/" />
         </Suspense>
       </div>
     </div>
   );
 };
 
-export default BoardPostSection;
+export default BestPostSection;
