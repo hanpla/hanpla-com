@@ -2,6 +2,7 @@ import BoardNavArea from "./board-nav-area";
 import PostListUi from "@/components/post/post-list-ui";
 import { getPostsByBoardAbbr } from "@/lib/queries/posts";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
+import type { Post } from "@/types/post";
 
 import { BoardPageParams, BoardSearchParams } from "./index";
 
@@ -29,10 +30,21 @@ const BoardPostSection = async ({ params, searchParams }: BoardPostSectionProps)
     searchKeyword,
   });
 
+  const getPostLink = (post: Post) => {
+    const paramsObj = new URLSearchParams();
+    if (resolvedSearchParams.page) paramsObj.set("page", resolvedSearchParams.page);
+    if (resolvedSearchParams.filter) paramsObj.set("filter", resolvedSearchParams.filter);
+    if (resolvedSearchParams.searchType) paramsObj.set("searchType", resolvedSearchParams.searchType);
+    if (resolvedSearchParams.searchKeyword) paramsObj.set("searchKeyword", resolvedSearchParams.searchKeyword);
+
+    const queryStr = paramsObj.toString();
+    return `/board/${post.board_abbr}/${post.id}${queryStr ? `?${queryStr}` : ""}`;
+  };
+
   return (
     <div className="space-y-6">
       {/* 포스트 목록 프레젠터 */}
-      <PostListUi posts={posts} showBoardName={false} />
+      <PostListUi posts={posts} showBoardName={false} getPostLink={getPostLink} />
 
       {/* 하단 페이지네이션 및 점프 컨트롤러 */}
       <BoardNavArea
