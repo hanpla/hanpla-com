@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { logout } from "@/lib/actions/logout";
-import type { SessionUser } from "@/lib/utils/auth";
+import type { SessionUser } from "@/types/auth";
 import { useLoginUrl } from "@/hooks/use-login-url";
 import { useMount } from "@/hooks/use-mount";
 import { useSession } from "@/components/providers/session-provider";

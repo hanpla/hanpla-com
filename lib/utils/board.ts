@@ -1,4 +1,4 @@
-import type { Board } from "@/lib/queries/board";
+import type { Board } from "@/types/board";
 
 export interface GroupedBoards {
   groupedBoards: Record<string, Board[]>;

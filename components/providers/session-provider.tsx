@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, ReactNode } from "react";
-import type { SessionUser } from "@/lib/utils/auth";
+import type { SessionUser } from "@/types/auth";
 
 interface SessionContextType {
   user: SessionUser | null;

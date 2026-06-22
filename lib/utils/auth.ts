@@ -3,12 +3,7 @@ import { cookies } from "next/headers";
 import * as jose from "jose";
 
 import { createClient } from "@/lib/supabase/client";
-
-export interface SessionUser {
-  id: string;
-  user_id: string;
-  nickname: string;
-}
+import type { SessionUser } from "@/types/auth";
 
 export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
   try {

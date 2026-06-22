@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { useLoginUrl } from "@/hooks/use-login-url";
 import { logout } from "@/lib/actions/logout";
-import type { SessionUser } from "@/lib/utils/auth";
+import type { SessionUser } from "@/types/auth";
 import { useSession } from "@/components/providers/session-provider";
 import ThemeToggle from "@/components/ui/theme-toggle";
 

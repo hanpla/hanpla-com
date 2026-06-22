@@ -1,17 +1,7 @@
 import { cacheLife, cacheTag } from "next/cache";
 
 import { createClient } from "@/lib/supabase/client";
-
-export interface Board {
-  abbr: string;
-  name: string;
-  category: string;
-  created_at: string;
-}
-
-export interface BoardName {
-  name: string;
-}
+import type { Board, BoardName } from "@/types/board";
 
 export const getBoards = async (): Promise<Board[]> => {
   "use cache";

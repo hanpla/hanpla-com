@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { Board } from "@/lib/queries/board";
+import type { Board } from "@/types/board";
 import ChevronRightIcon from "@/components/icons/chevron-right-icon";
 
 interface BoardCardProps {
