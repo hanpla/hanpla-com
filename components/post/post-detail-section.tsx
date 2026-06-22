@@ -38,11 +38,12 @@ const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProps) => {
   const postId = await postIdPromise;
   const post = await getPostById(postId);
 
-
   if (!post) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">존재하지 않는 게시글입니다.</h2>
+        <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
+          존재하지 않는 게시글입니다.
+        </h2>
       </div>
     );
   }
@@ -56,7 +57,7 @@ const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProps) => {
       const rawJson = typeof post.content === "string" ? JSON.parse(post.content) : post.content;
       contentHtml = generateHTML(rawJson, [StarterKit]);
     } catch (e) {
-      console.error("Failed to parse tiptap content json:", e);
+      console.error(e);
       if (typeof post.content === "string") {
         contentHtml = post.content;
       }
@@ -65,8 +66,6 @@ const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProps) => {
 
   return (
     <div className="space-y-6 py-6">
-
-
       {/* 헤더 메타 영역 */}
       <div className="space-y-4 border-b border-zinc-200 pb-6 dark:border-zinc-800">
         <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
@@ -96,8 +95,12 @@ const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProps) => {
       </div>
 
       {/* Tiptap 글 본문 영역 (Tailwind Typography prose 적용) */}
-      <div className="prose dark:prose-invert max-w-none min-h-[200px] leading-relaxed py-4">
-        {contentHtml ? parse(contentHtml, parserOptions) : <p className="text-zinc-400 dark:text-zinc-500">본문 내용이 없습니다.</p>}
+      <div className="prose dark:prose-invert min-h-50 max-w-none py-4 leading-relaxed">
+        {contentHtml ? (
+          parse(contentHtml, parserOptions)
+        ) : (
+          <p className="text-zinc-400 dark:text-zinc-500">본문 내용이 없습니다.</p>
+        )}
       </div>
     </div>
   );
