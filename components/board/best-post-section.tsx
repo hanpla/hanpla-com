@@ -3,7 +3,7 @@ import PostListUi from "@/components/post/post-list-ui";
 import { getBestPosts } from "@/lib/queries/posts";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 import type { BoardSearchParams } from "./index";
-import type { Post } from "@/types/post";
+import type { PostWithRelations } from "@/types/post";
 
 interface BestPostSectionProps {
   searchParams: BoardSearchParams;
@@ -24,7 +24,7 @@ const BestPostSection = async ({ searchParams }: BestPostSectionProps) => {
     searchKeyword,
   });
 
-  const getPostLink = (post: Post) => {
+  const getPostLink = (post: PostWithRelations) => {
     const paramsObj = new URLSearchParams();
     if (resolvedSearchParams.page) paramsObj.set("page", resolvedSearchParams.page);
     if (resolvedSearchParams.searchType) paramsObj.set("searchType", resolvedSearchParams.searchType);

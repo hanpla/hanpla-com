@@ -2,7 +2,7 @@ import BoardNavArea from "./board-nav-area";
 import PostListUi from "@/components/post/post-list-ui";
 import { getPostsByBoardAbbr } from "@/lib/queries/posts";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
-import type { Post } from "@/types/post";
+import type { PostWithRelations } from "@/types/post";
 
 import { BoardPageParams, BoardSearchParams } from "./index";
 
@@ -30,7 +30,7 @@ const BoardPostSection = async ({ params, searchParams }: BoardPostSectionProps)
     searchKeyword,
   });
 
-  const getPostLink = (post: Post) => {
+  const getPostLink = (post: PostWithRelations) => {
     const paramsObj = new URLSearchParams();
     if (resolvedSearchParams.page) paramsObj.set("page", resolvedSearchParams.page);
     if (resolvedSearchParams.filter) paramsObj.set("filter", resolvedSearchParams.filter);

@@ -3,7 +3,7 @@ import Link from "next/link";
 import ChatBubbleIcon from "@/components/icons/chat-bubble-icon";
 import EyeIcon from "@/components/icons/eye-icon";
 import HeartIcon from "@/components/icons/heart-icon";
-import type { Post } from "@/types/post";
+import type { PostWithRelations } from "@/types/post";
 import PostListHeader, { POST_GRID_COLS_CLASS } from "./post-list-header";
 
 // ==========================================
@@ -38,7 +38,7 @@ const CommentBadge = ({ count, isMobile = false }: { count: number; isMobile?: b
 };
 
 interface PostRowProps {
-  post: Post;
+  post: PostWithRelations;
   href: string;
   showBoardName: boolean;
 }
@@ -126,12 +126,12 @@ const PostRowMobile = ({ post, href, showBoardName }: PostRowProps) => {
 // ==========================================
 
 interface PostListUiProps {
-  posts: Post[];
+  posts: PostWithRelations[];
   showBoardName?: boolean;
-  getPostLink?: (post: Post) => string;
+  getPostLink?: (post: PostWithRelations) => string;
 }
 
-const defaultGetPostLink = (post: Post) => `/board/${post.board_abbr}/${post.id}`;
+const defaultGetPostLink = (post: PostWithRelations) => `/board/${post.board_abbr}/${post.id}`;
 
 const PostListUi = ({
   posts,

@@ -4,13 +4,16 @@ export interface Post {
   id: number;
   board_abbr: string;
   title: string;
-  content?: unknown; // Tiptap JSON document (JSONB), optional on lists
+  content?: unknown; // Tiptap JSON document (JSONB)
   author_id: string;
   views: number;
   likes: number;
   dislikes: number;
   comments_count: number;
   created_at: string; // ISO String format
+}
+
+export interface PostWithRelations extends Post {
   users: {
     nickname: string;
   } | null;
@@ -18,6 +21,7 @@ export interface Post {
   formattedTime?: string;
   formattedRelativeTime?: string;
 }
+
 
 export interface GetBoardPostsOptions {
   boardAbbr: string;

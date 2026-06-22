@@ -3,7 +3,7 @@ import { cacheLife } from "next/cache";
 import { createClient } from "@/lib/supabase/client";
 import { DEFAULT_PAGE_SIZE, BEST_POST_LIKES_THRESHOLD } from "@/lib/constants";
 import { formatRelativeTime, formatTimeOrDate } from "@/lib/utils/time";
-import type { Post, GetBoardPostsOptions, GetBestPostsOptions } from "@/types/post";
+import type { PostWithRelations, GetBoardPostsOptions, GetBestPostsOptions } from "@/types/post";
 
 /**
  * Fetches all posts for a given board abbreviation.
@@ -17,7 +17,7 @@ export const getPostsByBoardAbbr = async ({
   pageSize = DEFAULT_PAGE_SIZE,
   searchType,
   searchKeyword,
-}: GetBoardPostsOptions): Promise<{ posts: Post[]; totalCount: number }> => {
+}: GetBoardPostsOptions): Promise<{ posts: PostWithRelations[]; totalCount: number }> => {
   "use cache";
   cacheLife("boardList");
 
@@ -61,7 +61,7 @@ export const getPostsByBoardAbbr = async ({
       return { posts: [], totalCount: 0 };
     }
 
-    const posts = ((data as unknown as Post[]) || []).map((post) => ({
+    const posts = ((data as unknown as PostWithRelations[]) || []).map((post) => ({
       ...post,
       formattedTime: formatTimeOrDate(post.created_at),
       formattedRelativeTime: formatRelativeTime(post.created_at),
@@ -87,7 +87,7 @@ export const getBestPosts = async ({
   pageSize = DEFAULT_PAGE_SIZE,
   searchType,
   searchKeyword,
-}: GetBestPostsOptions = {}): Promise<{ posts: Post[]; totalCount: number }> => {
+}: GetBestPostsOptions = {}): Promise<{ posts: PostWithRelations[]; totalCount: number }> => {
   "use cache";
   cacheLife("hours");
 
@@ -127,7 +127,7 @@ export const getBestPosts = async ({
       return { posts: [], totalCount: 0 };
     }
 
-    const posts = ((data as unknown as Post[]) || []).map((post) => ({
+    const posts = ((data as unknown as PostWithRelations[]) || []).map((post) => ({
       ...post,
       formattedTime: formatTimeOrDate(post.created_at),
       formattedRelativeTime: formatRelativeTime(post.created_at),
@@ -146,7 +146,7 @@ export const getBestPosts = async ({
 /**
  * Fetches a single post by its ID, including all fields (such as 'content') and joined 'boards' details.
  */
-export const getPostById = async (id: number): Promise<Post | null> => {
+export const getPostById = async (id: number): Promise<PostWithRelations | null> => {
   try {
     const supabase = createClient();
     const { data, error } = await supabase
@@ -160,7 +160,7 @@ export const getPostById = async (id: number): Promise<Post | null> => {
       return null;
     }
 
-    return (data as unknown as Post) || null;
+    return (data as unknown as PostWithRelations) || null;
   } catch (error) {
     console.error(`Error in getPostById for id ${id}:`, error);
     return null;
