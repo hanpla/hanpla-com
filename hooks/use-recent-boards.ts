@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+
 import { useLocalStorage } from "./use-local-storage";
 import { useMount } from "./use-mount";
 
@@ -53,4 +54,4 @@ export const useRecentBoards = () => {
     handleDeleteBoard,
     toggleDeleteMode,
   };
-}
+};

@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+
 import Header from "@/components/board/header";
 import HeaderFallback from "@/components/board/header-fallback";
 import BoardPostSection from "@/components/board/board-post-section";

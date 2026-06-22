@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+
 import BoardHeaderUI from "@/components/board/header-ui";
 import BestPostSection from "@/components/board/best-post-section";
 import BoardPostSectionSkeleton from "@/components/board/board-post-section-skeleton";

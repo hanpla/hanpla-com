@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, ReactNode } from "react";
+
 import type { SessionUser } from "@/types/auth";
 
 interface SessionContextType {
@@ -15,11 +16,7 @@ interface SessionProviderProps {
 }
 
 export const SessionProvider = ({ children, user }: SessionProviderProps) => {
-  return (
-    <SessionContext.Provider value={{ user }}>
-      {children}
-    </SessionContext.Provider>
-  );
+  return <SessionContext.Provider value={{ user }}>{children}</SessionContext.Provider>;
 };
 
 export const useSession = () => {

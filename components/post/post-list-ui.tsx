@@ -1,9 +1,9 @@
 import Link from "next/link";
 
+import type { PostWithRelations } from "@/types/post";
 import ChatBubbleIcon from "@/components/icons/chat-bubble-icon";
 import EyeIcon from "@/components/icons/eye-icon";
 import HeartIcon from "@/components/icons/heart-icon";
-import type { PostWithRelations } from "@/types/post";
 import PostListHeader, { POST_GRID_COLS_CLASS } from "./post-list-header";
 
 // ==========================================

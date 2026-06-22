@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { KeyboardEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface BoardPageJumpProps {
   boardAbbr?: string;

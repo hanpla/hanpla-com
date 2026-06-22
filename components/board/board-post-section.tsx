@@ -1,10 +1,9 @@
-import BoardNavArea from "./board-nav-area";
-import PostListUi from "@/components/post/post-list-ui";
 import { getPostsByBoardAbbr } from "@/lib/queries/posts";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 import type { PostWithRelations } from "@/types/post";
-
-import { BoardPageParams, BoardSearchParams } from "./index";
+import type { BoardPageParams, BoardSearchParams } from "./index";
+import PostListUi from "@/components/post/post-list-ui";
+import BoardNavArea from "./board-nav-area";
 
 interface BoardPostSectionProps {
   params: BoardPageParams;
@@ -34,8 +33,10 @@ const BoardPostSection = async ({ params, searchParams }: BoardPostSectionProps)
     const paramsObj = new URLSearchParams();
     if (resolvedSearchParams.page) paramsObj.set("page", resolvedSearchParams.page);
     if (resolvedSearchParams.filter) paramsObj.set("filter", resolvedSearchParams.filter);
-    if (resolvedSearchParams.searchType) paramsObj.set("searchType", resolvedSearchParams.searchType);
-    if (resolvedSearchParams.searchKeyword) paramsObj.set("searchKeyword", resolvedSearchParams.searchKeyword);
+    if (resolvedSearchParams.searchType)
+      paramsObj.set("searchType", resolvedSearchParams.searchType);
+    if (resolvedSearchParams.searchKeyword)
+      paramsObj.set("searchKeyword", resolvedSearchParams.searchKeyword);
 
     const queryStr = paramsObj.toString();
     return `/board/${post.board_abbr}/${post.id}${queryStr ? `?${queryStr}` : ""}`;

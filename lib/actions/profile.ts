@@ -1,7 +1,8 @@
 "use server";
 
-import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
+import bcrypt from "bcryptjs";
+
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getSessionUser } from "@/lib/utils/auth";
 import { updateNicknameSchema, updatePasswordSchema } from "@/lib/validations/auth";
@@ -22,7 +23,7 @@ export const updateNicknameAction = async (
   formData: FormData
 ): Promise<ProfileActionState> => {
   const nickname = (formData.get("nickname") as string) || "";
-  
+
   const parsed = updateNicknameSchema.safeParse({ nickname });
   if (!parsed.success) {
     return {
@@ -88,7 +89,7 @@ export const updateNicknameAction = async (
 
     // Revalidate paths to update layout headers immediately
     revalidatePath("/", "layout");
-    
+
     return { success: true };
   } catch (error) {
     console.error("Update nickname error:", error);
