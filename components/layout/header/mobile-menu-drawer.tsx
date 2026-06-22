@@ -4,10 +4,10 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { logout } from "@/lib/actions/logout";
-import type { SessionUser } from "@/types/auth";
 import { useLoginUrl } from "@/hooks/use-login-url";
 import { useMount } from "@/hooks/use-mount";
+import { logout } from "@/lib/actions/logout";
+import type { SessionUser } from "@/types/auth";
 import { useSession } from "@/components/providers/session-provider";
 import CloseIcon from "@/components/icons/close-icon";
 import Logo from "@/components/ui/logo";
