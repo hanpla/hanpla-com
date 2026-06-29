@@ -42,4 +42,5 @@ next-env.d.ts
 
 # agents config
 .agents/
+AGENTS.md
 
