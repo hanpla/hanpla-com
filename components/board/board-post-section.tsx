@@ -4,6 +4,7 @@ import type { PostWithRelations } from "@/types/post";
 import type { BoardPageParams, BoardSearchParams } from "./index";
 import PostListUi from "@/components/post/post-list-ui";
 import BoardNavArea from "./board-nav-area";
+import BoardFilterBar from "./board-filter-bar";
 
 interface BoardPostSectionProps {
   params: BoardPageParams;
@@ -44,8 +45,24 @@ const BoardPostSection = async ({ params, searchParams }: BoardPostSectionProps)
 
   return (
     <div className="space-y-6">
+      {/* 상단 필터 및 글쓰기 바 */}
+      <BoardFilterBar
+        boardAbbr={abbr}
+        activeFilter={filter}
+        searchType={searchType}
+        searchKeyword={searchKeyword}
+      />
+
       {/* 포스트 목록 프레젠터 */}
       <PostListUi posts={posts} showBoardName={false} getPostLink={getPostLink} />
+
+      {/* 하단 필터 및 글쓰기 바 */}
+      <BoardFilterBar
+        boardAbbr={abbr}
+        activeFilter={filter}
+        searchType={searchType}
+        searchKeyword={searchKeyword}
+      />
 
       {/* 하단 페이지네이션 및 점프 컨트롤러 */}
       <BoardNavArea

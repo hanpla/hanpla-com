@@ -147,6 +147,9 @@ export const getBestPosts = async ({
  * Fetches a single post by its ID, including all fields (such as 'content') and joined 'boards' details.
  */
 export const getPostById = async (id: number): Promise<PostWithRelations | null> => {
+  "use cache";
+  cacheLife("minutes");
+
   try {
     const supabase = createClient();
     const { data, error } = await supabase

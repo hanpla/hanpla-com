@@ -6,6 +6,8 @@ import BoardPostSection from "@/components/board/board-post-section";
 import BoardPostSectionSkeleton from "@/components/board/board-post-section-skeleton";
 import PostDetailSection from "@/components/post/post-detail-section";
 import PostDetailSkeleton from "@/components/post/post-detail-skeleton";
+import BoardSearchBar from "@/components/board/board-search-bar";
+import BoardSearchBarSkeleton from "@/components/board/board-search-bar-skeleton";
 import type { BoardSearchParams } from "@/components/board";
 
 export type PostDetailPageParams = Promise<{
@@ -47,6 +49,13 @@ const PostIdPage = ({
       <Suspense fallback={<BoardPostSectionSkeleton />}>
         <BoardPostSection params={abbrPromise} searchParams={searchParams} />
       </Suspense>
+
+      {/* 5. 검색 바 */}
+      <div className="flex justify-center pt-2">
+        <Suspense fallback={<BoardSearchBarSkeleton />}>
+          <BoardSearchBar />
+        </Suspense>
+      </div>
     </div>
   );
 };
