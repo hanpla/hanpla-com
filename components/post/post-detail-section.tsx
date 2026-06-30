@@ -95,7 +95,7 @@ const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProps) => {
       </div>
 
       {/* Tiptap 글 본문 영역 (Tailwind Typography prose 적용) */}
-      <div className="prose dark:prose-invert min-h-50 max-w-none py-4 leading-relaxed">
+      <div className="prose dark:prose-invert prose-p:my-1.5 prose-headings:mt-4 prose-headings:mb-2 min-h-50 max-w-none py-4 leading-relaxed">
         {contentHtml ? (
           parse(contentHtml, parserOptions)
         ) : (
