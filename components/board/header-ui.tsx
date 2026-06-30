@@ -10,7 +10,7 @@ const BoardHeaderUI = ({ name, abbr, desc }: BoardHeaderUIProps) => {
   const href = abbr === "best" ? "/" : `/board/${abbr}`;
 
   return (
-    <div className="border-b border-zinc-200 pb-5 dark:border-zinc-800/80">
+    <div>
       <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-50">
         <Link href={href}>{name}</Link>
       </h1>
