@@ -2,8 +2,9 @@
 
 import { updateTag } from "next/cache";
 
+import { cookies } from "next/headers";
 import { getSessionUser } from "@/lib/utils/auth";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 
 export interface FormActionState {
   success: boolean;
@@ -66,7 +67,8 @@ export const createPostAction = async (
     }
 
     // 3. Supabase DB 인서트
-    const supabase = createClient();
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
     const { data, error } = await supabase
       .from("posts")
       .insert({
