@@ -1,4 +1,4 @@
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 import { createClient } from "@/lib/supabase/client";
 import { DEFAULT_PAGE_SIZE, BEST_POST_LIKES_THRESHOLD } from "@/lib/constants";
@@ -20,6 +20,7 @@ export const getPostsByBoardAbbr = async ({
 }: GetBoardPostsOptions): Promise<{ posts: PostWithRelations[]; totalCount: number }> => {
   "use cache";
   cacheLife("boardList");
+  cacheTag(`posts-${boardAbbr}`);
 
   try {
     const supabase = createClient();

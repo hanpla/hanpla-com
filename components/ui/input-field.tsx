@@ -8,7 +8,7 @@ interface InputFieldProps extends ComponentPropsWithoutRef<typeof Input> {
 
 const InputField = ({ label, id, ...props }: InputFieldProps) => (
   <div className="flex w-full flex-col gap-1.5">
-    <label htmlFor={id} className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+    <label htmlFor={id} className="w-fit text-xs font-semibold text-zinc-500 dark:text-zinc-400">
       {label}
     </label>
     <Input id={id} {...props} />
