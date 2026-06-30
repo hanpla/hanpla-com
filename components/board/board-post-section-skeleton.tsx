@@ -56,11 +56,27 @@ const PostRowMobileSkeleton = () => (
   </div>
 );
 
-const BoardPostSectionSkeleton = () => {
+const FilterBarSkeleton = () => (
+  <div className="flex items-center justify-between py-2">
+    {/* 필터 탭 스켈레톤 */}
+    <div className="inline-flex h-7 w-24 rounded-lg bg-zinc-150/80 dark:bg-zinc-800/60" />
+    {/* 글쓰기 버튼 스켈레톤 */}
+    <div className="h-7 w-16 rounded-lg bg-zinc-200 dark:bg-zinc-800/80" />
+  </div>
+);
+
+interface BoardPostSectionSkeletonProps {
+  showFilter?: boolean;
+}
+
+const BoardPostSectionSkeleton = ({ showFilter = true }: BoardPostSectionSkeletonProps) => {
   const rows = Array.from({ length: 10 });
 
   return (
-    <div className="animate-pulse space-y-4">
+    <div className="animate-pulse space-y-6">
+      {/* 상단 필터바 스켈레톤 */}
+      {showFilter && <FilterBarSkeleton />}
+
       {/* PC View (md 이상) */}
       <div className="hidden md:block">
         {/* Table Header */}
@@ -80,6 +96,9 @@ const BoardPostSectionSkeleton = () => {
           <PostRowMobileSkeleton key={index} />
         ))}
       </div>
+
+      {/* 하단 필터바 스켈레톤 */}
+      {showFilter && <FilterBarSkeleton />}
     </div>
   );
 };

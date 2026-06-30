@@ -23,7 +23,7 @@ const Home = ({ searchParams }: HomeProps) => {
       <BoardHeaderUI name="인기 게시판" abbr="best" />
 
       {/* 인기글 목록 & 페이징 영역 (지연 스트리밍 타겟) */}
-      <Suspense fallback={<BoardPostSectionSkeleton />}>
+      <Suspense fallback={<BoardPostSectionSkeleton showFilter={false} />}>
         <BestPostSection searchParams={searchParams} />
       </Suspense>
 

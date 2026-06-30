@@ -1,8 +1,16 @@
 import { Suspense } from "react";
 
+import { getBoards } from "@/lib/queries/board";
 import Header from "@/components/board/header";
 import PostWriteForm from "@/components/post/post-write-form";
 import PostWriteFormSkeleton from "@/components/post/post-write-form-skeleton";
+
+export const generateStaticParams = async () => {
+  const boards = await getBoards();
+  return boards.map((board) => ({
+    abbr: board.abbr,
+  }));
+};
 
 interface WritePageProps {
   params: Promise<{

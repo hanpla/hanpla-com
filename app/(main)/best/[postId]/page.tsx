@@ -41,7 +41,7 @@ const BestPostDetailPage = ({
       <hr className="border-zinc-200 dark:border-zinc-800" />
 
       {/* 4. 인기글 목록 & 페이징 영역 */}
-      <Suspense fallback={<BoardPostSectionSkeleton />}>
+      <Suspense fallback={<BoardPostSectionSkeleton showFilter={false} />}>
         <BestPostSection searchParams={searchParams} />
       </Suspense>
 

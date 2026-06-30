@@ -22,7 +22,7 @@ interface TiptapNode {
  * React 19의 useActionState 폼 액션 사양(prevState, formData)을 준수합니다.
  */
 export const createPostAction = async (
-  prevState: FormActionState,
+  _prevState: FormActionState,
   formData: FormData
 ): Promise<FormActionState> => {
   try {
