@@ -26,7 +26,7 @@ interface BoardProps {
 // 메인 게시판 레이아웃 셸 (PPR 정적 셸 적용)
 const Board = ({ params, searchParams }: BoardProps) => {
   return (
-    <div className="space-y-6 py-6">
+    <>
       {/* 1. 헤더 (1일 캐싱 및 사전 빌드 SSG) */}
       <Suspense fallback={<HeaderFallback />}>
         <Header params={params} />
@@ -43,7 +43,7 @@ const Board = ({ params, searchParams }: BoardProps) => {
           <BoardSearchBar />
         </Suspense>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -23,9 +23,9 @@ const BestPostDetailPage = ({
   const postIdPromise = params.then((p) => parseInt(p.postId, 10));
 
   return (
-    <div className="space-y-6 py-6">
+    <>
       {/* 1. 인기 게시판 헤더 고정 */}
-      <BoardHeaderUI name="인기 게시판" abbr="best" desc="인기 게시글들을 모아보는 공간입니다." />
+      <BoardHeaderUI name="인기 게시판" abbr="best" />
 
       {/* 2. 게시글 상세 본문 */}
       <Suspense fallback={<PostDetailSkeleton />}>
@@ -51,7 +51,7 @@ const BestPostDetailPage = ({
           <BoardSearchBar basePath="/" />
         </Suspense>
       </div>
-    </div>
+    </>
   );
 };
 

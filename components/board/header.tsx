@@ -26,11 +26,7 @@ const Header = async ({ params }: HeaderProps) => {
     <>
       <RecordVisit board={board} />
 
-      <BoardHeaderUI
-        name={res.name}
-        abbr={abbr}
-        desc={`${res.name} 주제에 관해 자유롭게 소통하는 공간입니다.`}
-      />
+      <BoardHeaderUI name={res.name} abbr={abbr} />
     </>
   );
 };

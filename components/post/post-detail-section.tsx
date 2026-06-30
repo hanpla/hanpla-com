@@ -65,9 +65,9 @@ const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProps) => {
   }
 
   return (
-    <div className="space-y-4 py-3">
+    <div className="py-3">
       {/* 헤더 메타 영역 */}
-      <div className="space-y-2 border-b border-zinc-200 pb-3 dark:border-zinc-800">
+      <div className="space-y-2 border-y border-zinc-200 py-3 dark:border-zinc-800">
         <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
           {post.title}
         </h1>

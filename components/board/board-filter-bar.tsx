@@ -93,7 +93,7 @@ const BoardFilterBar = ({
   }
 
   return (
-    <div className="flex items-center justify-between border-b border-zinc-100 pb-4 dark:border-zinc-800/60">
+    <div className="flex items-center justify-between py-2">
       <FilterTabs
         boardAbbr={boardAbbr}
         activeFilter={activeFilter}

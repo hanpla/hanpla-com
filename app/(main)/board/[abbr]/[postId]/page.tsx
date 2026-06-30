@@ -26,7 +26,7 @@ const PostIdPage = ({
   const abbrPromise = params.then((p) => ({ abbr: p.abbr }));
 
   return (
-    <div className="space-y-6 py-6">
+    <>
       {/* 1. 게시판 헤더 */}
       <Suspense fallback={<HeaderFallback />}>
         <Header params={abbrPromise} />
@@ -56,7 +56,7 @@ const PostIdPage = ({
           <BoardSearchBar />
         </Suspense>
       </div>
-    </div>
+    </>
   );
 };
 

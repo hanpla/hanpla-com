@@ -1,8 +1,6 @@
 const PostDetailSkeleton = () => {
   return (
-    <div className="space-y-6 py-6 animate-pulse">
-
-
+    <div className="animate-pulse">
       {/* 헤더 메타 영역 스켈레톤 */}
       <div className="space-y-4 border-b border-zinc-200 pb-6 dark:border-zinc-800">
         <div className="h-8 w-3/4 rounded bg-zinc-200 dark:bg-zinc-800" />

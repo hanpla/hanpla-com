@@ -19,9 +19,9 @@ interface HomeProps {
 
 const Home = ({ searchParams }: HomeProps) => {
   return (
-    <div className="space-y-6 py-6">
-      <BoardHeaderUI name="인기 게시판" abbr="best" desc="인기 게시글들을 모아보는 공간입니다." />
-      
+    <>
+      <BoardHeaderUI name="인기 게시판" abbr="best" />
+
       {/* 인기글 목록 & 페이징 영역 (지연 스트리밍 타겟) */}
       <Suspense fallback={<BoardPostSectionSkeleton />}>
         <BestPostSection searchParams={searchParams} />
@@ -33,7 +33,7 @@ const Home = ({ searchParams }: HomeProps) => {
           <BoardSearchBar basePath="/" />
         </Suspense>
       </div>
-    </div>
+    </>
   );
 };
 
