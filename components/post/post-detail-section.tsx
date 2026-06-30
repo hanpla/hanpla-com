@@ -65,9 +65,9 @@ const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProps) => {
   }
 
   return (
-    <div className="space-y-6 py-6">
+    <div className="space-y-4 py-3">
       {/* 헤더 메타 영역 */}
-      <div className="space-y-4 border-b border-zinc-200 pb-6 dark:border-zinc-800">
+      <div className="space-y-2 border-b border-zinc-200 pb-3 dark:border-zinc-800">
         <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
           {post.title}
         </h1>
@@ -95,7 +95,7 @@ const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProps) => {
       </div>
 
       {/* Tiptap 글 본문 영역 (Tailwind Typography prose 적용) */}
-      <div className="prose dark:prose-invert prose-p:my-1.5 prose-headings:mt-4 prose-headings:mb-2 min-h-50 max-w-none py-4 leading-relaxed">
+      <div className="prose dark:prose-invert prose-p:my-1 prose-headings:mt-3 prose-headings:mb-1.5 min-h-50 max-w-none pt-2 pb-6 leading-relaxed">
         {contentHtml ? (
           parse(contentHtml, parserOptions)
         ) : (
