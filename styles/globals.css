@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
@@ -29,21 +28,3 @@ body {
 .wrapper {
   @apply mx-auto w-full max-w-7xl px-4;
 }
-
-/* Tiptap Code Block Styles (Light/Dark 모드 공통 고정) */
-.prose pre,
-.prose-invert pre {
-  background-color: #f4f4f5 !important;
-  color: #18181b !important;
-  padding: 1rem !important;
-  border-radius: 0.5rem !important;
-}
-
-.prose pre code,
-.prose-invert pre code {
-  color: #18181b !important;
-  background-color: transparent !important;
-  padding: 0 !important;
-}
-
-

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import "@/styles/globals.css";
+import "@/styles/tiptap.css";
 import ThemeProvider from "@/components/providers/theme-provider";
 
 const pretendard = localFont({
