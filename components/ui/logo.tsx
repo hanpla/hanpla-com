@@ -5,7 +5,7 @@ interface LogoProps {
 }
 
 const Logo = ({ className = "" }: LogoProps) => (
-  <Link href="/" className={`text-foreground text-xl font-bold tracking-tight ${className}`}>
+  <Link href="/" className={`text-xl font-bold tracking-tight ${className}`}>
     Hanpla
   </Link>
 );
