@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 import Header from "@/components/layout/header";
+import RecentBoard from "@/components/layout/recent-board";
 
 const MainLayout = ({
   children,
@@ -10,6 +11,7 @@ const MainLayout = ({
   return (
     <>
       <Header />
+      <RecentBoard />
       <main className="wrapper pt-2">{children}</main>
     </>
   );

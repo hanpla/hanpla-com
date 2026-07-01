@@ -28,3 +28,11 @@ body {
 .wrapper {
   @apply mx-auto w-full max-w-7xl px-4;
 }
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
