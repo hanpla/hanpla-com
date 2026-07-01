@@ -94,6 +94,8 @@ export const login = async (
     const secret = new TextEncoder().encode(jwtSecret);
     const token = await new jose.SignJWT({
       id: user.id,
+      user_id: user.user_id,
+      nickname: user.nickname,
     })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
