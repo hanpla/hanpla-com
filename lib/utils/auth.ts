@@ -2,7 +2,6 @@ import { cache } from "react";
 import { cookies } from "next/headers";
 import * as jose from "jose";
 
-import { createClient } from "@/lib/supabase/client";
 import { SessionUser } from "@/types/auth";
 
 export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
@@ -22,35 +21,19 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
 
     const secret = new TextEncoder().encode(jwtSecret);
     const { payload } = await jose.jwtVerify(token, secret);
+
     const id = payload.id as string;
+    const user_id = payload.user_id as string;
+    const nickname = payload.nickname as string;
 
-    if (!id) {
-      return null;
-    }
-
-    const supabase = createClient();
-    const { data: user, error } = await supabase
-      .from("users")
-      .select("id, user_id, nickname")
-      .eq("id", id)
-      .maybeSingle();
-
-    if (error || !user) {
-      const isAbortError =
-        error?.message?.includes("AbortError") ||
-        error?.message?.includes("aborted") ||
-        (error instanceof Error && error.name === "AbortError");
-
-      if (error && !isAbortError) {
-        console.error("Error fetching session user profile:", error);
-      }
+    if (!id || !user_id || !nickname) {
       return null;
     }
 
     return {
-      id: user.id,
-      user_id: user.user_id,
-      nickname: user.nickname,
+      id,
+      user_id,
+      nickname,
     };
   } catch {
     // JWT verification failed or expired
