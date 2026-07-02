@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Link from "next/link";
 
 import PulbicNav from "./public-nav";
@@ -14,10 +13,8 @@ const Nav = () => {
         <Link href="/boards" className={LINK_STYLE}>
           전체 게시판
         </Link>
-        <Suspense>
-          <PulbicNav />
-          <PrivateNav />
-        </Suspense>
+        <PulbicNav />
+        <PrivateNav />
       </ul>
     </nav>
   );
