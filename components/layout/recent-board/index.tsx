@@ -13,7 +13,7 @@ const RecentBoard = () => {
   }
 
   return (
-    <div className="border-b border-zinc-200 dark:border-zinc-600">
+    <div className="flex h-11.5 items-center border-b border-zinc-200 dark:border-zinc-600">
       <div className="wrapper flex items-center justify-between gap-3 overflow-hidden py-2">
         <div className="flex flex-1 items-center gap-3 overflow-hidden">
           <span className="shrink-0 text-xs font-bold tracking-wider text-zinc-400 dark:text-zinc-500">
