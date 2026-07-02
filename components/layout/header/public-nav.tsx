@@ -1,20 +1,10 @@
 import Link from "next/link";
 
 import { getSessionUser } from "@/lib/utils/auth";
+import CallbackLink from "./callback-link";
 
 const LINK_STYLE =
   "hover:text-foreground dark:hover:text-foreground text-foreground/80 text-sm font-medium transition-colors";
-
-const PUBLIC_LINKS = [
-  {
-    href: "/login",
-    label: "로그인",
-  },
-  {
-    href: "/signup",
-    label: "회원가입",
-  },
-];
 
 const PulbicLinks = async () => {
   const user = await getSessionUser();
@@ -24,11 +14,12 @@ const PulbicLinks = async () => {
 
   return (
     <>
-      {PUBLIC_LINKS.map((link) => (
-        <li key={link.href} className={LINK_STYLE}>
-          <Link href={link.href}>{link.label}</Link>
-        </li>
-      ))}
+      <li className={LINK_STYLE}>
+        <CallbackLink href="/login">로그인</CallbackLink>
+      </li>
+      <li className={LINK_STYLE}>
+        <Link href="/signup">회원가입</Link>
+      </li>
     </>
   );
 };
