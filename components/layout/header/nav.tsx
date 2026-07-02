@@ -14,7 +14,7 @@ const Nav = () => {
         <Link href="/boards" className={LINK_STYLE}>
           전체 게시판
         </Link>
-        <Suspense fallback={null}>
+        <Suspense>
           <PulbicNav />
           <PrivateNav />
         </Suspense>
