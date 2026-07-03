@@ -14,7 +14,7 @@ const MainLayout = ({
     <>
       <Header />
       <RecentBoard />
-      <main className="wrapper pt-2">{children}</main>
+      <main className="wrapper mt-4">{children}</main>
     </>
   );
 };
