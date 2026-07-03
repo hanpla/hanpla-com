@@ -8,10 +8,6 @@ const RecentBoard = () => {
   const { recentBoards, isMounted, isDeleteMode, handleDeleteBoard, toggleDeleteMode } =
     useRecentBoards();
 
-  if (isMounted && recentBoards.length === 0) {
-    return null;
-  }
-
   return (
     <div className="flex h-11.5 items-center border-b border-zinc-200 dark:border-zinc-600">
       <div className="wrapper flex items-center justify-between gap-3 overflow-hidden py-2">
