@@ -1,17 +1,16 @@
 import Link from "next/link";
 
-import { getSessionUser } from "@/lib/utils/auth";
+import type { SessionUser } from "@/types/auth";
 import LogoutButton from "./logout-button";
+
+interface PrivateNavProps {
+  user: SessionUser;
+}
 
 const LINK_STYLE =
   "hover:text-foreground dark:hover:text-foreground text-foreground/80 text-sm font-medium transition-colors";
 
-const PrivateNav = async () => {
-  const user = await getSessionUser();
-  if (!user) {
-    return null;
-  }
-
+const PrivateNav = ({ user }: PrivateNavProps) => {
   return (
     <>
       <Link href="/profile" className={LINK_STYLE}>

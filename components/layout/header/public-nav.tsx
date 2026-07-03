@@ -1,17 +1,11 @@
 import Link from "next/link";
 
-import { getSessionUser } from "@/lib/utils/auth";
 import CallbackLink from "./callback-link";
 
 const LINK_STYLE =
   "hover:text-foreground dark:hover:text-foreground text-foreground/80 text-sm font-medium transition-colors";
 
-const PulbicLinks = async () => {
-  const user = await getSessionUser();
-  if (user) {
-    return null;
-  }
-
+const PulbicLinks = () => {
   return (
     <>
       <li className={LINK_STYLE}>
