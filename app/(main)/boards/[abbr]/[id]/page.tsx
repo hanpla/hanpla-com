@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { getBoardByAbbr } from "@/lib/queries/boards";
 import PageTitle from "@/components/ui/page-title";
+import PostDetailSection from "@/components/post/post-detail-section";
 
 interface PostDetailPageProps {
   params: Promise<{
@@ -11,7 +12,8 @@ interface PostDetailPageProps {
 }
 
 const PostDetailPage = async ({ params }: PostDetailPageProps) => {
-  const { abbr, id } = await params;
+  const resolvedParams = await params;
+  const { abbr, id } = resolvedParams;
 
   // 게시판 정보 조회
   const board = await getBoardByAbbr(abbr);
@@ -20,14 +22,15 @@ const PostDetailPage = async ({ params }: PostDetailPageProps) => {
     notFound();
   }
 
+  // postIdPromise를 구성하여 하위 Server Component에 전달합니다.
+  const postIdPromise = Promise.resolve(Number(id));
+
   return (
     <>
       <PageTitle title={board.name} href={`/boards/${board.abbr}`} />
       
-      <div className="mt-6 text-sm text-zinc-500 dark:text-zinc-400">
-        <p>
-          [{board.name}] 게시판의 {id}번 게시글 상세 페이지가 여기에 표시될 예정입니다.
-        </p>
+      <div className="mt-4">
+        <PostDetailSection postIdPromise={postIdPromise} />
       </div>
     </>
   );

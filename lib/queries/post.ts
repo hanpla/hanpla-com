@@ -211,3 +211,36 @@ export const getPostsByBoardAbbr = (options: GetBoardPostsOptions) => {
     }
   )();
 };
+
+export const getPostById = async (id: number): Promise<PostWithRelations | null> => {
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("posts")
+      .select(`
+        id,
+        board_abbr,
+        title,
+        content,
+        author_id,
+        views,
+        likes,
+        dislikes,
+        comments_count,
+        created_at,
+        author:users(nickname)
+      `)
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      console.error(`게시글(${id}) 조회 실패:`, error);
+      return null;
+    }
+
+    return data as unknown as PostWithRelations;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
