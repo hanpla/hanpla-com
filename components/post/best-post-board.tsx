@@ -27,23 +27,18 @@ export const BestPostBoard = async ({ searchParams, baseUrl }: BestPostBoardProp
 
   return (
     <div className="space-y-6">
-      {/* 1. 검색 폼 */}
-      <SearchForm
-        baseUrl={baseUrl}
-        defaultType={searchType}
-        defaultKeyword={searchKeyword}
-      />
-
-      {/* 2. 게시글 목록 */}
       <PostList posts={posts} showBoardBadge={true} emptyMessage="인기 게시글이 없습니다." />
-
-      {/* 3. 페이지네이션 */}
       <Pagination
-        baseUrl={baseUrl}
-        totalCount={totalCount}
         currentPage={page}
+        totalCount={totalCount}
         pageSize={20}
+        basePath={baseUrl}
+        searchParams={{
+          searchType,
+          searchKeyword,
+        }}
       />
+      <SearchForm baseUrl={baseUrl} defaultType={searchType} defaultKeyword={searchKeyword} />
     </div>
   );
 };
