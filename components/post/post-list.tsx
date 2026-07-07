@@ -30,7 +30,7 @@ export const PostList = ({ posts, showBoardBadge = false, emptyMessage }: PostLi
           {/* 1. Title Row */}
           <div className="flex min-w-0 items-center justify-between gap-4">
             <Link
-              href={`/boards/${post.board_abbr}/posts/${post.id}`}
+              href={`/boards/${post.board_abbr}/${post.id}`}
               className="flex min-w-0 items-center gap-1.5 font-medium text-zinc-900 hover:underline dark:text-zinc-100"
             >
               {showBoardBadge && (
