@@ -1,7 +1,7 @@
 import BestPostBoard from "@/components/post/best-post-board";
 import PageTitle from "@/components/ui/page-title";
 
-interface MainPageProps {
+interface BestPageProps {
   searchParams: Promise<{
     page?: string;
     searchType?: string;
@@ -9,12 +9,12 @@ interface MainPageProps {
   }>;
 }
 
-const MainPage = async ({ searchParams }: MainPageProps) => {
+const BestPage = async ({ searchParams }: BestPageProps) => {
   const resolvedParams = await searchParams;
 
   return (
     <>
-      <PageTitle title="인기 게시글" />
+      <PageTitle title="실시간 베스트" />
       <div className="mt-4">
         <BestPostBoard searchParams={resolvedParams} baseUrl="/best" />
       </div>
@@ -22,4 +22,4 @@ const MainPage = async ({ searchParams }: MainPageProps) => {
   );
 };
 
-export default MainPage;
+export default BestPage;
