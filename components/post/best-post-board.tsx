@@ -32,6 +32,11 @@ export const BestPostBoard = async ({ searchParams, baseUrl }: BestPostBoardProp
         showBoardBadge={true}
         emptyMessage="인기 게시글이 없습니다."
         baseLinkPath="/best"
+        searchParams={{
+          page: String(page),
+          searchType,
+          searchKeyword,
+        }}
       />
       <Pagination
         currentPage={page}

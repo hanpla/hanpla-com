@@ -11,6 +11,12 @@ interface PostListProps {
   showBoardBadge?: boolean;
   emptyMessage?: string;
   baseLinkPath?: string;
+  searchParams?: {
+    page?: string;
+    filter?: string;
+    searchType?: string;
+    searchKeyword?: string;
+  };
 }
 
 export const PostList = ({
@@ -18,6 +24,7 @@ export const PostList = ({
   showBoardBadge = false,
   emptyMessage,
   baseLinkPath,
+  searchParams,
 }: PostListProps) => {
   if (posts.length === 0) {
     return (
@@ -29,6 +36,20 @@ export const PostList = ({
     );
   }
 
+  const getPostLink = (post: PostWithRelations) => {
+    const basePath = baseLinkPath ? `${baseLinkPath}/${post.id}` : `/boards/${post.board_abbr}/${post.id}`;
+    if (!searchParams) return basePath;
+
+    const params = new URLSearchParams();
+    if (searchParams.page) params.set("page", searchParams.page);
+    if (searchParams.filter) params.set("filter", searchParams.filter);
+    if (searchParams.searchType) params.set("searchType", searchParams.searchType);
+    if (searchParams.searchKeyword) params.set("searchKeyword", searchParams.searchKeyword);
+
+    const queryStr = params.toString();
+    return `${basePath}${queryStr ? `?${queryStr}` : ""}`;
+  };
+
   return (
     <div className="divide-y divide-zinc-100 border-y border-zinc-100 dark:divide-zinc-900 dark:border-zinc-900">
       {posts.map((post) => (
@@ -36,7 +57,7 @@ export const PostList = ({
           {/* 1. Title Row */}
           <div className="flex min-w-0 items-center justify-between gap-4">
             <Link
-              href={baseLinkPath ? `${baseLinkPath}/${post.id}` : `/boards/${post.board_abbr}/${post.id}`}
+              href={getPostLink(post)}
               className="flex min-w-0 items-center gap-1.5 font-medium text-zinc-900 hover:underline dark:text-zinc-100"
             >
               {showBoardBadge && (

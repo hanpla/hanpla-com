@@ -77,6 +77,12 @@ const BoardDetailPage = async ({ params, searchParams }: BoardDetailPageProps) =
           posts={posts}
           showBoardBadge={false} // 개별 게시판이므로 게시판 배지는 노출 안 함
           emptyMessage="등록된 게시글이 없습니다."
+          searchParams={{
+            page: String(page),
+            filter: activeFilter,
+            searchType,
+            searchKeyword,
+          }}
         />
       </div>
 
