@@ -14,7 +14,7 @@ const BestPage = async ({ searchParams }: BestPageProps) => {
 
   return (
     <>
-      <PageTitle title="실시간 베스트" />
+      <PageTitle title="인기 게시글" href="/best" />
       <div className="mt-4">
         <BestPostBoard searchParams={resolvedParams} baseUrl="/best" />
       </div>
