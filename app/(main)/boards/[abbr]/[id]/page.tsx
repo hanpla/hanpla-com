@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getBoardByAbbr } from "@/lib/queries/boards";
 import PageTitle from "@/components/ui/page-title";
 import PostDetailSection from "@/components/post/post-detail-section";
+import ViewsCounter from "@/components/post/views-counter";
 
 interface PostDetailPageProps {
   params: Promise<{
@@ -32,6 +33,9 @@ const PostDetailPage = async ({ params }: PostDetailPageProps) => {
       <div className="mt-4">
         <PostDetailSection postIdPromise={postIdPromise} />
       </div>
+
+      {/* 클라이언트 마운트 시 조회수 증가 비동기 처리 */}
+      <ViewsCounter postId={Number(id)} />
     </>
   );
 };
