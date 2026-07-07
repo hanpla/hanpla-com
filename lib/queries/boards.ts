@@ -24,3 +24,28 @@ export const getBoards = unstable_cache(
     tags: ["boards"],  // 향후 revalidateTag("boards") 로 캐시 파괴 가능
   }
 );
+
+export const getBoardByAbbr = (abbr: string) => {
+  return unstable_cache(
+    async (): Promise<Board | null> => {
+      const supabase = createAdminClient();
+      const { data, error } = await supabase
+        .from("boards")
+        .select("abbr, name, category, created_at")
+        .eq("abbr", abbr)
+        .single();
+
+      if (error) {
+        console.error(`게시판(${abbr}) 조회 실패:`, error);
+        return null;
+      }
+
+      return data;
+    },
+    [`board-${abbr}`],
+    {
+      revalidate: 60 * 60 * 24, // 24시간 캐시
+      tags: ["boards", `board-${abbr}`],
+    }
+  )();
+};

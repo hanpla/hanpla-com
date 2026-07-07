@@ -57,7 +57,7 @@ export const SearchForm = ({ baseUrl, defaultType, defaultKeyword }: SearchFormP
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="검색어를 입력해 주세요"
-          className="!py-1.5 !text-xs"
+          className="py-1.5! text-xs!"
         />
       </div>
       <Button type="submit" variant="primary" size="sm">
