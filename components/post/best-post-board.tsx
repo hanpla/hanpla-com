@@ -27,7 +27,12 @@ export const BestPostBoard = async ({ searchParams, baseUrl }: BestPostBoardProp
 
   return (
     <div className="space-y-6">
-      <PostList posts={posts} showBoardBadge={true} emptyMessage="인기 게시글이 없습니다." />
+      <PostList
+        posts={posts}
+        showBoardBadge={true}
+        emptyMessage="인기 게시글이 없습니다."
+        baseLinkPath="/best"
+      />
       <Pagination
         currentPage={page}
         totalCount={totalCount}

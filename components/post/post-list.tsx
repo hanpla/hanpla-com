@@ -10,9 +10,15 @@ interface PostListProps {
   posts: PostWithRelations[];
   showBoardBadge?: boolean;
   emptyMessage?: string;
+  baseLinkPath?: string;
 }
 
-export const PostList = ({ posts, showBoardBadge = false, emptyMessage }: PostListProps) => {
+export const PostList = ({
+  posts,
+  showBoardBadge = false,
+  emptyMessage,
+  baseLinkPath,
+}: PostListProps) => {
   if (posts.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 py-16 text-center dark:border-zinc-800">
@@ -30,7 +36,7 @@ export const PostList = ({ posts, showBoardBadge = false, emptyMessage }: PostLi
           {/* 1. Title Row */}
           <div className="flex min-w-0 items-center justify-between gap-4">
             <Link
-              href={`/boards/${post.board_abbr}/${post.id}`}
+              href={baseLinkPath ? `${baseLinkPath}/${post.id}` : `/boards/${post.board_abbr}/${post.id}`}
               className="flex min-w-0 items-center gap-1.5 font-medium text-zinc-900 hover:underline dark:text-zinc-100"
             >
               {showBoardBadge && (
