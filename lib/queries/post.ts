@@ -110,7 +110,9 @@ export interface GetBoardPostsOptions {
   searchKeyword?: string;
 }
 
-export const getPostsByBoardAbbr = (options: GetBoardPostsOptions) => {
+export const getPostsByBoardAbbr = async (
+  options: GetBoardPostsOptions
+): Promise<{ posts: PostWithRelations[]; totalCount: number }> => {
   const {
     boardAbbr,
     filter = "all",
@@ -120,96 +122,87 @@ export const getPostsByBoardAbbr = (options: GetBoardPostsOptions) => {
     searchKeyword = "",
   } = options;
 
-  return unstable_cache(
-    async (): Promise<{ posts: PostWithRelations[]; totalCount: number }> => {
-      try {
-        const supabase = createAdminClient();
-        const from = (page - 1) * pageSize;
-        const to = from + pageSize - 1;
+  try {
+    const supabase = createAdminClient();
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
 
-        const authorSelect = searchType === "author" ? "author:users!inner(nickname)" : "author:users(nickname)";
+    const authorSelect = searchType === "author" ? "author:users!inner(nickname)" : "author:users(nickname)";
 
-        let query = supabase
-          .from("posts")
-          .select(`
-            id,
-            board_abbr,
-            title,
-            content,
-            author_id,
-            views,
-            likes,
-            dislikes,
-            comments_count,
-            created_at,
-            ${authorSelect}
-          `, { count: "exact" })
-          .eq("board_abbr", boardAbbr);
+    let query = supabase
+      .from("posts")
+      .select(`
+        id,
+        board_abbr,
+        title,
+        content,
+        author_id,
+        views,
+        likes,
+        dislikes,
+        comments_count,
+        created_at,
+        ${authorSelect}
+      `, { count: "exact" })
+      .eq("board_abbr", boardAbbr);
 
-        // 필터 조건 적용 (인기글: 추천 10개 이상)
-        if (filter === "popular") {
-          query = query.gte("likes", 10);
-        }
-
-        // 정렬 조건 적용 (최신순)
-        query = query.order("created_at", { ascending: false });
-
-        // 검색 조건 적용
-        if (searchKeyword && searchType) {
-          if (searchType === "title") {
-            query = query.ilike("title", `%${searchKeyword}%`);
-          } else if (searchType === "content") {
-            query = query.textSearch("content", searchKeyword, { type: "plain" });
-          } else if (searchType === "title_content") {
-            query = query.or(`title.ilike.%${searchKeyword}%,content.plfts.${searchKeyword}`);
-          } else if (searchType === "author") {
-            query = query.ilike("users.nickname", `%${searchKeyword}%`);
-          }
-        }
-
-        // 페이지네이션 적용
-        query = query.range(from, to);
-
-        const { data: posts, error, count } = await query;
-
-        if (error) {
-          console.error(`게시판(${boardAbbr}) 글 목록 조회 실패:`, error);
-          throw error;
-        }
-
-        const queryData = posts as unknown as PostWithRelations[];
-        const boardPosts = (queryData ?? []).map((post) => ({
-          id: post.id,
-          board_abbr: post.board_abbr,
-          title: post.title,
-          content: post.content,
-          author_id: post.author_id,
-          views: post.views,
-          likes: post.likes,
-          dislikes: post.dislikes,
-          comments_count: post.comments_count,
-          created_at: post.created_at,
-          author: post.author,
-        }));
-
-        return {
-          posts: boardPosts,
-          totalCount: count ?? 0,
-        };
-      } catch (error) {
-        console.error(error);
-        return {
-          posts: [],
-          totalCount: 0,
-        };
-      }
-    },
-    [`posts-${boardAbbr}`, filter, String(page), String(pageSize), searchType, searchKeyword],
-    {
-      revalidate: 60 * 60 * 24, // 하루(24시간) 캐시
-      tags: ["posts", `posts-${boardAbbr}`],
+    // 필터 조건 적용 (인기글: 추천 10개 이상)
+    if (filter === "popular") {
+      query = query.gte("likes", 10);
     }
-  )();
+
+    // 정렬 조건 적용 (최신순)
+    query = query.order("created_at", { ascending: false });
+
+    // 검색 조건 적용
+    if (searchKeyword && searchType) {
+      if (searchType === "title") {
+        query = query.ilike("title", `%${searchKeyword}%`);
+      } else if (searchType === "content") {
+        query = query.textSearch("content", searchKeyword, { type: "plain" });
+      } else if (searchType === "title_content") {
+        query = query.or(`title.ilike.%${searchKeyword}%,content.plfts.${searchKeyword}`);
+      } else if (searchType === "author") {
+        query = query.ilike("users.nickname", `%${searchKeyword}%`);
+      }
+    }
+
+    // 페이지네이션 적용
+    query = query.range(from, to);
+
+    const { data: posts, error, count } = await query;
+
+    if (error) {
+      console.error(`게시판(${boardAbbr}) 글 목록 조회 실패:`, error);
+      throw error;
+    }
+
+    const queryData = posts as unknown as PostWithRelations[];
+    const boardPosts = (queryData ?? []).map((post) => ({
+      id: post.id,
+      board_abbr: post.board_abbr,
+      title: post.title,
+      content: post.content,
+      author_id: post.author_id,
+      views: post.views,
+      likes: post.likes,
+      dislikes: post.dislikes,
+      comments_count: post.comments_count,
+      created_at: post.created_at,
+      author: post.author,
+    }));
+
+    return {
+      posts: boardPosts,
+      totalCount: count ?? 0,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      posts: [],
+      totalCount: 0,
+    };
+  }
 };
 
 export const getPostById = async (id: number): Promise<PostWithRelations | null> => {
