@@ -17,7 +17,7 @@ const BoardList = ({ isMounted, recentBoards, isDeleteMode, onDelete }: BoardLis
           <Chip
             key={board.abbr}
             as={isDeleteMode ? "button" : "link"}
-            href={`/board/${board.abbr}`}
+            href={`/boards/${board.abbr}`}
             onClick={isDeleteMode ? () => onDelete(board.abbr) : undefined}
             className={
               isDeleteMode
