@@ -20,6 +20,8 @@ export const getBestPosts = (options: GetBestPostsOptions = {}) => {
         const from = (page - 1) * limit;
         const to = from + limit - 1;
 
+        const authorSelect = searchType === "author" ? "author:users!inner(nickname)" : "author:users(nickname)";
+
         let query = supabase
           .from("posts")
           .select(`
@@ -33,7 +35,7 @@ export const getBestPosts = (options: GetBestPostsOptions = {}) => {
             dislikes,
             comments_count,
             created_at,
-            author:users(nickname)
+            ${authorSelect}
           `, { count: "exact" });
 
         // 정렬 조건 적용 (좋아요 순 -> 조회수 순)

@@ -3,6 +3,8 @@
 import { KeyboardEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { usePagination } from "@/hooks/use-pagination";
+import Button from "@/components/ui/button";
+import Input from "@/components/ui/input";
 
 interface PageJumpProps {
   currentPage: number;
@@ -51,22 +53,21 @@ export const PageJump = ({
   return (
     <div className="flex items-center gap-2 text-sm">
       <span className="font-medium text-zinc-500 dark:text-zinc-400">페이지 이동</span>
-      <input
-        type="number"
-        min="1"
-        max={totalPages}
-        value={pageInput}
-        onChange={(e) => setPageInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={String(currentPage)}
-        className="w-16 rounded-lg border border-zinc-200 px-2.5 py-1.5 text-center text-sm font-medium focus:outline-1 dark:border-zinc-800 dark:focus:outline-zinc-500"
-      />
-      <button
-        onClick={handleJump}
-        className="cursor-pointer rounded-lg bg-zinc-100 px-3 py-1.5 text-sm font-semibold text-zinc-800 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
-      >
+      <div className="w-16">
+        <Input
+          type="number"
+          min="1"
+          max={totalPages}
+          value={pageInput}
+          onChange={(e) => setPageInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={String(currentPage)}
+          className="px-2.5! py-1.5! text-center! text-sm!"
+        />
+      </div>
+      <Button variant="secondary" size="sm" onClick={handleJump}>
         이동
-      </button>
+      </Button>
     </div>
   );
 };

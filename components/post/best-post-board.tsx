@@ -38,7 +38,12 @@ export const BestPostBoard = async ({ searchParams, baseUrl }: BestPostBoardProp
           searchKeyword,
         }}
       />
-      <SearchForm baseUrl={baseUrl} defaultType={searchType} defaultKeyword={searchKeyword} />
+      <SearchForm
+        key={`${searchType || ""}_${searchKeyword || ""}`}
+        baseUrl={baseUrl}
+        defaultType={searchType}
+        defaultKeyword={searchKeyword}
+      />
     </div>
   );
 };
