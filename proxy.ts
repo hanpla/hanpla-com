@@ -36,7 +36,7 @@ export async function proxy(request: NextRequest) {
   // 2. 비로그인 상태인 유저가 보호된 경로에 접근 시 로그인(/login?callbackUrl=...)으로 이동
   const isProtectedRoute =
     PROTECTED_ROUTE_PREFIXES.some((prefix) => pathname.startsWith(prefix)) ||
-    /^\/board\/[^\/]+\/write$/.test(pathname);
+    /^\/boards\/[^\/]+\/write$/.test(pathname);
   if (!isLoggedIn && isProtectedRoute) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
@@ -47,5 +47,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/profile/:path*", "/login", "/signup", "/board/:abbr/write"],
+  matcher: ["/profile/:path*", "/login", "/signup", "/boards/:abbr/write"],
 };
