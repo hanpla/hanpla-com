@@ -1,6 +1,7 @@
 "use client";
 
 import { Editor } from "@tiptap/react";
+
 import BoldIcon from "@/components/icons/bold-icon";
 import ItalicIcon from "@/components/icons/italic-icon";
 import StrikeIcon from "@/components/icons/strike-icon";
@@ -26,106 +27,123 @@ export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
         : "text-zinc-500 dark:text-zinc-400"
     }`;
 
+  // 반복되는 마크업 제거를 위해 에디터 상태 및 액션 객체화
+  const items = [
+    {
+      title: "굵게",
+      isActive: editor.isActive("bold"),
+      onClick: () => editor.chain().focus().toggleBold().run(),
+      icon: BoldIcon,
+    },
+    {
+      title: "기울임",
+      isActive: editor.isActive("italic"),
+      onClick: () => editor.chain().focus().toggleItalic().run(),
+      icon: ItalicIcon,
+    },
+    {
+      title: "취소선",
+      isActive: editor.isActive("strike"),
+      onClick: () => editor.chain().focus().toggleStrike().run(),
+      icon: StrikeIcon,
+    },
+    { type: "separator" },
+    {
+      title: "인라인 코드",
+      isActive: editor.isActive("code"),
+      onClick: () => editor.chain().focus().toggleCode().run(),
+      icon: CodeIcon,
+    },
+    {
+      title: "코드 블록",
+      isActive: editor.isActive("codeBlock"),
+      onClick: () => editor.chain().focus().toggleCodeBlock().run(),
+      icon: CodeBlockIcon,
+    },
+    {
+      title: "인용구",
+      isActive: editor.isActive("blockquote"),
+      onClick: () => editor.chain().focus().toggleBlockquote().run(),
+      icon: BlockquoteIcon,
+    },
+    { type: "separator" },
+    {
+      title: "순서 없는 목록",
+      isActive: editor.isActive("bulletList"),
+      onClick: () => editor.chain().focus().toggleBulletList().run(),
+      icon: BulletListIcon,
+    },
+    {
+      title: "순서 있는 목록",
+      isActive: editor.isActive("orderedList"),
+      onClick: () => editor.chain().focus().toggleOrderedList().run(),
+      icon: OrderedListIcon,
+    },
+  ];
+
+  const undoRedoItems = [
+    {
+      title: "되돌리기",
+      onClick: () => editor.chain().focus().undo().run(),
+      disabled: !editor.can().undo(),
+      icon: UndoIcon,
+    },
+    {
+      title: "다시 실행",
+      onClick: () => editor.chain().focus().redo().run(),
+      disabled: !editor.can().redo(),
+      icon: RedoIcon,
+    },
+  ];
+
   return (
     <div className="flex flex-wrap items-center gap-1 border-b border-zinc-200 p-2 dark:border-zinc-800/80">
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        className={btnClass(editor.isActive("bold"))}
-        title="굵게"
-      >
-        <BoldIcon className="h-4 w-4" />
-      </button>
+      {items.map((item, index) => {
+        if (item.type === "separator") {
+          return (
+            <div
+              key={`separator-${index}`}
+              className="mx-1 h-4 w-px bg-zinc-200 dark:bg-zinc-800"
+            />
+          );
+        }
 
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={btnClass(editor.isActive("italic"))}
-        title="기울임"
-      >
-        <ItalicIcon className="h-4 w-4" />
-      </button>
+        const Icon = item.icon!;
+        return (
+          <button
+            key={item.title}
+            type="button"
+            onClick={item.onClick}
+            className={btnClass(item.isActive!)}
+            title={item.title}
+          >
+            <Icon className="h-4 w-4" />
+          </button>
+        );
+      })}
 
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-        className={btnClass(editor.isActive("strike"))}
-        title="취소선"
-      >
-        <StrikeIcon className="h-4 w-4" />
-      </button>
+      {/* 순수한 구분선 */}
+      <div className="mx-1 h-4 w-px bg-zinc-200 dark:bg-zinc-800" />
 
-      <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-800 mx-1" />
-
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        className={btnClass(editor.isActive("code"))}
-        title="인라인 코드"
-      >
-        <CodeIcon className="h-4 w-4" />
-      </button>
-
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={btnClass(editor.isActive("codeBlock"))}
-        title="코드 블록"
-      >
-        <CodeBlockIcon className="h-4 w-4" />
-      </button>
-
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={btnClass(editor.isActive("blockquote"))}
-        title="인용구"
-      >
-        <BlockquoteIcon className="h-4 w-4" />
-      </button>
-
-      <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-800 mx-1" />
-
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={btnClass(editor.isActive("bulletList"))}
-        title="순서 없는 목록"
-      >
-        <BulletListIcon className="h-4 w-4" />
-      </button>
-
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={btnClass(editor.isActive("orderedList"))}
-        title="순서 있는 목록"
-      >
-        <OrderedListIcon className="h-4 w-4" />
-      </button>
-
-      <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-800 mx-1 flex-1 sm:flex-none" />
+      {/* 모바일 화면에서만 동작하는 줄바꿈용 가변 여백 */}
+      <div className="flex-1 sm:hidden" />
 
       <div className="flex items-center gap-1 sm:ml-auto">
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().undo()}
-          className="p-2 rounded-md text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 dark:text-zinc-400 dark:hover:bg-zinc-800/80"
-          title="되돌리기"
-        >
-          <UndoIcon className="h-4 w-4" />
-        </button>
-
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().redo().run()}
-          disabled={!editor.can().redo()}
-          className="p-2 rounded-md text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 dark:text-zinc-400 dark:hover:bg-zinc-800/80"
-          title="다시 실행"
-        >
-          <RedoIcon className="h-4 w-4" />
-        </button>
+        {undoRedoItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <button
+              key={item.title}
+              type="button"
+              onClick={item.onClick}
+              disabled={item.disabled}
+              className="rounded-md p-2 text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 dark:text-zinc-400 dark:hover:bg-zinc-800/80"
+              title={item.title}
+            >
+              <Icon className="h-4 w-4" />
+            </button>
+          );
+        })}
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ export interface FormActionState {
 export const incrementPostViews = async (postId: number): Promise<void> => {
   try {
     const supabase = createAdminClient();
-    
+
     // 1. RPC(increment_post_views)를 통한 원자적 증가 시도
     const { error: rpcError } = await supabase.rpc("increment_post_views", {
       post_id: postId,
@@ -27,8 +27,11 @@ export const incrementPostViews = async (postId: number): Promise<void> => {
 
     // RPC가 존재하지 않거나 에러 발생 시 Fallback 작동 (Read-then-Write)
     if (rpcError) {
-      console.warn("RPC increment_post_views failed, falling back to read-then-write:", rpcError.message);
-      
+      console.warn(
+        "RPC increment_post_views failed, falling back to read-then-write:",
+        rpcError.message
+      );
+
       const { data: post, error: selectError } = await supabase
         .from("posts")
         .select("views")
@@ -61,7 +64,7 @@ export const incrementPostViews = async (postId: number): Promise<void> => {
  * - Supabase 데이터베이스에 저장한 뒤, 목록 캐시를 무효화 처리합니다.
  */
 export const createPostAction = async (
-  prevState: FormActionState,
+  _prevState: FormActionState,
   formData: FormData
 ): Promise<FormActionState> => {
   try {

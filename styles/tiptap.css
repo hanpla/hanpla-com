@@ -1,3 +1,24 @@
+@reference "./globals.css";
+
+/* Tiptap Editor Content Area Styles */
+.ProseMirror {
+  @apply prose dark:prose-invert max-w-none focus:outline-none p-4 text-zinc-900 dark:text-zinc-100;
+  min-height: 25rem; /* 400px */
+}
+
+.ProseMirror p {
+  @apply my-1;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  @apply mt-3 mb-1.5;
+}
+
 /* Tiptap Code Block Styles (Light/Dark 모드 공통 고정) */
 .prose pre,
 .prose-invert pre {
