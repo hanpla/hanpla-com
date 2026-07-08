@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { getBoardByAbbr } from "@/lib/queries/boards";
 import PageTitle from "@/components/ui/page-title";
+import PostWriteForm from "@/components/post/post-write-form";
 
 interface WritePageProps {
   params: Promise<{
@@ -9,7 +10,6 @@ interface WritePageProps {
   }>;
 }
 
-// 1. 글 작성 페이지 렌더러
 const WritePage = async ({ params }: WritePageProps) => {
   const { abbr } = await params;
 
@@ -24,10 +24,8 @@ const WritePage = async ({ params }: WritePageProps) => {
     <>
       <PageTitle title={board.name} href={`/boards/${board.abbr}`} />
       
-      <div className="mt-6 text-sm text-zinc-500 dark:text-zinc-400">
-        <p>
-          [{board.name}] 게시판의 새 글 작성 페이지가 여기에 표시될 예정입니다.
-        </p>
+      <div className="mt-6">
+        <PostWriteForm boardAbbr={board.abbr} />
       </div>
     </>
   );
