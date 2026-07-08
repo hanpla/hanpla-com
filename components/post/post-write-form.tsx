@@ -35,7 +35,7 @@ export const PostWriteForm = ({ boardAbbr }: PostWriteFormProps) => {
     immediatelyRender: false, // Next.js SSR 하이드레이션 오류 방지를 위해 명시적으로 설정
     editorProps: {
       attributes: {
-        class: "focus:outline-none",
+        class: "prose dark:prose-invert max-w-none text-zinc-900 dark:text-zinc-100",
       },
     },
     onUpdate({ editor }) {

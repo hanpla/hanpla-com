@@ -2,7 +2,8 @@
 
 /* Tiptap Editor Content Area Styles */
 .ProseMirror {
-  @apply prose dark:prose-invert max-w-none focus:outline-none p-4 text-zinc-900 dark:text-zinc-100;
+  outline: none;
+  padding: 1rem;
   min-height: 25rem; /* 400px */
 }
 

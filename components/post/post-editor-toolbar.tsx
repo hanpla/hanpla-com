@@ -49,6 +49,25 @@ export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
     },
     { type: "separator" },
     {
+      title: "제목 1 (H1)",
+      isActive: editor.isActive("heading", { level: 1 }),
+      onClick: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+      label: "H1",
+    },
+    {
+      title: "제목 2 (H2)",
+      isActive: editor.isActive("heading", { level: 2 }),
+      onClick: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+      label: "H2",
+    },
+    {
+      title: "제목 3 (H3)",
+      isActive: editor.isActive("heading", { level: 3 }),
+      onClick: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+      label: "H3",
+    },
+    { type: "separator" },
+    {
       title: "인라인 코드",
       isActive: editor.isActive("code"),
       onClick: () => editor.chain().focus().toggleCode().run(),
@@ -108,7 +127,6 @@ export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
           );
         }
 
-        const Icon = item.icon!;
         return (
           <button
             key={item.title}
@@ -117,7 +135,13 @@ export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
             className={btnClass(item.isActive!)}
             title={item.title}
           >
-            <Icon className="h-4 w-4" />
+            {item.icon ? (
+              <item.icon className="h-4 w-4" />
+            ) : (
+              <span className="text-[11px] font-extrabold tracking-tighter leading-none select-none font-sans">
+                {item.label}
+              </span>
+            )}
           </button>
         );
       })}
