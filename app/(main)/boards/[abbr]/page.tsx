@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { getBoardByAbbr, getBoards } from "@/lib/queries/boards";
+import { getBoardByAbbr } from "@/lib/queries/boards";
 import { getPostsByBoardAbbr, GetBoardPostsOptions } from "@/lib/queries/post";
 import PageTitle from "@/components/ui/page-title";
 import BoardFilterBar from "@/components/post/board-filter-bar";
@@ -20,15 +20,7 @@ interface BoardDetailPageProps {
   }>;
 }
 
-// 1. 빌드 시 정적 사전 생성 경로 정의
-export const generateStaticParams = async () => {
-  const boards = await getBoards();
-  return boards.map((board) => ({
-    abbr: board.abbr,
-  }));
-};
-
-// 2. 개별 게시판 상세 페이지 렌더러
+// 1. 개별 게시판 상세 페이지 렌더러
 const BoardDetailPage = async ({ params, searchParams }: BoardDetailPageProps) => {
   const { abbr } = await params;
   const resolvedSearchParams = await searchParams;

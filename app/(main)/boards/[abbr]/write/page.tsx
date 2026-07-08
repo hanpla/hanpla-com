@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { getBoardByAbbr, getBoards } from "@/lib/queries/boards";
+import { getBoardByAbbr } from "@/lib/queries/boards";
 import PageTitle from "@/components/ui/page-title";
 
 interface WritePageProps {
@@ -9,15 +9,7 @@ interface WritePageProps {
   }>;
 }
 
-// 1. 빌드 시 정적 사전 생성 경로 정의
-export const generateStaticParams = async () => {
-  const boards = await getBoards();
-  return boards.map((board) => ({
-    abbr: board.abbr,
-  }));
-};
-
-// 2. 글 작성 페이지 렌더러
+// 1. 글 작성 페이지 렌더러
 const WritePage = async ({ params }: WritePageProps) => {
   const { abbr } = await params;
 
