@@ -44,14 +44,14 @@ export const SearchForm = ({ baseUrl, defaultType, defaultKeyword }: SearchFormP
       <select
         value={searchType}
         onChange={(e) => setSearchType(e.target.value as SearchType)}
-        className="cursor-pointer rounded-lg border border-zinc-200 px-2.5 py-1.5 text-xs font-semibold text-zinc-700 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300"
+        className="shrink-0 cursor-pointer rounded-lg border border-zinc-200 px-2.5 py-1.5 text-xs font-semibold text-zinc-700 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300"
       >
         <option value="title_content">제목 + 내용</option>
         <option value="title">제목</option>
         <option value="content">내용</option>
         <option value="author">닉네임</option>
       </select>
-      <div className="w-56">
+      <div className="w-56 min-w-0 flex-1 sm:flex-none">
         <Input
           type="text"
           value={keyword}
@@ -60,7 +60,7 @@ export const SearchForm = ({ baseUrl, defaultType, defaultKeyword }: SearchFormP
           className="py-1.5! text-xs!"
         />
       </div>
-      <Button type="submit" variant="primary" size="sm">
+      <Button type="submit" variant="primary" size="sm" className="shrink-0">
         검색
       </Button>
     </form>
