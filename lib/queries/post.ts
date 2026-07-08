@@ -38,10 +38,10 @@ export const getBestPosts = (options: GetBestPostsOptions = {}) => {
             ${authorSelect}
           `, { count: "exact" });
 
-        // 정렬 조건 적용 (좋아요 순 -> 조회수 순)
+        // 인기글 필터 조건(추천 10개 이상) 및 정렬 조건(최신순) 적용
         query = query
-          .order("likes", { ascending: false })
-          .order("views", { ascending: false });
+          .gte("likes", 10)
+          .order("created_at", { ascending: false });
 
         // 검색 조건 적용
         if (searchKeyword && searchType) {
