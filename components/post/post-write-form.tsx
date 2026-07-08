@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useActionState } from "react";
 import { useRouter } from "next/navigation";
-import { useEditor, EditorContent, JSONContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { EditorContent } from "@tiptap/react";
 
 import { createPostAction, FormActionState } from "@/lib/actions/post";
 import { useMount } from "@/hooks/use-mount";
+import { usePostEditor } from "@/hooks/use-post-editor";
 import Button from "@/components/ui/button";
 import InputField from "@/components/ui/input-field";
 import PostWriteFormSkeleton from "./post-write-form-skeleton";
@@ -19,34 +19,17 @@ interface PostWriteFormProps {
 export const PostWriteForm = ({ boardAbbr }: PostWriteFormProps) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
-  const [contentStr, setContentStr] = useState("");
 
   // 공통 커스텀 훅 useMount를 활용한 하이드레이션 클라이언트 가드
   const isClient = useMount();
+
+  // 커스텀 훅을 활용한 에디터 설정 및 상태 분리
+  const { editor, contentStr } = usePostEditor();
 
   // React 19의 useActionState에 서버 액션(createPostAction)을 직접 전달
   const [state, formAction, isPending] = useActionState(createPostAction, {
     success: false,
   } as FormActionState);
-
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: "",
-    immediatelyRender: false, // Next.js SSR 하이드레이션 오류 방지를 위해 명시적으로 설정
-    editorProps: {
-      attributes: {
-        class: "prose dark:prose-invert max-w-none text-zinc-900 dark:text-zinc-100",
-      },
-    },
-    onUpdate({ editor }) {
-      const json = editor.getJSON();
-      // 비어있는지 사전 체크하여 hidden input 값 갱신
-      const hasText = json.content?.some(
-        (node: JSONContent) => node.content && node.content.length > 0
-      );
-      setContentStr(hasText ? JSON.stringify(json) : "");
-    },
-  });
 
   // 등록 완료 시 상세 페이지로 리다이렉트 (복수형 /boards/ 적용)
   useEffect(() => {

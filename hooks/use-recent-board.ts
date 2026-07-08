@@ -31,7 +31,13 @@ export const useRecentBoards = () => {
 
   const handleDeleteBoard = useCallback(
     (abbr: string) => {
-      setRecentBoards((prev) => prev.filter((board) => board.abbr !== abbr));
+      setRecentBoards((prev) => {
+        const next = prev.filter((board) => board.abbr !== abbr);
+        if (next.length === 0) {
+          setIsDeleteMode(false);
+        }
+        return next;
+      });
     },
     [setRecentBoards]
   );
