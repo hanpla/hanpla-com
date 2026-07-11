@@ -11,7 +11,7 @@ const SignUpForm = () => {
   return (
     <form action={formAction} className="space-y-4" noValidate>
       <InputField
-        label="닉네임"
+        label="닉네임 (2~8자, 한글/영문)"
         id="nickname"
         name="nickname"
         defaultValue={state.fields?.nickname || ""}
@@ -20,7 +20,7 @@ const SignUpForm = () => {
       />
 
       <InputField
-        label="아이디"
+        label="아이디 (4~8자, 영문/숫자)"
         id="user_id"
         name="user_id"
         defaultValue={state.fields?.user_id || ""}
@@ -29,7 +29,7 @@ const SignUpForm = () => {
       />
 
       <InputField
-        label="비밀번호"
+        label="비밀번호 (4~8자)"
         id="password"
         name="password"
         type="password"
