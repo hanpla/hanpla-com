@@ -5,11 +5,13 @@ export const signUpSchema = z
     nickname: z
       .string()
       .min(2, "닉네임은 2자 이상이어야 합니다.")
-      .max(8, "닉네임은 8자 이하여야 합니다."),
+      .max(8, "닉네임은 8자 이하여야 합니다.")
+      .regex(/^[a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ]+$/, "닉네임은 한글과 영문만 입력할 수 있습니다."),
     user_id: z
       .string()
       .min(4, "아이디는 4자 이상이어야 합니다.")
-      .max(8, "아이디는 8자 이하여야 합니다."),
+      .max(8, "아이디는 8자 이하여야 합니다.")
+      .regex(/^[a-zA-Z0-9]+$/, "아이디는 영문과 숫자만 입력할 수 있습니다."),
     password: z
       .string()
       .min(4, "비밀번호는 4자 이상이어야 합니다.")
@@ -43,7 +45,8 @@ export const updateNicknameSchema = z.object({
   nickname: z
     .string()
     .min(2, "닉네임은 2자 이상이어야 합니다.")
-    .max(8, "닉네임은 8자 이하여야 합니다."),
+    .max(8, "닉네임은 8자 이하여야 합니다.")
+    .regex(/^[a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ]+$/, "닉네임은 한글과 영문만 입력할 수 있습니다."),
 });
 
 export type UpdateNicknameInput = z.infer<typeof updateNicknameSchema>;
