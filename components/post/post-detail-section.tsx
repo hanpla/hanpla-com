@@ -7,6 +7,8 @@ import { getPostById } from "@/lib/queries/post";
 import EyeIcon from "@/components/icons/eye-icon";
 import HeartIcon from "@/components/icons/heart-icon";
 import { formatDate } from "@/lib/utils/date";
+import PostVote from "./post-vote";
+import PostComments from "./post-comments";
 
 interface PostDetailSectionProps {
   postIdPromise: Promise<number>;
@@ -103,6 +105,12 @@ export const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProp
           <p className="text-zinc-400 dark:text-zinc-500">본문 내용이 없습니다.</p>
         )}
       </div>
+
+      {/* 추천/비추천 버튼 영역 */}
+      <PostVote likes={post.likes} dislikes={post.dislikes} />
+
+      {/* 댓글 영역 (임시 영역) */}
+      <PostComments commentsCount={post.comments_count || 0} />
     </div>
   );
 };
