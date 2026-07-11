@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { Editor } from "@tiptap/react";
 
 import BoldIcon from "@/components/icons/bold-icon";
@@ -18,12 +19,52 @@ interface PostEditorToolbarProps {
 }
 
 export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
+  // 에디터의 세부 상태 변화(선택 영역, 커서 이동, 서식 토글 등)를 실시간 반영하기 위한 강제 리렌더러
+  const [, setUpdateCount] = useState(0);
+
+  // 이전 버튼들의 활성화 상태를 메모리에 기록하기 위한 ref (타이핑 시 불필요한 렌더링 방어)
+  const prevStatesRef = useRef<string>("");
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const handleTransaction = () => {
+      // 현재 버튼들의 활성 상태를 수집하여 문자열로 조합
+      const currentStates = [
+        editor.isActive("bold"),
+        editor.isActive("italic"),
+        editor.isActive("strike"),
+        editor.isActive("heading", { level: 1 }),
+        editor.isActive("heading", { level: 2 }),
+        editor.isActive("heading", { level: 3 }),
+        editor.isActive("code"),
+        editor.isActive("codeBlock"),
+        editor.isActive("blockquote"),
+        editor.isActive("bulletList"),
+        editor.isActive("orderedList"),
+        editor.can().undo(),
+        editor.can().redo(),
+      ].join(",");
+
+      // 활성화된 서식 상태에 변화가 발생한 경우에만 컴포넌트 리렌더링 격발
+      if (prevStatesRef.current !== currentStates) {
+        prevStatesRef.current = currentStates;
+        setUpdateCount((prev) => prev + 1);
+      }
+    };
+
+    editor.on("transaction", handleTransaction);
+    return () => {
+      editor.off("transaction", handleTransaction);
+    };
+  }, [editor]);
+
   if (!editor) return null;
 
   const btnClass = (isActive: boolean) =>
     `p-2 rounded-md transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/80 ${
       isActive
-        ? "bg-zinc-150 text-zinc-950 dark:bg-zinc-800 dark:text-zinc-100 font-bold"
+        ? "bg-zinc-200/80 text-zinc-950 dark:bg-zinc-700 dark:text-zinc-50 font-bold"
         : "text-zinc-500 dark:text-zinc-400"
     }`;
 
