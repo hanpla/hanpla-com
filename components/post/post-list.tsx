@@ -37,7 +37,9 @@ export const PostList = ({
   }
 
   const getPostLink = (post: PostWithRelations) => {
-    const basePath = baseLinkPath ? `${baseLinkPath}/${post.id}` : `/boards/${post.board_abbr}/${post.id}`;
+    const basePath = baseLinkPath
+      ? `${baseLinkPath}/${post.id}`
+      : `/boards/${post.board_abbr}/${post.id}`;
     if (!searchParams) return basePath;
 
     const params = new URLSearchParams();
