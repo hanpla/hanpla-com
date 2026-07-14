@@ -2,6 +2,7 @@ import Link from "next/link";
 import parse, { HTMLReactParserOptions, DOMNode, Element, domToReact } from "html-react-parser";
 import { generateHTML } from "@tiptap/html";
 import StarterKit from "@tiptap/starter-kit";
+import filterXSS from "xss";
 
 import { getPostById } from "@/lib/queries/post";
 import EyeIcon from "@/components/icons/eye-icon";
@@ -53,7 +54,7 @@ export const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProp
 
   const author = post.author?.nickname || "익명";
 
-  // Tiptap JSON -> HTML 변환 (보안 위협 자동 정제)
+  // Tiptap JSON -> HTML 변환 (보안 위협 방지를 위해 하단에서 filterXSS로 정제 적용)
   let contentHtml = "";
   if (post.content) {
     try {
@@ -66,6 +67,9 @@ export const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProp
       }
     }
   }
+
+  // XSS 공격 및 마크업 인젝션 원천 차단
+  const sanitizedHtml = contentHtml ? filterXSS(contentHtml) : "";
 
   return (
     <div className="py-3">
@@ -99,8 +103,8 @@ export const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProp
 
       {/* Tiptap 글 본문 영역 (Tailwind Typography prose 적용) */}
       <div className="prose dark:prose-invert prose-p:my-1 prose-headings:mt-3 prose-headings:mb-1.5 min-h-50 max-w-none pt-2 pb-6 leading-relaxed">
-        {contentHtml ? (
-          parse(contentHtml, parserOptions)
+        {sanitizedHtml ? (
+          parse(sanitizedHtml, parserOptions)
         ) : (
           <p className="text-zinc-400 dark:text-zinc-500">본문 내용이 없습니다.</p>
         )}
