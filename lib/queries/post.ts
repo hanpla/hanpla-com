@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 
 import { createAdminClient } from "../supabase/admin";
-import type { PostWithRelations } from "@/types/post";
+import type { PostWithRelations, VoteType } from "@/types/post";
 
 export interface GetBestPostsOptions {
   page?: number;
@@ -20,11 +20,13 @@ export const getBestPosts = (options: GetBestPostsOptions = {}) => {
         const from = (page - 1) * limit;
         const to = from + limit - 1;
 
-        const authorSelect = searchType === "author" ? "author:users!inner(nickname)" : "author:users(nickname)";
+        const authorSelect =
+          searchType === "author"
+            ? "author:users!posts_author_id_fkey!inner(nickname)"
+            : "author:users!posts_author_id_fkey(nickname)";
 
-        let query = supabase
-          .from("posts")
-          .select(`
+        let query = supabase.from("posts").select(
+          `
             id,
             board_abbr,
             title,
@@ -36,12 +38,12 @@ export const getBestPosts = (options: GetBestPostsOptions = {}) => {
             comments_count,
             created_at,
             ${authorSelect}
-          `, { count: "exact" });
+          `,
+          { count: "exact" }
+        );
 
         // 인기글 필터 조건(추천 10개 이상) 및 정렬 조건(최신순) 적용
-        query = query
-          .gte("likes", 10)
-          .order("created_at", { ascending: false });
+        query = query.gte("likes", 10).order("created_at", { ascending: false });
 
         // 검색 조건 적용
         if (searchKeyword && searchType) {
@@ -127,11 +129,15 @@ export const getPostsByBoardAbbr = async (
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
 
-    const authorSelect = searchType === "author" ? "author:users!inner(nickname)" : "author:users(nickname)";
+    const authorSelect =
+      searchType === "author"
+        ? "author:users!posts_author_id_fkey!inner(nickname)"
+        : "author:users!posts_author_id_fkey(nickname)";
 
     let query = supabase
       .from("posts")
-      .select(`
+      .select(
+        `
         id,
         board_abbr,
         title,
@@ -143,7 +149,9 @@ export const getPostsByBoardAbbr = async (
         comments_count,
         created_at,
         ${authorSelect}
-      `, { count: "exact" })
+      `,
+        { count: "exact" }
+      )
       .eq("board_abbr", boardAbbr);
 
     // 필터 조건 적용 (인기글: 추천 10개 이상)
@@ -210,7 +218,8 @@ export const getPostById = async (id: number): Promise<PostWithRelations | null>
     const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("posts")
-      .select(`
+      .select(
+        `
         id,
         board_abbr,
         title,
@@ -221,8 +230,9 @@ export const getPostById = async (id: number): Promise<PostWithRelations | null>
         dislikes,
         comments_count,
         created_at,
-        author:users(nickname)
-      `)
+        author:users!posts_author_id_fkey(nickname)
+      `
+      )
       .eq("id", id)
       .single();
 
@@ -234,6 +244,30 @@ export const getPostById = async (id: number): Promise<PostWithRelations | null>
     return data as unknown as PostWithRelations;
   } catch (error) {
     console.error(error);
+    return null;
+  }
+};
+
+/**
+ * 특정 사용자의 해당 게시글 투표 상태(like | dislike | null)를 조회합니다.
+ */
+export const getUserPostVote = async (postId: number, userId: string): Promise<VoteType> => {
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("post_votes")
+      .select("vote_type")
+      .eq("post_id", postId)
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (error || !data) {
+      return null;
+    }
+
+    return (data.vote_type as VoteType) || null;
+  } catch (error) {
+    console.error("getUserPostVote error:", error);
     return null;
   }
 };

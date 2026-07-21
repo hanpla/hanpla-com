@@ -1,9 +1,11 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 import * as jose from "jose";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import type { VoteType } from "@/types/post";
 
 export interface FormActionState {
   success: boolean;
@@ -143,5 +145,156 @@ export const createPostAction = async (
       success: false,
       error: "알 수 없는 오류가 발생했습니다.",
     };
+  }
+};
+
+export interface VoteActionResult {
+  success: boolean;
+  likes?: number;
+  dislikes?: number;
+  userVote?: VoteType;
+  error?: string;
+}
+
+/**
+ * 게시글 추천/비추천 토글 서버 액션입니다.
+ * - 로그인 여부 및 JWT 세션을 검증합니다.
+ * - 동일 투표 클릭 시 취소, 타 투표 클릭 시 변경, 신규 클릭 시 추천/비추천을 처리합니다.
+ * - post_votes 테이블 및 posts 테이블 수치를 반영한 후 캐시를 무효화합니다.
+ */
+export const votePostAction = async (
+  postId: number,
+  targetVote: "like" | "dislike"
+): Promise<VoteActionResult> => {
+  try {
+    if (!postId || !targetVote) {
+      return { success: false, error: "유효하지 않은 요청입니다." };
+    }
+
+    // 1. 사용자 세션 검증
+    const cookieStore = await cookies();
+    const token = cookieStore.get("session_token")?.value;
+    if (!token) {
+      return { success: false, error: "로그인이 필요합니다." };
+    }
+
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      throw new Error("JWT_SECRET environment variable is missing");
+    }
+
+    let userId: string;
+    try {
+      const secret = new TextEncoder().encode(jwtSecret);
+      const { payload } = await jose.jwtVerify(token, secret);
+      if (!payload.id) {
+        throw new Error("Missing id in payload");
+      }
+      userId = payload.id as string;
+    } catch {
+      return { success: false, error: "유효하지 않은 세션입니다. 다시 로그인해 주세요." };
+    }
+
+    const supabase = createAdminClient();
+
+    // 2. 현재 게시글의 likes/dislikes 조회
+    const { data: post, error: postError } = await supabase
+      .from("posts")
+      .select("likes, dislikes")
+      .eq("id", postId)
+      .single();
+
+    if (postError || !post) {
+      return { success: false, error: "게시글을 찾을 수 없습니다." };
+    }
+
+    const currentLikes = post.likes || 0;
+    const currentDislikes = post.dislikes || 0;
+
+    // 3. 기존 투표 상태 조회 (post_votes 테이블)
+    let existingVote: VoteType = null;
+    const { data: voteData, error: voteSelectError } = await supabase
+      .from("post_votes")
+      .select("vote_type")
+      .eq("post_id", postId)
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (!voteSelectError && voteData) {
+      existingVote = voteData.vote_type as VoteType;
+    }
+
+    let newVote: VoteType = null;
+    let newLikes = currentLikes;
+    let newDislikes = currentDislikes;
+
+    if (existingVote === targetVote) {
+      // 동일 버튼 클릭 -> 투표 취소
+      newVote = null;
+      if (targetVote === "like") {
+        newLikes = Math.max(0, currentLikes - 1);
+      } else {
+        newDislikes = Math.max(0, currentDislikes - 1);
+      }
+
+      await supabase.from("post_votes").delete().eq("post_id", postId).eq("user_id", userId);
+    } else if (existingVote !== null) {
+      // 다른 버튼 클릭 -> 투표 변경 (like -> dislike 또는 dislike -> like)
+      newVote = targetVote;
+      if (targetVote === "like") {
+        newLikes = currentLikes + 1;
+        newDislikes = Math.max(0, currentDislikes - 1);
+      } else {
+        newLikes = Math.max(0, currentLikes - 1);
+        newDislikes = currentDislikes + 1;
+      }
+
+      await supabase
+        .from("post_votes")
+        .update({ vote_type: targetVote })
+        .eq("post_id", postId)
+        .eq("user_id", userId);
+    } else {
+      // 신규 투표
+      newVote = targetVote;
+      if (targetVote === "like") {
+        newLikes = currentLikes + 1;
+      } else {
+        newDislikes = currentDislikes + 1;
+      }
+
+      await supabase.from("post_votes").insert({
+        post_id: postId,
+        user_id: userId,
+        vote_type: targetVote,
+      });
+    }
+
+    // 4. posts 테이블 likes / dislikes 수치 업데이트
+    const { error: updateError } = await supabase
+      .from("posts")
+      .update({
+        likes: newLikes,
+        dislikes: newDislikes,
+      })
+      .eq("id", postId);
+
+    if (updateError) {
+      console.error("Failed to update post likes/dislikes:", updateError);
+      return { success: false, error: "투표 수 반영에 실패했습니다." };
+    }
+
+    // 5. 관련 캐시 무효화
+    revalidatePath("/", "layout");
+
+    return {
+      success: true,
+      likes: newLikes,
+      dislikes: newDislikes,
+      userVote: newVote,
+    };
+  } catch (error) {
+    console.error("Error in votePostAction:", error);
+    return { success: false, error: "알 수 없는 오류가 발생했습니다." };
   }
 };

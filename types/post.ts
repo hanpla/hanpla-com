@@ -11,6 +11,8 @@ export interface Post {
   created_at: string; // ISO String format
 }
 
+export type VoteType = "like" | "dislike" | null;
+
 export interface PostWithRelations extends Post {
   author: {
     nickname: string;
