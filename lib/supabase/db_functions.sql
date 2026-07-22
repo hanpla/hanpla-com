@@ -53,3 +53,19 @@ CREATE TRIGGER trigger_update_post_comments_count
 AFTER INSERT OR DELETE ON comments
 FOR EACH ROW EXECUTE FUNCTION update_post_comments_count();
 
+-- 5. RLS (Row Level Security) 활성화 및 읽기 정책 추가
+-- post_votes RLS
+ALTER TABLE post_votes ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow public read access on post_votes" ON post_votes;
+CREATE POLICY "Allow public read access on post_votes" ON post_votes
+  FOR SELECT USING (true);
+
+-- comments RLS
+ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow public read access on comments" ON comments;
+CREATE POLICY "Allow public read access on comments" ON comments
+  FOR SELECT USING (true);
+
+

@@ -200,7 +200,7 @@ const CommentItem = ({
             disabled={isPending}
             onClick={handleDelete}
             title="댓글 삭제"
-            className="rounded p-1 text-zinc-400 opacity-0 transition-opacity hover:bg-zinc-100 hover:text-red-500 group-hover:opacity-100 dark:hover:bg-zinc-800 dark:hover:text-red-400"
+            className="rounded p-1 text-zinc-400 opacity-100 transition-opacity hover:bg-zinc-100 hover:text-red-500 sm:opacity-0 sm:group-hover:opacity-100 dark:hover:bg-zinc-800 dark:hover:text-red-400"
           >
             <TrashIcon className="h-4 w-4" />
           </button>
