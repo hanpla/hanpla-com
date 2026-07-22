@@ -8,7 +8,7 @@ const AUTH_ROUTES = ["/login", "/signup"];
 // 로그인이 반드시 필요한 보호된 경로 접두사 (프로필 등)
 const PROTECTED_ROUTE_PREFIXES = ["/profile"];
 
-export async function proxy(request: NextRequest) {
+export const proxy = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
   const token = request.cookies.get("session_token")?.value;
@@ -44,8 +44,8 @@ export async function proxy(request: NextRequest) {
   }
 
   return NextResponse.next();
-}
+};
 
 export const config = {
-  matcher: ["/profile/:path*", "/login", "/signup", "/boards/:abbr/write"],
+  matcher: ["/profile", "/profile/:path*", "/login", "/signup", "/boards/:abbr/write"],
 };
