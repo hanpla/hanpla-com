@@ -23,3 +23,33 @@ CREATE TABLE IF NOT EXISTS post_votes (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   PRIMARY KEY (post_id, user_id)
 );
+
+-- 3. 댓글 및 답글 (comments) 테이블 생성 SQL
+CREATE TABLE IF NOT EXISTS comments (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  post_id BIGINT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+  author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  parent_id BIGINT REFERENCES comments(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 4. 댓글 추가/삭제 시 posts.comments_count 자동 갱신 트리거
+CREATE OR REPLACE FUNCTION update_post_comments_count()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF (TG_OP = 'INSERT') THEN
+    UPDATE posts SET comments_count = COALESCE(comments_count, 0) + 1 WHERE id = NEW.post_id;
+  ELSIF (TG_OP = 'DELETE') THEN
+    UPDATE posts SET comments_count = GREATEST(0, COALESCE(comments_count, 0) - 1) WHERE id = OLD.post_id;
+  END IF;
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS trigger_update_post_comments_count ON comments;
+CREATE TRIGGER trigger_update_post_comments_count
+AFTER INSERT OR DELETE ON comments
+FOR EACH ROW EXECUTE FUNCTION update_post_comments_count();
+
