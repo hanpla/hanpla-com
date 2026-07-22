@@ -28,6 +28,20 @@ const nestComments = (rawComments: CommentWithAuthor[]): CommentWithAuthor[] => 
     }
   });
 
+  // 3. 원댓글 목록은 최신순(내림차순) 정렬
+  rootComments.sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
+  // 4. 각 원댓글의 답글(대댓글) 목록은 대화 흐름에 맞게 작성순(오름차순) 정렬
+  commentMap.forEach((node) => {
+    if (node.replies && node.replies.length > 0) {
+      node.replies.sort(
+        (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
+    }
+  });
+
   return rootComments;
 };
 
@@ -51,7 +65,7 @@ export const getCommentsByPostId = async (postId: number): Promise<CommentWithAu
       `
       )
       .eq("post_id", postId)
-      .order("created_at", { ascending: true });
+      .order("created_at", { ascending: false });
 
     if (error) {
       console.error("Failed to fetch comments:", error.message);
