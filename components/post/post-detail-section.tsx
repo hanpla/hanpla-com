@@ -1,4 +1,5 @@
 import { getPostById, getUserPostVote } from "@/lib/queries/post";
+import { getCommentsByPostId } from "@/lib/queries/comment";
 import { getSessionUser } from "@/lib/utils/auth";
 import PostDetailHeader from "./post-detail-header";
 import PostDetailContent from "./post-detail-content";
@@ -30,7 +31,12 @@ export const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProp
   }
 
   const sessionUser = await getSessionUser();
-  const initialUserVote = sessionUser ? await getUserPostVote(post.id, sessionUser.id) : null;
+
+  // 병렬 데이터 페칭 (Vercel Best Practice: async-parallel)
+  const [initialUserVote, comments] = await Promise.all([
+    sessionUser ? getUserPostVote(post.id, sessionUser.id) : Promise.resolve(null),
+    getCommentsByPostId(post.id),
+  ]);
 
   return (
     <div className="py-3">
@@ -50,7 +56,13 @@ export const PostDetailSection = async ({ postIdPromise }: PostDetailSectionProp
       />
 
       {/* 4. 댓글 영역 */}
-      <PostComments commentsCount={post.comments_count || 0} />
+      <PostComments
+        postId={post.id}
+        commentsCount={post.comments_count || 0}
+        comments={comments}
+        currentUserId={sessionUser?.id}
+        isLoggedIn={!!sessionUser}
+      />
     </div>
   );
 };
