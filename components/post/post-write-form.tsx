@@ -27,27 +27,35 @@ export const PostWriteForm = ({ boardAbbr }: PostWriteFormProps) => {
   // 공통 커스텀 훅 useMount를 활용한 하이드레이션 클라이언트 가드
   const isClient = useMount();
 
-  // 커스텀 훅을 활용한 에디터 설정 및 상태 분리
-  const { editor, contentStr } = usePostEditor();
+  // 커스텀 훅을 활용한 에디터 설정 및 상태 분리 (미사용 이미지 청소 유틸 포함)
+  const {
+    editor,
+    contentStr,
+    addUploadedImage,
+    cleanupUnusedImages,
+    cleanupAllImages,
+  } = usePostEditor();
 
   // React 19의 useActionState에 서버 액션(createPostAction)을 직접 전달
   const [state, formAction, isPending] = useActionState(createPostAction, {
     success: false,
   } as FormActionState);
 
-  // 등록 완료 시 상세 페이지로 리다이렉트 및 프로필 작성글 쿼리 캐시 파괴(무효화)
+  // 등록 완료 시 지워진 미사용 이미지 자동 정리 후 상세 페이지 이동 및 쿼리 무효화
   useEffect(() => {
     if (state.success && state.postId) {
+      cleanupUnusedImages(contentStr);
       invalidateUserPostsQuery(queryClient);
       router.push(`/boards/${boardAbbr}/${state.postId}`);
     }
-  }, [state, boardAbbr, router, queryClient]);
+  }, [state, boardAbbr, router, queryClient, cleanupUnusedImages, contentStr]);
 
   if (!isClient || !editor) {
     return <PostWriteFormSkeleton />;
   }
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
+    await cleanupAllImages();
     router.back();
   };
 
@@ -84,8 +92,8 @@ export const PostWriteForm = ({ boardAbbr }: PostWriteFormProps) => {
       <div className="flex w-full flex-col gap-1.5">
         <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">본문</span>
         <div className="rounded-lg border border-zinc-200 bg-transparent transition-all duration-200 focus-within:border-zinc-950 focus-within:ring-2 focus-within:ring-zinc-950/10 focus-within:outline-hidden dark:border-zinc-800/80 dark:focus-within:border-zinc-100 dark:focus-within:ring-zinc-100/10">
-          {/* 툴바 컴포넌트 연동 */}
-          <PostEditorToolbar editor={editor} />
+          {/* 툴바 컴포넌트 연동 및 이미지 등록 콜백 전달 */}
+          <PostEditorToolbar editor={editor} onImageUploaded={addUploadedImage} />
 
           {/* 에디터 본문 */}
           <EditorContent editor={editor} />

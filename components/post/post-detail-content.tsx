@@ -2,7 +2,8 @@ import Link from "next/link";
 import parse, { HTMLReactParserOptions, DOMNode, Element, domToReact } from "html-react-parser";
 import { generateHTML } from "@tiptap/html";
 import StarterKit from "@tiptap/starter-kit";
-import filterXSS from "xss";
+import Image from "@tiptap/extension-image";
+import filterXSS, { getDefaultWhiteList } from "xss";
 
 interface PostDetailContentProps {
   content?: unknown;
@@ -29,12 +30,27 @@ const parserOptions: HTMLReactParserOptions = {
   },
 };
 
+// XSS Sanitization 허용 목록 설정 (img 태그 및 클래스 속성 보존)
+const xssOptions = {
+  whiteList: {
+    ...getDefaultWhiteList(),
+    img: ["src", "alt", "title", "width", "height", "class", "style"],
+  },
+};
+
 export const PostDetailContent = ({ content }: PostDetailContentProps) => {
   let contentHtml = "";
   if (content) {
     try {
       const rawJson = typeof content === "string" ? JSON.parse(content) : content;
-      contentHtml = generateHTML(rawJson, [StarterKit]);
+      contentHtml = generateHTML(rawJson, [
+        StarterKit,
+        Image.configure({
+          HTMLAttributes: {
+            class: "rounded-lg max-w-full h-auto my-4 mx-auto block shadow-xs",
+          },
+        }),
+      ]);
     } catch (e) {
       console.error("Tiptap JSON parsing failed:", e);
       if (typeof content === "string") {
@@ -43,7 +59,7 @@ export const PostDetailContent = ({ content }: PostDetailContentProps) => {
     }
   }
 
-  const sanitizedHtml = contentHtml ? filterXSS(contentHtml) : "";
+  const sanitizedHtml = contentHtml ? filterXSS(contentHtml, xssOptions) : "";
 
   return (
     <div className="prose dark:prose-invert prose-p:my-1 prose-headings:mt-3 prose-headings:mb-1.5 min-h-50 max-w-none pt-2 pb-6 leading-relaxed">

@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/refs */
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { Editor } from "@tiptap/react";
 
+import { getSignedUploadUrlAction } from "@/lib/actions/image";
 import BoldIcon from "@/components/icons/bold-icon";
 import ItalicIcon from "@/components/icons/italic-icon";
 import StrikeIcon from "@/components/icons/strike-icon";
@@ -11,46 +13,36 @@ import CodeBlockIcon from "@/components/icons/code-block-icon";
 import BulletListIcon from "@/components/icons/bullet-list-icon";
 import OrderedListIcon from "@/components/icons/ordered-list-icon";
 import BlockquoteIcon from "@/components/icons/blockquote-icon";
+import ImageIcon from "@/components/icons/image-icon";
 import UndoIcon from "@/components/icons/undo-icon";
 import RedoIcon from "@/components/icons/redo-icon";
 
 interface PostEditorToolbarProps {
   editor: Editor | null;
+  onImageUploaded?: (url: string) => void;
 }
 
-export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
-  // 에디터의 세부 상태 변화(선택 영역, 커서 이동, 서식 토글 등)를 실시간 반영하기 위한 강제 리렌더러
-  const [, setUpdateCount] = useState(0);
+const MAX_SINGLE_SIZE = 8 * 1024 * 1024; // 이미지 1개당 최대 8MB
+const MAX_TOTAL_SIZE = 50 * 1024 * 1024; // 글당 전체 이미지 최대 50MB
 
-  // 이전 버튼들의 활성화 상태를 메모리에 기록하기 위한 ref (타이핑 시 불필요한 렌더링 방어)
-  const prevStatesRef = useRef<string>("");
+export const PostEditorToolbar = ({
+  editor,
+  onImageUploaded,
+}: PostEditorToolbarProps) => {
+  // 에디터 서식 상태 변화에 따른 툴바 UI 업데이트 트리거
+  const [, setUpdateCount] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+
+  // 숨김 파일 input 참조 및 이미지 누적 용량(byte) 추적
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const totalImageSizeRef = useRef<number>(0);
 
   useEffect(() => {
     if (!editor) return;
 
+    // 에디터 서식 변경 시에만 리렌더링 갱신
     const handleTransaction = () => {
-      // 현재 버튼들의 활성 상태를 수집하여 문자열로 조합
-      const currentStates = [
-        editor.isActive("bold"),
-        editor.isActive("italic"),
-        editor.isActive("strike"),
-        editor.isActive("heading", { level: 1 }),
-        editor.isActive("heading", { level: 2 }),
-        editor.isActive("heading", { level: 3 }),
-        editor.isActive("code"),
-        editor.isActive("codeBlock"),
-        editor.isActive("blockquote"),
-        editor.isActive("bulletList"),
-        editor.isActive("orderedList"),
-        editor.can().undo(),
-        editor.can().redo(),
-      ].join(",");
-
-      // 활성화된 서식 상태에 변화가 발생한 경우에만 컴포넌트 리렌더링 격발
-      if (prevStatesRef.current !== currentStates) {
-        prevStatesRef.current = currentStates;
-        setUpdateCount((prev) => prev + 1);
-      }
+      setUpdateCount((prev) => prev + 1);
     };
 
     editor.on("transaction", handleTransaction);
@@ -61,6 +53,85 @@ export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
 
   if (!editor) return null;
 
+  const handleImageButtonClick = () => {
+    if (isUploading) return;
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files;
+    if (!selectedFiles || selectedFiles.length === 0) return;
+
+    const files = Array.from(selectedFiles);
+
+    try {
+      setIsUploading(true);
+
+      for (const file of files) {
+        // 1. 단일 파일 용량 검증 (8MB)
+        if (file.size > MAX_SINGLE_SIZE) {
+          alert(`'${file.name}' 파일이 8MB를 초과하여 업로드할 수 없습니다.`);
+          continue;
+        }
+
+        // 2. 누적 총 용량 검증 (50MB)
+        if (totalImageSizeRef.current + file.size > MAX_TOTAL_SIZE) {
+          alert(
+            `전체 이미지 용량이 50MB를 초과하여 더 이상 이미지를 추가할 수 없습니다. ('${file.name}' 제외됨)`
+          );
+          break;
+        }
+
+        // 3. 서버에 서명된 업로드 URL 발급 요청
+        const signedResult = await getSignedUploadUrlAction(
+          file.name,
+          file.type,
+          file.size,
+          totalImageSizeRef.current
+        );
+
+        if (!signedResult.success || !signedResult.signedUrl || !signedResult.publicUrl) {
+          alert(signedResult.error || `'${file.name}' 업로드 권한 생성에 실패했습니다.`);
+          continue;
+        }
+
+        // 4. 브라우저 Direct Upload 수행
+        const uploadResponse = await fetch(signedResult.signedUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type,
+          },
+          body: file,
+        });
+
+        if (!uploadResponse.ok) {
+          console.error("Direct upload failed for", file.name, uploadResponse.statusText);
+          alert(`'${file.name}' 업로드 중 오류가 발생했습니다.`);
+          continue;
+        }
+
+        // 5. 성공 시 누적 용량 추가, 상위 추적 콜백 호출 및 커서 다음 라인에 이미지 삽입
+        totalImageSizeRef.current += file.size;
+        onImageUploaded?.(signedResult.publicUrl);
+
+        editor
+          .chain()
+          .focus()
+          .setImage({ src: signedResult.publicUrl, alt: file.name })
+          .createParagraphNear()
+          .run();
+      }
+    } catch (error) {
+      console.error("Image upload error:", error);
+      alert("이미지 업로드 처리 중 오류가 발생했습니다.");
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
   const btnClass = (isActive: boolean) =>
     `p-2 rounded-md transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/80 ${
       isActive
@@ -68,7 +139,6 @@ export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
         : "text-zinc-500 dark:text-zinc-400"
     }`;
 
-  // 반복되는 마크업 제거를 위해 에디터 상태 및 액션 객체화
   const items = [
     {
       title: "굵게",
@@ -139,6 +209,15 @@ export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
       onClick: () => editor.chain().focus().toggleOrderedList().run(),
       icon: OrderedListIcon,
     },
+    { type: "separator" },
+    {
+      title: isUploading ? "이미지 업로드 중..." : "이미지 첨부",
+      isActive: false,
+      onClick: handleImageButtonClick,
+      disabled: isUploading,
+      icon: ImageIcon,
+      isUploading,
+    },
   ];
 
   const undoRedoItems = [
@@ -158,6 +237,16 @@ export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
 
   return (
     <div className="flex flex-wrap items-center gap-1 border-b border-zinc-200 p-2 dark:border-zinc-800/80">
+      {/* 숨겨진 파일 선택 Input */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        accept="image/png, image/jpeg, image/gif, image/webp"
+        multiple
+        className="hidden"
+      />
+
       {items.map((item, index) => {
         if (item.type === "separator") {
           return (
@@ -168,15 +257,22 @@ export const PostEditorToolbar = ({ editor }: PostEditorToolbarProps) => {
           );
         }
 
+        const isItemUploading = "isUploading" in item && item.isUploading;
+
         return (
           <button
             key={item.title}
             type="button"
             onClick={item.onClick}
-            className={btnClass(item.isActive!)}
+            disabled={item.disabled}
+            className={`${btnClass(item.isActive!)} ${
+              item.disabled ? "opacity-40 cursor-not-allowed" : ""
+            }`}
             title={item.title}
           >
-            {item.icon ? (
+            {isItemUploading ? (
+              <span className="h-4 w-4 block animate-spin rounded-full border-2 border-zinc-400 border-t-transparent" />
+            ) : item.icon ? (
               <item.icon className="h-4 w-4" />
             ) : (
               <span className="text-[11px] font-extrabold tracking-tighter leading-none select-none font-sans">
