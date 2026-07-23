@@ -4,7 +4,7 @@ interface UsePaginationOptions {
   currentPage: number;
   totalCount: number;
   pageSize: number;
-  basePath: string;
+  basePath?: string;
   searchParams?: Record<string, string | undefined>;
 }
 
@@ -12,7 +12,7 @@ export const usePagination = ({
   currentPage,
   totalCount,
   pageSize,
-  basePath,
+  basePath = "",
   searchParams,
 }: UsePaginationOptions) => {
   // 1. 전체 페이지 수 계산
@@ -48,7 +48,7 @@ export const usePagination = ({
       });
     }
     params.set("page", String(pageNumber));
-    return `${basePath}?${params.toString()}`;
+    return basePath ? `${basePath}?${params.toString()}` : `?${params.toString()}`;
   };
 
   const isFirstPage = currentPage <= 1;

@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import "@/styles/globals.css";
 import "@/styles/tiptap.css";
 import ThemeProvider from "@/components/providers/theme-provider";
+import QueryProvider from "@/components/providers/query-provider";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -26,7 +27,9 @@ const RootLayout = ({
   return (
     <html lang="ko" className={`${pretendard.variable} antialiased`} suppressHydrationWarning>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

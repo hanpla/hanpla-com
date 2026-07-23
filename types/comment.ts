@@ -20,3 +20,11 @@ export interface CreateCommentInput {
   content: string;
   parentId?: number | null;
 }
+
+export interface UserCommentWithPost extends Comment {
+  post: {
+    id: number;
+    board_abbr: string;
+    title: string;
+  } | null;
+}

@@ -4,7 +4,10 @@ import { useState, useEffect, useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { EditorContent } from "@tiptap/react";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 import { createPostAction, FormActionState } from "@/lib/actions/post";
+import { invalidateUserPostsQuery } from "@/lib/queries/profile";
 import { useMount } from "@/hooks/use-mount";
 import { usePostEditor } from "@/hooks/use-post-editor";
 import Button from "@/components/ui/button";
@@ -18,6 +21,7 @@ interface PostWriteFormProps {
 
 export const PostWriteForm = ({ boardAbbr }: PostWriteFormProps) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
 
   // 공통 커스텀 훅 useMount를 활용한 하이드레이션 클라이언트 가드
@@ -31,12 +35,13 @@ export const PostWriteForm = ({ boardAbbr }: PostWriteFormProps) => {
     success: false,
   } as FormActionState);
 
-  // 등록 완료 시 상세 페이지로 리다이렉트 (복수형 /boards/ 적용)
+  // 등록 완료 시 상세 페이지로 리다이렉트 및 프로필 작성글 쿼리 캐시 파괴(무효화)
   useEffect(() => {
     if (state.success && state.postId) {
+      invalidateUserPostsQuery(queryClient);
       router.push(`/boards/${boardAbbr}/${state.postId}`);
     }
-  }, [state, boardAbbr, router]);
+  }, [state, boardAbbr, router, queryClient]);
 
   if (!isClient || !editor) {
     return <PostWriteFormSkeleton />;

@@ -21,7 +21,7 @@ export const getBoards = unstable_cache(
   ["boards-list"],
   {
     revalidate: 60 * 60 * 24, // 24시간 (하루) 캐시
-    tags: ["boards"],  // 향후 revalidateTag("boards") 로 캐시 파괴 가능
+    tags: ["boards"], // 향후 revalidateTag("boards") 로 캐시 파괴 가능
   }
 );
 

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useTransition, FormEvent, ChangeEvent } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { createCommentAction, deleteCommentAction } from "@/lib/actions/comment";
+import { invalidateUserCommentsQuery } from "@/lib/queries/profile";
 import type { CommentWithAuthor } from "@/types/comment";
 import { formatDate } from "@/lib/utils/date";
 import TrashIcon from "@/components/icons/trash-icon";
@@ -55,6 +57,7 @@ const CommentForm = ({
 }: CommentFormProps) => {
   const [content, setContent] = useState("");
   const [isPending, startTransition] = useTransition();
+  const queryClient = useQueryClient();
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length <= 500) {
@@ -84,6 +87,7 @@ const CommentForm = ({
 
       if (result.success) {
         setContent("");
+        invalidateUserCommentsQuery(queryClient);
         if (onSuccess) onSuccess();
       } else if (result.error) {
         alert(result.error);
@@ -97,14 +101,12 @@ const CommentForm = ({
         <textarea
           disabled={!isLoggedIn || isPending}
           autoFocus={autoFocus}
-          placeholder={
-            isLoggedIn ? placeholder : "로그인 후 댓글을 작성할 수 있습니다."
-          }
+          placeholder={isLoggedIn ? placeholder : "로그인 후 댓글을 작성할 수 있습니다."}
           value={content}
           onChange={handleChange}
           className="h-16 w-full resize-none bg-transparent text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none disabled:opacity-60 dark:text-zinc-200 dark:placeholder-zinc-500"
         />
-        <div className="mt-2 flex items-center justify-between border-t border-zinc-150 pt-3 text-xs text-zinc-400 dark:border-zinc-800/80">
+        <div className="border-zinc-150 mt-2 flex items-center justify-between border-t pt-3 text-xs text-zinc-400 dark:border-zinc-800/80">
           <span>{content.length} / 500자</span>
           <div className="flex items-center gap-2">
             {onCancel && (
@@ -141,6 +143,7 @@ const CommentItem = ({
 }: CommentItemProps) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const queryClient = useQueryClient();
 
   const isAuthor = currentUserId === comment.author_id;
 
@@ -153,7 +156,9 @@ const CommentItem = ({
 
     startTransition(async () => {
       const result = await deleteCommentAction(comment.id, postId);
-      if (!result.success && result.error) {
+      if (result.success) {
+        invalidateUserCommentsQuery(queryClient);
+      } else if (result.error) {
         alert(result.error);
       }
     });
@@ -177,7 +182,7 @@ const CommentItem = ({
             </span>
           </div>
 
-          <p className="whitespace-pre-wrap text-sm text-zinc-800 leading-relaxed dark:text-zinc-200">
+          <p className="text-sm leading-relaxed whitespace-pre-wrap text-zinc-800 dark:text-zinc-200">
             {comment.content}
           </p>
 
@@ -209,7 +214,7 @@ const CommentItem = ({
 
       {/* 답글 작성 폼 */}
       {showReplyForm && !isReply && (
-        <div className="mt-3 pl-4 sm:pl-6 border-l-2 border-zinc-200 dark:border-zinc-800">
+        <div className="mt-3 border-l-2 border-zinc-200 pl-4 sm:pl-6 dark:border-zinc-800">
           <CommentForm
             postId={postId}
             parentId={comment.id}
@@ -224,7 +229,7 @@ const CommentItem = ({
 
       {/* 대댓글(답글) 목록 렌더링 */}
       {comment.replies && comment.replies.length > 0 && (
-        <div className="mt-3 space-y-3.5 pl-4 sm:pl-6 border-l-2 border-zinc-200 dark:border-zinc-800">
+        <div className="mt-3 space-y-3.5 border-l-2 border-zinc-200 pl-4 sm:pl-6 dark:border-zinc-800">
           {comment.replies.map((reply) => (
             <CommentItem
               key={reply.id}
@@ -250,12 +255,10 @@ export const PostComments = ({
   isLoggedIn = false,
 }: PostCommentsProps) => {
   return (
-    <div className="py-6 border-b border-zinc-200 dark:border-zinc-800">
+    <div className="border-b border-zinc-200 py-6 dark:border-zinc-800">
       {/* 댓글 헤더 */}
       <div className="mb-4 flex items-center gap-2">
-        <span className="text-lg font-extrabold text-zinc-900 dark:text-zinc-100">
-          댓글
-        </span>
+        <span className="text-lg font-extrabold text-zinc-900 dark:text-zinc-100">댓글</span>
         <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-sm font-semibold text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
           {commentsCount}
         </span>

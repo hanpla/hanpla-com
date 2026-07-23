@@ -271,3 +271,57 @@ export const getUserPostVote = async (postId: number, userId: string): Promise<V
     return null;
   }
 };
+
+/**
+ * 특정 사용자가 작성한 게시글 목록을 최신순으로 조회합니다.
+ */
+export const getPostsByUserId = async (
+  userId: string,
+  page: number = 1,
+  pageSize: number = 10
+): Promise<{ posts: PostWithRelations[]; totalCount: number }> => {
+  try {
+    const supabase = createAdminClient();
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+
+    const {
+      data: posts,
+      error,
+      count,
+    } = await supabase
+      .from("posts")
+      .select(
+        `
+        id,
+        board_abbr,
+        title,
+        content,
+        author_id,
+        views,
+        likes,
+        dislikes,
+        comments_count,
+        created_at,
+        author:users!posts_author_id_fkey(nickname)
+      `,
+        { count: "exact" }
+      )
+      .eq("author_id", userId)
+      .order("created_at", { ascending: false })
+      .range(from, to);
+
+    if (error) {
+      console.error(`사용자(${userId}) 게시글 목록 조회 실패:`, error);
+      return { posts: [], totalCount: 0 };
+    }
+
+    return {
+      posts: (posts as unknown as PostWithRelations[]) ?? [],
+      totalCount: count ?? 0,
+    };
+  } catch (error) {
+    console.error("getPostsByUserId error:", error);
+    return { posts: [], totalCount: 0 };
+  }
+};

@@ -58,7 +58,11 @@ const ProfileView = ({ user }: ProfileViewProps) => {
     <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
       <ProfileTabNav activeTab={activeTab} onSelectTab={setActiveTab} />
       <div className="flex-1">
-        {activeTab === "posts" ? <ProfilePostsSection /> : <ProfileInfoSection user={user} />}
+        {activeTab === "posts" ? (
+          <ProfilePostsSection userId={user.id} />
+        ) : (
+          <ProfileInfoSection user={user} />
+        )}
       </div>
     </div>
   );
